@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'register_screen.dart'; // Import to navigate to RegisterScreen
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +21,10 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 32.0),
+              const SizedBox(height: 16.0),
               // Title
               const Text(
-                'Login',
+                'Buat Akun',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 36.0,
@@ -32,7 +32,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Color(0xFF1A1A1A),
                 ),
               ),
-              const SizedBox(height: 56.0),
+              const SizedBox(height: 48.0),
+
+              // Full Name Label
+              const Text(
+                'NAMA LENGKAP',
+                style: TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF5A4D4C),
+                  letterSpacing: 0.5,
+                ),
+              ),
+              const SizedBox(height: 8.0),
+              _buildTextField('Masukkan nama lengkap'),
+              const SizedBox(height: 16.0),
 
               // Email Label
               const Text(
@@ -45,25 +59,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 8.0),
-              // Email Input Field
-              TextField(
+              _buildTextField(
+                'contoh@honda.id',
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  hintText: 'nama@email.com',
-                  hintStyle: TextStyle(color: Colors.grey[400], fontSize: 16.0),
-                  filled: true,
-                  fillColor: const Color(0xFFEBEBEB), // Light gray background
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 18.0,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
               ),
-              const SizedBox(height: 24.0),
+              const SizedBox(height: 16.0),
 
               // Password Label
               const Text(
@@ -76,65 +76,43 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 8.0),
-              // Password Input Field
-              TextField(
-                obscureText: !_isPasswordVisible,
-                decoration: InputDecoration(
-                  hintText: '••••••••',
-                  hintStyle: TextStyle(
-                    color: Colors.grey[400],
-                    letterSpacing: 4.0,
-                  ),
-                  filled: true,
-                  fillColor: const Color(0xFFEBEBEB),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 18.0,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                    borderSide: BorderSide.none,
-                  ),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _isPasswordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: Colors.grey[600],
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
-                    },
-                  ),
-                ),
+              _buildPasswordField(
+                hint: 'Min. 8 karakter',
+                isVisible: _isPasswordVisible,
+                onToggle: () {
+                  setState(() {
+                    _isPasswordVisible = !_isPasswordVisible;
+                  });
+                },
               ),
               const SizedBox(height: 16.0),
 
-              // Forgot Password Text
-              Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: () {
-                    // Navigate to Forgot Password
-                  },
-                  child: const Text(
-                    'Lupa Kata Sandi?',
-                    style: TextStyle(
-                      color: Color(0xFFCC0000), // Honda Red
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14.0,
-                    ),
-                  ),
+              // Confirm Password Label
+              const Text(
+                'KONFIRMASI KATA SANDI',
+                style: TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF5A4D4C),
+                  letterSpacing: 0.5,
                 ),
+              ),
+              const SizedBox(height: 8.0),
+              _buildPasswordField(
+                hint: 'Ulangi kata sandi',
+                isVisible: _isConfirmPasswordVisible,
+                onToggle: () {
+                  setState(() {
+                    _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                  });
+                },
               ),
               const SizedBox(height: 48.0),
 
-              // Login Button
+              // Register Button
               ElevatedButton(
                 onPressed: () {
-                  // Perform login action
+                  // Perform register action
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFE00024), // Vibrant Red
@@ -146,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   shadowColor: const Color(0xFFE00024).withOpacity(0.5),
                 ),
                 child: const Text(
-                  'Masuk',
+                  'Daftar Sekarang',
                   style: TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
@@ -156,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 48.0),
 
-              // Divider "Atau masuk dengan"
+              // Divider "Atau daftar dengan"
               Row(
                 children: [
                   const Expanded(
@@ -165,11 +143,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      'Atau masuk dengan',
+                      'ATAU DAFTAR DENGAN',
                       style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[700],
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.5,
                       ),
                     ),
                   ),
@@ -186,7 +165,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   _buildSocialButton(Icons.apple, Colors.black),
                   const SizedBox(width: 16.0),
-                  // Menggunakan network image untuk logo Google (atau fallback text 'G')
                   _buildGoogleIcon(),
                   const SizedBox(width: 16.0),
                   _buildSocialButton(Icons.facebook, const Color(0xFF1877F2)),
@@ -194,26 +172,24 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 48.0),
 
-              // Register Text
+              // Login Text
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Belum punya akun? ',
-                    style: TextStyle(color: Colors.grey[700], fontSize: 14.0),
+                    'Sudah memiliki akun? ',
+                    style: TextStyle(
+                      color: Colors.grey[800],
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   GestureDetector(
                     onTap: () {
-                      // Navigate to Register
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RegisterScreen(),
-                        ),
-                      );
+                      Navigator.pop(context); // Go back to login screen
                     },
                     child: const Text(
-                      'Daftar Sekarang',
+                      'Masuk di sini',
                       style: TextStyle(
                         color: Color(0xFFCC0000), // Honda Red
                         fontWeight: FontWeight.bold,
@@ -231,7 +207,60 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // Builder method for generic icons (Apple, Facebook)
+  Widget _buildTextField(
+    String hint, {
+    TextInputType keyboardType = TextInputType.text,
+  }) {
+    return TextField(
+      keyboardType: keyboardType,
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TextStyle(color: Colors.grey[500], fontSize: 16.0),
+        filled: true,
+        fillColor: const Color(0xFFEBEBEB),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16.0,
+          vertical: 18.0,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPasswordField({
+    required String hint,
+    required bool isVisible,
+    required VoidCallback onToggle,
+  }) {
+    return TextField(
+      obscureText: !isVisible,
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TextStyle(color: Colors.grey[500], fontSize: 16.0),
+        filled: true,
+        fillColor: const Color(0xFFEBEBEB),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16.0,
+          vertical: 18.0,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: BorderSide.none,
+        ),
+        suffixIcon: IconButton(
+          icon: Icon(
+            isVisible ? Icons.visibility : Icons.visibility_off,
+            color: Colors.grey[600],
+          ),
+          onPressed: onToggle,
+        ),
+      ),
+    );
+  }
+
   Widget _buildSocialButton(IconData icon, Color color) {
     return Container(
       width: 60,
@@ -245,7 +274,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // Builder method for Google Network Logo
   Widget _buildGoogleIcon() {
     return Container(
       width: 60,
@@ -261,7 +289,6 @@ class _LoginScreenState extends State<LoginScreen> {
           width: 26,
           height: 26,
           errorBuilder: (context, error, stackTrace) {
-            // Fallback apabila network gagal
             return const Text(
               'G',
               style: TextStyle(
