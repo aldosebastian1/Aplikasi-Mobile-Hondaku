@@ -12,6 +12,31 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
+  // Data konten untuk onboarding
+  final List<Map<String, dynamic>> _onboardingData = [
+    {
+      'title1': 'Temukan Motor',
+      'title2': 'Impian.',
+      'title2Color': const Color(0xFFCC0000), // Honda red
+      'subtitle':
+          'Jelajahi berbagai model motor Honda terbaru dengan harga OTR terbaik di wilayah Anda.',
+    },
+    {
+      'title1': 'Simulasi Kredit',
+      'title2': 'Instan',
+      'title2Color': Colors.black87, // Black color for 'Instan'
+      'subtitle':
+          'Hitung cicilan motor impian Anda secara real-time dengan berbagai pilihan leasing terpercaya.',
+    },
+    {
+      'title1': 'Pantau Pesanan',
+      'title2': 'Anda',
+      'title2Color': Colors.black87,
+      'subtitle':
+          'Lacak status pengiriman motor Anda dari dealer hingga sampai di depan rumah dengan fitur tracking real-time.',
+    },
+  ];
+
   // Function to navigate to Home
   void _navigateToHome() {
     Navigator.of(context).pushReplacement(
@@ -86,16 +111,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                       clipBehavior: Clip.hardEdge,
                       child: Image.asset(
-                        // Menggunakan gambar lokal: assets/images/onboard1.png, dst.
-                        'assets/images/onboard${index + 1}.png',
+                        // Menggunakan gambar lokal: assets/images/onboarding1.png, dst.
+                        'assets/images/onboarding${index + 1}.png',
                         fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: double.infinity,
                         // Menanangi error jika gambar belum Anda masukkan ke folder
                         errorBuilder: (context, error, stackTrace) {
                           return Center(
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Text(
-                                'Harap tambahkan gambar:\n"assets/images/onboard${index + 1}.png"',
+                                'Harap tambahkan gambar:\n"assets/images/onboardin${index + 1}.png"',
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(color: Colors.white70),
                               ),
@@ -137,9 +164,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
 
                   // Headlines
-                  const Text(
-                    'Temukan Motor',
-                    style: TextStyle(
+                  Text(
+                    _onboardingData[_currentPage]['title1'],
+                    style: const TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w900,
                       color: Colors.black87,
@@ -147,12 +174,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       letterSpacing: -1.0,
                     ),
                   ),
-                  const Text(
-                    'Impian.',
+                  Text(
+                    _onboardingData[_currentPage]['title2'],
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w900,
-                      color: Color(0xFFCC0000), // Honda red
+                      color: _onboardingData[_currentPage]['title2Color'],
                       height: 1.1,
                       letterSpacing: -1.0,
                     ),
@@ -161,7 +188,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                   // Subtitle
                   Text(
-                    'Jelajahi berbagai model motor Honda terbaru dengan harga OTR terbaik di wilayah Anda.',
+                    _onboardingData[_currentPage]['subtitle'],
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey[700],
