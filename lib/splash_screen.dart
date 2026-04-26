@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'main.dart'; // Using this for now to navigate to MyHomePage
+import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -12,13 +12,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // Navigate to the Home Page after 2 seconds
+    // Navigate to the Onboarding Screen after 2 seconds
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) =>
-              const MyHomePage(title: 'Flutter Demo Home Page'),
-        ),
+        MaterialPageRoute(builder: (context) => const OnboardingScreen()),
       );
     });
   }
