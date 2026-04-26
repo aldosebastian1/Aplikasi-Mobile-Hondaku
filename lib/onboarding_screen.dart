@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'main.dart'; // Import to navigate to MyHomePage
+import 'login_screen.dart'; // Import to navigate to Login
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -37,12 +37,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     },
   ];
 
-  // Function to navigate to Home
-  void _navigateToHome() {
+  // Function to navigate to Login
+  void _navigateToLogin() {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
-      ),
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }
 
@@ -75,7 +73,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: _navigateToHome,
+                    onTap: _navigateToLogin,
                     child: const Text(
                       'Skip >',
                       style: TextStyle(
@@ -225,7 +223,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     height: 56,
                     child: ElevatedButton(
                       onPressed: _currentPage == 2
-                          ? _navigateToHome
+                          ? _navigateToLogin
                           : () {
                               _pageController.nextPage(
                                 duration: const Duration(milliseconds: 300),
