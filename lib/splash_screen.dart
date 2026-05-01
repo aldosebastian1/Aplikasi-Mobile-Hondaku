@@ -14,8 +14,16 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     // Navigate to the Onboarding Screen after 2 seconds
     Future.delayed(const Duration(seconds: 2), () {
+      if (!mounted) return;
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+        PageRouteBuilder(
+          transitionDuration: const Duration(milliseconds: 800),
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const OnboardingScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+        ),
       );
     });
   }
@@ -43,14 +51,16 @@ class _SplashScreenState extends State<SplashScreen> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 50.0),
+                padding: const EdgeInsets.only(
+                  bottom: 48.0,
+                ), // HIG: multiple of 8
                 child: Text(
                   'THE POWER OF DREAMS',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: Colors.grey.shade600, // Grayish text color
-                    letterSpacing: 2.5, // Spaced out letters
+                    letterSpacing: 2.0, // HIG: balanced tracking
                   ),
                 ),
               ),
