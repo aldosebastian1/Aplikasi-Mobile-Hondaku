@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'hondaku_app.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -10,29 +12,54 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
+  bool _isLoading = false; // State for loading animation
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA), // Off-white light background
+      backgroundColor: const Color(
+        0xFFFAFAFA,
+      ), // Off-white light background (apple standard grouped)
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 48.0),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 24.0,
+            vertical: 16.0,
+          ), // HIG: Generous 24pt edge margin
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                // Make the back icon optically align perfectly with left margin
+                child: Transform.translate(
+                  offset: const Offset(-12, 0),
+                  child: IconButton(
+                    iconSize: 22,
+                    icon: const Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.black87,
+                    ),
+                    onPressed: () {
+                      // Go back to login screen
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
               const SizedBox(height: 16.0),
               // Title
               const Text(
                 'Buat Akun',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 36.0,
-                  fontWeight: FontWeight.w900,
-                  color: Color(0xFF1A1A1A),
+                  fontSize: 38.0, // Large Title
+                  fontWeight: FontWeight.w900, // Very heavy weight
+                  color: Color(0xFF1A1A1A), // Native black/dark grey
+                  letterSpacing: -0.5,
                 ),
               ),
-              const SizedBox(height: 48.0),
+              const SizedBox(height: 56.0),
 
               // Full Name Label
               const Text(
@@ -111,26 +138,60 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
               // Register Button
               ElevatedButton(
-                onPressed: () {
-                  // Perform register action
-                },
+                onPressed: _isLoading
+                    ? null
+                    : () async {
+                        // Set loading state
+                        setState(() {
+                          _isLoading = true;
+                        });
+
+                        // Fake network register action time
+                        await Future.delayed(const Duration(seconds: 2));
+
+                        if (context.mounted) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HondakuApp(),
+                            ),
+                          );
+                        }
+                      },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFE00024), // Vibrant Red
                   padding: const EdgeInsets.symmetric(vertical: 18.0),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
+                    borderRadius: BorderRadius.circular(
+                      30.0,
+                    ), // Fully rounded like the design
                   ),
-                  elevation: 2,
-                  shadowColor: const Color(0xFFE00024).withOpacity(0.5),
+                  elevation: 8, // Soft shadow
+                  shadowColor: const Color(
+                    0xFFE00024,
+                  ).withValues(alpha: 0.5), // Red glow
                 ),
-                child: const Text(
-                  'Daftar Sekarang',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
+                child: _isLoading
+                    ? const SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 3.0,
+                        ),
+                      )
+                    : const Text(
+                        'Daftar Sekarang',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
               ),
               const SizedBox(height: 48.0),
 
@@ -138,36 +199,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Row(
                 children: [
                   const Expanded(
-                    child: Divider(color: Color(0xFFE0E0E0), thickness: 1),
+                    child: Divider(color: Color(0xFFE8E8E8), thickness: 1.5),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      'ATAU DAFTAR DENGAN',
+                      'Atau daftar dengan',
                       style: TextStyle(
-                        color: Colors.grey[700],
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.5,
+                        color: Colors.grey[800],
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
                   const Expanded(
-                    child: Divider(color: Color(0xFFE0E0E0), thickness: 1),
+                    child: Divider(color: Color(0xFFE8E8E8), thickness: 1.5),
                   ),
                 ],
               ),
-              const SizedBox(height: 32.0),
+              const SizedBox(height: 24.0),
 
               // Social Media Buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildSocialButton(Icons.apple, Colors.black),
+                  _buildAssetSocialButton('assets/icons/apple-logo.svg'),
                   const SizedBox(width: 16.0),
-                  _buildGoogleIcon(),
+                  _buildAssetSocialButton('assets/icons/goggle-logo.svg'),
                   const SizedBox(width: 16.0),
-                  _buildSocialButton(Icons.facebook, const Color(0xFF1877F2)),
+                  _buildAssetSocialButton('assets/icons/facebook-logo.svg'),
                 ],
               ),
               const SizedBox(height: 48.0),
@@ -178,11 +238,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 children: [
                   Text(
                     'Sudah memiliki akun? ',
-                    style: TextStyle(
-                      color: Colors.grey[800],
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: TextStyle(color: Colors.grey[800], fontSize: 14.0),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -191,8 +247,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: const Text(
                       'Masuk di sini',
                       style: TextStyle(
-                        color: Color(0xFFCC0000), // Honda Red
-                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFE00024), // Brighter red
+                        fontWeight: FontWeight.w500,
                         fontSize: 14.0,
                       ),
                     ),
@@ -217,7 +273,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         hintText: hint,
         hintStyle: TextStyle(color: Colors.grey[500], fontSize: 16.0),
         filled: true,
-        fillColor: const Color(0xFFEBEBEB),
+        fillColor: const Color(0xFFE8E8E8), // Light gray background
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16.0,
           vertical: 18.0,
@@ -239,9 +295,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
       obscureText: !isVisible,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: Colors.grey[500], fontSize: 16.0),
+        hintStyle: TextStyle(
+          color: Colors.grey[500],
+          letterSpacing: 4.0,
+          fontSize: 16.0,
+        ),
         filled: true,
-        fillColor: const Color(0xFFEBEBEB),
+        fillColor: const Color(0xFFE8E8E8),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16.0,
           vertical: 18.0,
@@ -253,7 +313,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         suffixIcon: IconButton(
           icon: Icon(
             isVisible ? Icons.visibility : Icons.visibility_off,
-            color: Colors.grey[600],
+            color: const Color(
+              0xFF5A4D4C,
+            ).withValues(alpha: 0.8), // Matches label color hint
+            size: 22.0,
           ),
           onPressed: onToggle,
         ),
@@ -261,43 +324,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildSocialButton(IconData icon, Color color) {
+  Widget _buildAssetSocialButton(String assetPath) {
     return Container(
-      width: 60,
-      height: 60,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Icon(icon, color: color, size: 32.0),
-    );
-  }
-
-  Widget _buildGoogleIcon() {
-    return Container(
-      width: 60,
-      height: 60,
+      width: 64,
+      height: 64,
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
         border: Border.all(color: Colors.grey.shade200),
       ),
       child: Center(
-        child: Image.network(
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png',
-          width: 26,
-          height: 26,
-          errorBuilder: (context, error, stackTrace) {
-            return const Text(
-              'G',
-              style: TextStyle(
-                color: Color(0xFFDB4437),
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-              ),
-            );
-          },
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: SvgPicture.asset(
+            assetPath,
+            height: 32,
+            width: 32,
+            fit: BoxFit.contain,
+            placeholderBuilder: (BuildContext context) =>
+                const Icon(Icons.broken_image, color: Colors.grey),
+          ),
         ),
       ),
     );
