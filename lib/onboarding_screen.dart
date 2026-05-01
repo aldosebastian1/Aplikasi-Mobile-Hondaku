@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'login_screen.dart'; // Import to navigate to Login
 
 class OnboardingScreen extends StatefulWidget {
@@ -40,7 +40,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   // Function to navigate to Login
   void _navigateToLogin() {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const LoginScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+      ),
     );
   }
 
@@ -57,7 +64,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Container(
               color: Colors.white,
               padding: const EdgeInsets.symmetric(
-                horizontal: 24.0,
+                horizontal: 20.0, // HIG: Standard iOS margin
                 vertical: 16.0,
               ),
               child: Row(
@@ -73,13 +80,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   ),
                   GestureDetector(
+                    // HIG: Touch target min 44x44, padded for easier tap
+                    behavior: HitTestBehavior.opaque,
                     onTap: _navigateToLogin,
-                    child: const Text(
-                      'Skip >',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black54,
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 8.0,
+                        horizontal: 8.0,
+                      ),
+                      child: Text(
+                        'Lewati', // HIG: Text labels without chevrons are preferred unless it's a navigational push
+                        style: TextStyle(
+                          fontSize: 16, // HIG: standard interactive text size
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black54,
+                        ),
                       ),
                     ),
                   ),
@@ -103,8 +118,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: const Color(
-                          0xFF333333,
-                        ), // Dark placeholder background
+                          0xFFF2F2F7,
+                        ), // HIG System Gray 6 (image placeholder instead of pure dark 333)
                         borderRadius: BorderRadius.circular(24.0),
                       ),
                       clipBehavior: Clip.hardEdge,
@@ -139,11 +154,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(32.0),
-                  topRight: Radius.circular(32.0),
+                  topLeft: Radius.circular(
+                    24.0,
+                  ), // HIG: Modals & Sheets max radii 10-24
+                  topRight: Radius.circular(24.0),
                 ),
               ),
-              padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 48.0),
+              padding: const EdgeInsets.fromLTRB(
+                20.0,
+                24.0,
+                20.0,
+                48.0,
+              ), // Padding changed to match standard 20 margin + 8pt grid
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,9 +210,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   Text(
                     _onboardingData[_currentPage]['subtitle'],
                     style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[700],
-                      height: 1.5,
+                      fontSize: 17, // HIG Body standard text size
+                      color: const Color(0xFF3C3C43).withValues(
+                        alpha: 0.8,
+                      ), // HIG System Gray (High contrast secondary text)
+                      height: 1.3, // Standard iOS line height for body
                     ),
                   ),
                   const SizedBox(height: 32.0),
@@ -231,18 +255,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               );
                             },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFCC0000), // Red button
+                        backgroundColor: const Color(
+                          0xFFCC0000,
+                        ), // Standard Red primary action
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 14.0,
+                        ), // ~44->48 pt touch target
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(28.0),
+                          borderRadius: BorderRadius.circular(
+                            28.0,
+                          ), // Keep slightly pill-shaped or fallback to pill
                         ),
-                        elevation: 0,
+                        elevation: 0, // HIG flat buttons
                       ),
                       child: Text(
-                        _currentPage == 2 ? 'Mulai Sekarang' : 'Mulai Sekarang',
+                        _currentPage == 2 ? 'Mulai Sekarang' : 'Lanjutkan',
                         style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 17, // HIG Body standard action
+                          fontWeight: FontWeight.w600, // Medium to bold HIG CTA
                           color: Colors.white,
+                          letterSpacing: -0.4,
                         ),
                       ),
                     ),
