@@ -1,4 +1,4 @@
-﻿class Motorcycle {
+class Motorcycle {
   final String id;
   final String name;
   final String categoryBadge;
