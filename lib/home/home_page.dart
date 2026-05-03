@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../data/motorcycle_data.dart';
 import 'product_detail_screen.dart';
@@ -16,6 +17,7 @@ class _HalamanHomeState extends State<HalamanHome> {
   static const _surface = Colors.white;
   int _currentBanner = 0;
   final PageController _bannerController = PageController();
+  Timer? _bannerTimer;
 
   final List<Map<String, dynamic>> _kategori = [
     {'icon': Icons.motorcycle, 'label': 'MATIC'},
@@ -25,7 +27,30 @@ class _HalamanHomeState extends State<HalamanHome> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _startBannerTimer();
+  }
+
+  void _startBannerTimer() {
+    _bannerTimer = Timer.periodic(const Duration(seconds: 4), (timer) {
+      if (_bannerController.hasClients) {
+        int nextPage = _currentBanner + 1;
+        if (nextPage >= heroBannersDatabase.length) {
+          nextPage = 0;
+        }
+        _bannerController.animateToPage(
+          nextPage,
+          duration: const Duration(milliseconds: 800),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
+  @override
   void dispose() {
+    _bannerTimer?.cancel();
     _bannerController.dispose();
     super.dispose();
   }
@@ -168,7 +193,7 @@ class _HalamanHomeState extends State<HalamanHome> {
     return Column(
       children: [
         SizedBox(
-          height: 380, // Tinggi banner disesuaikan agar pas dengan desain baru
+          height: 320, // Final touch: Sedikit lebih tinggi untuk estetika maksimal
           child: PageView.builder(
             controller: _bannerController,
             onPageChanged: (i) => setState(() => _currentBanner = i),
@@ -225,14 +250,14 @@ class _HalamanHomeState extends State<HalamanHome> {
                     Colors.black.withOpacity(0.4),
                     Colors.transparent,
                   ],
-                  stops: const [0.0, 0.5, 0.8],
+                  stops: const [0.0, 0.5, 0.9],
                 ),
               ),
             ),
           ),
           // Content
           Padding(
-            padding: const EdgeInsets.all(26),
+            padding: const EdgeInsets.all(28),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -257,13 +282,13 @@ class _HalamanHomeState extends State<HalamanHome> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 14),
                 // Title 1
                 Text(
                   data.title1,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 42,
+                    fontSize: 40,
                     fontWeight: FontWeight.w900,
                     height: 1.0,
                     letterSpacing: -1.2,
@@ -274,7 +299,7 @@ class _HalamanHomeState extends State<HalamanHome> {
                   data.title2,
                   style: const TextStyle(
                     color: Color(0xFFF68685),
-                    fontSize: 34,
+                    fontSize: 32,
                     fontWeight: FontWeight.w800,
                     height: 1.1,
                     letterSpacing: -0.5,
@@ -286,7 +311,7 @@ class _HalamanHomeState extends State<HalamanHome> {
                   data.subtitle,
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.85),
-                    fontSize: 14,
+                    fontSize: 15,
                     fontWeight: FontWeight.w400,
                     height: 1.4,
                   ),
@@ -298,20 +323,19 @@ class _HalamanHomeState extends State<HalamanHome> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _red,
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
+                      horizontal: 30,
+                      vertical: 15,
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(99),
                     ),
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    elevation: 0,
                   ),
                   child: const Text(
                     'Learn More',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 13,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
