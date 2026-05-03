@@ -1,0 +1,461 @@
+import 'package:flutter/material.dart';
+import '../data/motorcycle_data.dart';
+import 'product_detail_screen.dart';
+import '../booking/checkout_payment_method_page.dart';
+
+class HalamanKatalog extends StatefulWidget {
+  const HalamanKatalog({super.key});
+
+  @override
+  State<HalamanKatalog> createState() => _HalamanKatalogState();
+}
+
+class _HalamanKatalogState extends State<HalamanKatalog> {
+  static const _red = Color(0xFFC40000);
+  static const _surface = Colors.white;
+
+  int _selectedFilter = 0;
+  final List<String> _filters = ['All Models', 'Price', 'Popularity'];
+
+  double _parsePrice(String priceString) {
+    final cleanString = priceString.replaceAll(RegExp(r'[^0-9]'), '');
+    return double.tryParse(cleanString) ?? 0.0;
+  }
+
+  List<Motorcycle> get _filteredMotors {
+    final list = List<Motorcycle>.from(motorcycleDatabase);
+    if (_selectedFilter == 1) {
+      list.sort((a, b) => _parsePrice(a.price).compareTo(_parsePrice(b.price)));
+    } else if (_selectedFilter == 2) {
+      list.sort((a, b) => _parsePrice(b.price).compareTo(_parsePrice(a.price)));
+    }
+    return list;
+  }
+
+  void _showFilterSheet() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) => Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Filter',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            ...['Semua Kategori', 'Matic', 'Sport', 'Cruiser', 'Electric'].map(
+              (e) => ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(e, style: const TextStyle(fontSize: 14)),
+                trailing: const Icon(Icons.chevron_right, size: 18),
+                onTap: () => Navigator.pop(context),
+              ),
+            ),
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF5F5F5),
+      body: SafeArea(
+        top: false,
+        child: Column(
+          children: [
+            _buildHeader(),
+            Expanded(
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+                      child: _buildHeroHeader(),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+                      child: _buildFilterChips(),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 28, 20, 12),
+                      child: _buildRecommendationsHeader(),
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (_, i) => _buildMotorCard(_filteredMotors[i]),
+                        childCount: _filteredMotors.length,
+                      ),
+                    ),
+                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      decoration: const BoxDecoration(
+        color: _surface,
+        border: Border(bottom: BorderSide(color: Color(0xFFE9E9E9))),
+      ),
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
+          child: Row(
+            children: [
+              Text(
+                'Hondaku',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  color: _red,
+                  letterSpacing: -0.9,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.location_on, size: 12, color: Color(0xFFC40000)),
+                    const SizedBox(width: 4),
+                    Text(
+                      'OTR MEDAN',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF222222),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Spacer(),
+              CircleAvatar(
+                radius: 20,
+                backgroundColor: const Color(0xFFE9E9E9),
+                backgroundImage: const AssetImage('assets/images/profile.png'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeroHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'ENGINEERED FOR PERFORMANCE',
+          style: TextStyle(
+            color: _red,
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.5,
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          'Precision\nMachine.',
+          style: TextStyle(
+            fontSize: 38,
+            fontWeight: FontWeight.w900,
+            height: 1.1,
+            color: Colors.black,
+          ),
+        ),
+        const SizedBox(height: 16),
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                width: 3,
+                decoration: BoxDecoration(
+                  color: _red,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Expanded(
+                child: Text(
+                  'Explore the complete range of Honda motorcycles, from aggressive super sports to versatile urban commuters.',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.black54,
+                    height: 1.6,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFilterChips() {
+    return Row(
+      children: _filters.asMap().entries.map((entry) {
+        final i = entry.key;
+        final label = entry.value;
+        final isSelected = i == _selectedFilter;
+
+        return Padding(
+          padding: EdgeInsets.only(right: i < _filters.length - 1 ? 8 : 0),
+          child: GestureDetector(
+            onTap: () => setState(() => _selectedFilter = i),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: BoxDecoration(
+                color: isSelected ? _red : Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  color: isSelected ? _red : Colors.grey.shade300,
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (i == 0) ...[
+                    Icon(
+                      Icons.tune,
+                      size: 14,
+                      color: isSelected ? Colors.white : Colors.black87,
+                    ),
+                    const SizedBox(width: 6),
+                  ],
+                  Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: isSelected ? Colors.white : Colors.black87,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildRecommendationsHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Text(
+          'RECOMMENDATIONS',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 0.3,
+          ),
+        ),
+        GestureDetector(
+          onTap: _showFilterSheet,
+          child: Row(
+            children: [
+              Icon(Icons.tune, size: 14, color: Colors.grey.shade700),
+              const SizedBox(width: 4),
+              Text(
+                'FILTER',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.grey.shade700,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMotorCard(Motorcycle motor) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Gambar full width
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+            child: Container(
+              width: double.infinity,
+              height: 220,
+              color: Colors.white,
+              child: Image.asset(
+                motor.imageAsset,
+                fit: BoxFit.contain,
+                height: 220,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Badge kategori
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Text(
+                    motor.categoryBadge,
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.grey.shade600,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  motor.name,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  motor.description,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: Colors.black54,
+                    height: 1.4,
+                  ),
+                ),
+                const SizedBox(height: 14),
+                const Text(
+                  'STARTING FROM',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.grey,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  motor.price,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: _red,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ProductDetailScreen(),
+                            ),
+                          );
+                        },
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: Colors.grey.shade300),
+                          padding: const EdgeInsets.symmetric(vertical: 13),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                        ),
+                        child: const Text(
+                          'Detail',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const CheckoutPaymentMethodPage(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _red,
+                          padding: const EdgeInsets.symmetric(vertical: 13),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                        ),
+                        child: const Text(
+                          'Book Now',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
