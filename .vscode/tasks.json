@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "sync app flow once",
+      "type": "shell",
+      "command": "dart",
+      "args": [
+        "run",
+        "tool/sync_app_flow.dart"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "watch app flow",
+      "type": "shell",
+      "command": "dart",
+      "args": [
+        "run",
+        "tool/sync_app_flow.dart",
+        "--watch"
+      ],
+      "isBackground": true,
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
