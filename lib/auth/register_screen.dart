@@ -72,7 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               const SizedBox(height: 8.0),
-              _buildTextField('Masukkan nama lengkap'),
+              _buildTextField('Nama Lengkap'),
               const SizedBox(height: 16.0),
 
               // Email Label
@@ -87,7 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 8.0),
               _buildTextField(
-                'contoh@honda.id',
+                'nama@email.com',
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 16.0),
@@ -126,7 +126,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 8.0),
               _buildPasswordField(
-                hint: 'Ulangi kata sandi',
+                hint: '••••••••',
                 isVisible: _isConfirmPasswordVisible,
                 onToggle: () {
                   setState(() {
@@ -326,23 +326,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Widget _buildAssetSocialButton(String assetPath) {
     return Container(
-      width: 64,
-      height: 64,
+      width: 48,
+      height: 48,
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
-        border: Border.all(color: Colors.grey.shade200),
+        border: Border.all(color: const Color(0xFFF0F0F0)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(11.0),
           child: SvgPicture.asset(
             assetPath,
-            height: 32,
-            width: 32,
+            height: 26,
+            width: 26,
             fit: BoxFit.contain,
             placeholderBuilder: (BuildContext context) =>
-                const Icon(Icons.broken_image, color: Colors.grey),
+                const Icon(Icons.broken_image, color: Colors.grey, size: 18),
           ),
         ),
       ),
