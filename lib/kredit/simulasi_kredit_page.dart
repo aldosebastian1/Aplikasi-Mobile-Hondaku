@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../data/motorcycle_data.dart';
 import 'upload_dokumen_kredit_page.dart';
 
 class SimulasiKreditPage extends StatefulWidget {
-  const SimulasiKreditPage({super.key});
+  final Motorcycle motor;
+  const SimulasiKreditPage({super.key, required this.motor});
 
   @override
   State<SimulasiKreditPage> createState() => _SimulasiKreditPageState();
 }
 
 class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
-  static const double hargaOTR = 19850000;
+  late double hargaOTR;
   static const double minDpPersen = 0.10;
   static const double maxDpPersen = 0.75;
 
@@ -32,6 +34,14 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
   String? _selectedLeasing;
 
   final List<int> _tenorList = [11, 23, 35];
+
+  @override
+  void initState() {
+    super.initState();
+    // Parse price from string e.g. "Rp 19.155.000" to double
+    String priceStr = widget.motor.price.replaceAll(RegExp(r'[^0-9]'), '');
+    hargaOTR = double.tryParse(priceStr) ?? 0;
+  }
 
   double get _dpNominal => hargaOTR * _dpPersen;
   double get _pokokPinjaman => hargaOTR - _dpNominal;
@@ -153,11 +163,16 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: const Center(
-          child: Icon(
-            Icons.directions_bike,
-            size: 80,
-            color: Color(0xFFC40000),
+        child: Center(
+          child: Image.asset(
+            widget.motor.imageAsset,
+            height: 140,
+            fit: BoxFit.contain,
+            errorBuilder: (_, __, ___) => const Icon(
+              Icons.directions_bike,
+              size: 80,
+              color: Color(0xFFC40000),
+            ),
           ),
         ),
       ),
@@ -374,7 +389,7 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => UploadDokumenKreditPage(
-                      namaMotor: 'Honda BeAT',
+                      namaMotor: widget.motor.name,
                       selectedLeasing: leasing,
                       angsuran: _hitungAngsuran(leasing),
                       tenor: _selectedTenor,
