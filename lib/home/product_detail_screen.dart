@@ -1,106 +1,125 @@
 import 'package:flutter/material.dart';
+import '../data/motorcycle_data.dart';
 import '../core/hondaku_app.dart';
 import '../booking/checkout_payment_method_page.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  const ProductDetailScreen({super.key});
+  final int parentIndex;
+  final Motorcycle motor;
+  const ProductDetailScreen({
+    super.key,
+    this.parentIndex = 1,
+    required this.motor,
+  });
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
-  int _selectedBottomIndex = 0;
+  late int _selectedBottomIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedBottomIndex = widget.parentIndex;
+  }
+
+  static const _red = Color(0xFFC40000);
+  static const _surface = Colors.white;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildMainTopBar(),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _buildHeroSection(),
-                    const SizedBox(height: 16),
-                    _buildTitlePriceSection(),
-                    const SizedBox(height: 20),
-                    _buildKeySpecsSection(),
-                    const SizedBox(height: 20),
-                    _buildFeaturesSection(),
-                    const SizedBox(height: 20),
-                    _buildDetailedSpecsSection(),
-                    const SizedBox(height: 40),
-                    _buildBottomButtonsSection(),
-                    const SizedBox(height: 20),
-                  ],
-                ),
+      body: Column(
+        children: [
+          _buildHeader(),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildHeroSection(),
+                  const SizedBox(height: 16),
+                  _buildTitlePriceSection(),
+                  const SizedBox(height: 20),
+                  _buildKeySpecsSection(),
+                  const SizedBox(height: 20),
+                  _buildFeaturesSection(),
+                  const SizedBox(height: 20),
+                  _buildDetailedSpecsSection(),
+                  const SizedBox(height: 40),
+                  _buildBottomButtonsSection(),
+                  const SizedBox(height: 20),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomNavigationBar: _buildBottomNavBar(context),
     );
   }
 
-  Widget _buildMainTopBar() {
+  Widget _buildHeader() {
     return Container(
-      height: 64,
-      padding: const EdgeInsets.symmetric(horizontal: 18),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.96),
-        border: const Border(bottom: BorderSide(color: Color(0xFFEEEEEE))),
+      decoration: const BoxDecoration(
+        color: _surface,
+        border: Border(bottom: BorderSide(color: Color(0xFFE9E9E9))),
       ),
-      child: Row(
-        children: [
-          Text(
-            'Hondaku',
-            style: TextStyle(
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.w800,
-              fontSize: 22,
-              color: const Color(0xFFB60020),
-              letterSpacing: -1.2,
-            ),
-          ),
-          const SizedBox(width: 8),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: const Color(0xFFEDEDED),
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: const Row(
-              children: [
-                Icon(Icons.location_on, size: 13, color: Color(0xFFB60020)),
-                SizedBox(width: 4),
-                Text(
-                  'OTR MEDAN',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 10,
-                    color: Color(0xFF1A1C1C),
-                    letterSpacing: 1,
-                  ),
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
+          child: Row(
+            children: [
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(
+                  Icons.arrow_back_ios_new,
+                  size: 20,
+                  color: Colors.black87,
                 ),
-              ],
-            ),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+              ),
+              const SizedBox(width: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.location_on, size: 12, color: Color(0xFFC40000)),
+                    const SizedBox(width: 4),
+                    Text(
+                      'OTR MEDAN',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF222222),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Spacer(),
+              CircleAvatar(
+                radius: 20,
+                backgroundColor: const Color(0xFFE9E9E9),
+                backgroundImage: const AssetImage('assets/images/profile.png'),
+              ),
+            ],
           ),
-          const Spacer(),
-          CircleAvatar(
-            radius: 18,
-            backgroundColor: const Color(0xFFE2E2E2),
-            backgroundImage: const AssetImage('assets/images/profile.png'),
-          ),
-        ],
+        ),
       ),
     );
   }
-
+  
   Widget _buildHeroSection() {
     return Container(
       color: Colors.white,
@@ -168,7 +187,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 child: AspectRatio(
                   aspectRatio: 1.6,
                   child: Image.asset(
-                    'assets/images/Beat 1.png',
+                    widget.motor.imageAsset,
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: double.infinity,
@@ -258,13 +277,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Total Control Super Sport',
-            style: TextStyle(color: Color(0xFF2F2F2F), fontSize: 14),
+          Text(
+            widget.motor.subtitle,
+            style: const TextStyle(color: Color(0xFF2F2F2F), fontSize: 14),
           ),
           const SizedBox(height: 4),
-          const Text(
-            'BEAT',
+          Text(
+            widget.motor.name.toUpperCase(),
             style: TextStyle(fontSize: 34, fontWeight: FontWeight.w900),
           ),
           const SizedBox(height: 20),
@@ -299,20 +318,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
                 const SizedBox(height: 8),
                 RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     style: TextStyle(
                       fontSize: 19,
                       fontWeight: FontWeight.w800,
                       color: Colors.black,
                     ),
                     children: [
-                      TextSpan(
+                      const TextSpan(
                         text: 'Mulai dari ',
                         style: TextStyle(color: Color(0xFFE11D48)),
                       ),
                       TextSpan(
-                        text: 'Rp 19.155.000',
-                        style: TextStyle(color: Color(0xFF1A1A1A)),
+                        text: widget.motor.price,
+                        style: const TextStyle(color: Color(0xFF1A1A1A)),
                       ),
                     ],
                   ),
@@ -636,7 +655,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CheckoutPaymentMethodPage(),
+                    builder: (context) =>
+                        CheckoutPaymentMethodPage(motor: widget.motor),
                   ),
                 );
               },
