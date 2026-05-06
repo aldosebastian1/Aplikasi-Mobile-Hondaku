@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'data_pemesan_page.dart';
+import '../data/motorcycle_data.dart';
+import 'booking_form_page.dart';
 import '../kredit/simulasi_kredit_page.dart';
 
 class CheckoutPaymentMethodPage extends StatefulWidget {
-  const CheckoutPaymentMethodPage({super.key});
+  final Motorcycle motor;
+  const CheckoutPaymentMethodPage({super.key, required this.motor});
 
   @override
   State<CheckoutPaymentMethodPage> createState() =>
@@ -74,7 +76,7 @@ class _CheckoutPaymentMethodPageState extends State<CheckoutPaymentMethodPage> {
         onPressed: () => Navigator.maybePop(context),
       ),
       title: const Text(
-        'Data Pemesan',
+        'Metode Pembayaran',
         style: TextStyle(
           color: Colors.black,
           fontSize: 16,
@@ -123,7 +125,7 @@ class _CheckoutPaymentMethodPageState extends State<CheckoutPaymentMethodPage> {
             padding: const EdgeInsets.all(12),
             child: Row(
               children: [
-                // Motorcycle image placeholder
+                // Motorcycle image
                 Container(
                   width: 80,
                   height: 60,
@@ -133,8 +135,8 @@ class _CheckoutPaymentMethodPageState extends State<CheckoutPaymentMethodPage> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      'https://www.honda-indonesia.com/content/dam/HPM/product/motorcycles/beat/beat-street/2022/colors/BeAT-Street-Matte-Black.png',
+                    child: Image.asset(
+                      widget.motor.imageAsset,
                       fit: BoxFit.contain,
                       errorBuilder: (context, error, stackTrace) => const Icon(
                         Icons.two_wheeler,
@@ -148,17 +150,17 @@ class _CheckoutPaymentMethodPageState extends State<CheckoutPaymentMethodPage> {
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
-                        'BeAT Matte Black',
-                        style: TextStyle(
+                        widget.motor.name,
+                        style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 4),
-                      Row(
+                      const SizedBox(height: 4),
+                      const Row(
                         children: [
                           Icon(
                             Icons.location_on,
@@ -175,12 +177,12 @@ class _CheckoutPaymentMethodPageState extends State<CheckoutPaymentMethodPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
-                        'Rp 19.155.000',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
+                        widget.motor.price,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
                           color: Color(0xFFD32F2F),
                         ),
                       ),
@@ -507,7 +509,8 @@ class _CheckoutPaymentMethodPageState extends State<CheckoutPaymentMethodPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SimulasiKreditPage(),
+                        builder: (context) =>
+                            SimulasiKreditPage(motor: widget.motor),
                       ),
                     );
                     return;
@@ -516,7 +519,8 @@ class _CheckoutPaymentMethodPageState extends State<CheckoutPaymentMethodPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DataPemesanPage(),
+                      builder: (context) =>
+                          BookingFormPage(motor: widget.motor),
                     ),
                   );
                 },
