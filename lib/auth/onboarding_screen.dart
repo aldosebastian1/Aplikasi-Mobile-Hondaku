@@ -9,6 +9,9 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+  static const Color _red = Color(0xFFC40000);
+  static const Color _surface = Colors.white;
+
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
@@ -51,68 +54,71 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
+  Widget _buildHeader() {
+    return Container(
+      decoration: const BoxDecoration(
+        color: _surface,
+        border: Border(bottom: BorderSide(color: Color(0xFFE9E9E9))),
+      ),
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Hondaku',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  color: _red,
+                  letterSpacing: -0.9,
+                ),
+              ),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: _navigateToLogin,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8.0,
+                    horizontal: 8.0,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Text(
+                        'Skip',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      SizedBox(width: 2),
+                      Icon(
+                        Icons.chevron_right,
+                        size: 20,
+                        color: Colors.black54,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(
-        0xFFF8F8F8,
-      ), // Light gray background for top section
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Custom App Bar Area
-            Container(
-              color: Colors.white,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20.0, // HIG: Standard iOS margin
-                vertical: 16.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'HONDAKU',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w900,
-                      color: Color(0xFFCC0000), // Honda Red
-                      letterSpacing: -0.5,
-                    ),
-                  ),
-                  GestureDetector(
-                    // HIG: Touch target min 44x44, padded for easier tap
-                    behavior: HitTestBehavior.opaque,
-                    onTap: _navigateToLogin,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 8.0,
-                        horizontal: 8.0,
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Text(
-                            'Skip', // Changed from 'Lewati' to 'Skip'
-                            style: TextStyle(
-                              fontSize:
-                                  16, // HIG: standard interactive text size
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black54,
-                            ),
-                          ),
-                          SizedBox(width: 2),
-                          Icon(
-                            Icons.chevron_right,
-                            size: 20,
-                            color: Colors.black54,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+      backgroundColor: const Color(0xFFF8F8F8),
+      body: Column(
+        children: [
+          _buildHeader(),
 
             // Image Section (PageView) using local assets
             Expanded(
@@ -303,7 +309,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ],
         ),
-      ),
     );
   }
 }
