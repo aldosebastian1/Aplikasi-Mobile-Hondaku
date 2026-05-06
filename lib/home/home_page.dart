@@ -17,6 +17,8 @@ class _HalamanHomeState extends State<HalamanHome> {
   static const _surface = Colors.white;
   int _currentBanner = 0;
   final PageController _bannerController = PageController();
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
   Timer? _bannerTimer;
 
   final List<Map<String, dynamic>> _kategori = [
@@ -52,7 +54,17 @@ class _HalamanHomeState extends State<HalamanHome> {
   void dispose() {
     _bannerTimer?.cancel();
     _bannerController.dispose();
+    _searchController.dispose();
     super.dispose();
+  }
+
+  List<Motorcycle> get _filteredMotors {
+    if (_searchQuery.isEmpty) return motorcycleDatabase;
+    return motorcycleDatabase.where((m) {
+      return m.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+          m.categoryBadge.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+          m.subtitle.toLowerCase().contains(_searchQuery.toLowerCase());
+    }).toList();
   }
 
   @override
@@ -69,13 +81,13 @@ class _HalamanHomeState extends State<HalamanHome> {
                 slivers: [
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                       child: _buildSearchBar(),
                     ),
                   ),
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
                       child: _buildBanner(),
                     ),
                   ),
@@ -93,12 +105,37 @@ class _HalamanHomeState extends State<HalamanHome> {
                   ),
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (_, i) => _buildMotorCard(motorcycleDatabase[i]),
-                        childCount: motorcycleDatabase.length,
-                      ),
-                    ),
+                    sliver: _filteredMotors.isEmpty
+                        ? SliverToBoxAdapter(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 40),
+                              child: Center(
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.search_off_rounded,
+                                      size: 64,
+                                      color: Colors.grey.shade300,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Text(
+                                      'Motor "${_searchQuery}" tidak ditemukan',
+                                      style: TextStyle(
+                                        color: Colors.grey.shade600,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        : SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (_, i) => _buildMotorCard(_filteredMotors[i]),
+                              childCount: _filteredMotors.length,
+                            ),
+                          ),
                   ),
                   const SliverToBoxAdapter(child: SizedBox(height: 24)),
                 ],
@@ -170,21 +207,40 @@ class _HalamanHomeState extends State<HalamanHome> {
 
   Widget _buildSearchBar() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      height: 48, // Standard height for search bars
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(999),
         border: Border.all(color: Colors.grey.shade200),
       ),
-      child: Row(
-        children: [
-          Icon(Icons.search, size: 20, color: Colors.grey.shade500),
-          const SizedBox(width: 10),
-          Text(
-            'Cari motor idaman...',
-            style: TextStyle(fontSize: 14, color: Colors.grey.shade500),
-          ),
-        ],
+      child: TextField(
+        controller: _searchController,
+        onChanged: (val) {
+          setState(() {
+            _searchQuery = val;
+          });
+        },
+        textAlignVertical: TextAlignVertical.center,
+        style: const TextStyle(fontSize: 14),
+        decoration: InputDecoration(
+          hintText: 'Cari motor idaman...',
+          hintStyle: TextStyle(fontSize: 14, color: Colors.grey.shade500),
+          prefixIcon: Icon(Icons.search, size: 18, color: Colors.grey.shade500),
+          suffixIcon: _searchQuery.isNotEmpty
+              ? IconButton(
+                  icon: const Icon(Icons.close, size: 16),
+                  onPressed: () {
+                    _searchController.clear();
+                    setState(() {
+                      _searchQuery = '';
+                    });
+                  },
+                )
+              : null,
+          border: InputBorder.none,
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+        ),
       ),
     );
   }
@@ -512,7 +568,8 @@ class _HalamanHomeState extends State<HalamanHome> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ProductDetailScreen(),
+                              builder: (context) =>
+                                  ProductDetailScreen(parentIndex: 0, motor: motor),
                             ),
                           );
                         },
@@ -541,7 +598,7 @@ class _HalamanHomeState extends State<HalamanHome> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  const CheckoutPaymentMethodPage(),
+                                  CheckoutPaymentMethodPage(motor: motor),
                             ),
                           );
                         },
