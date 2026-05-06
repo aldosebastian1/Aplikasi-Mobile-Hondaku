@@ -52,7 +52,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Colors.black87,
                     ),
                     onPressed: () {
-                      Navigator.pop(context);
+                      if (Navigator.canPop(context)) {
+                        Navigator.pop(context);
+                      }
                     },
                   ),
                 ),
@@ -88,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                  hintText: 'Masukkan email',
+                  hintText: 'nama@email.com',
                   hintStyle: TextStyle(color: Colors.grey[500], fontSize: 16.0),
                   filled: true,
                   fillColor: const Color(0xFFE8E8E8), // Light gray background
@@ -120,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _passwordController,
                 obscureText: !_isPasswordVisible,
                 decoration: InputDecoration(
-                  hintText: 'Masukkan kata sandi',
+                  hintText: '••••••••',
                   hintStyle: TextStyle(color: Colors.grey[500], fontSize: 16.0),
                   filled: true,
                   fillColor: const Color(0xFFE8E8E8),
@@ -333,23 +335,30 @@ class _LoginScreenState extends State<LoginScreen> {
   // Builder method for Asset Social Button
   Widget _buildAssetSocialButton(String assetPath) {
     return Container(
-      width: 64,
-      height: 64,
+      width: 48,
+      height: 48,
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
-        border: Border.all(color: Colors.grey.shade200),
+        border: Border.all(color: const Color(0xFFF0F0F0)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(11.0),
           child: SvgPicture.asset(
             assetPath,
-            height: 32,
-            width: 32,
+            height: 26,
+            width: 26,
             fit: BoxFit.contain,
             placeholderBuilder: (BuildContext context) =>
-                const Icon(Icons.broken_image, color: Colors.grey),
+                const Icon(Icons.broken_image, color: Colors.grey, size: 18),
           ),
         ),
       ),
