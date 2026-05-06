@@ -399,7 +399,8 @@ class _HalamanKatalogState extends State<HalamanKatalog> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ProductDetailScreen(),
+                              builder: (context) =>
+                                  ProductDetailScreen(parentIndex: 1, motor: motor),
                             ),
                           );
                         },
@@ -428,7 +429,7 @@ class _HalamanKatalogState extends State<HalamanKatalog> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  const CheckoutPaymentMethodPage(),
+                                  CheckoutPaymentMethodPage(motor: motor),
                             ),
                           );
                         },
