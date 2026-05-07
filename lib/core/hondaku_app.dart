@@ -23,17 +23,21 @@ class _HondakuAppState extends State<HondakuApp> {
     _selectedIndex = widget.initialIndex;
   }
 
-  final List<Widget> _pages = [
-    const HalamanHome(),
-    const HalamanKatalog(),
-    const AktivitasPage(),
-    ProfilePage(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      HalamanHome(onSeeAll: () {
+        setState(() {
+          _selectedIndex = 1;
+        });
+      }),
+      const HalamanKatalog(),
+      const AktivitasPage(),
+      ProfilePage(),
+    ];
+
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body: pages[_selectedIndex],
       bottomNavigationBar: HondakuBottomNavBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
