@@ -79,6 +79,16 @@ class _AktivitasPageState extends State<AktivitasPage>
           ),
         ),
         centerTitle: true,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: CircleAvatar(
+              radius: 20,
+              backgroundColor: const Color(0xFFE9E9E9),
+              backgroundImage: const AssetImage('assets/images/profile.png'),
+            ),
+          ),
+        ],
         bottom: TabBar(
           controller: _tabController,
           labelColor: _red,
