@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16.0),
                     borderSide:
-                        const BorderSide(color: Color(0xFFE00024), width: 1.5),
+                        const BorderSide(color: Color(0xFFE00024), width: 2.0),
                   ),
                 ),
               ),
@@ -168,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16.0),
                     borderSide:
-                        const BorderSide(color: Color(0xFFE00024), width: 1.5),
+                        const BorderSide(color: Color(0xFFE00024), width: 2.0),
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -272,7 +272,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     elevation: 4, // Softer shadow
                     shadowColor: const Color(
                       0xFFE00024,
-                    ).withValues(alpha: 0.3),
+                    ).withValues(alpha: 0.4),
                   ),
                   child: _isLoading
                       ? const SizedBox(
