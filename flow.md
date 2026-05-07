@@ -28,7 +28,7 @@ Struktur file telah dikelompokkan ke dalam folder fungsional untuk memudahkan pe
 > Bagian ini dihasilkan otomatis oleh `tool/sync_app_flow.dart`.
 > Jangan edit manual di antara marker START/END karena akan ditimpa saat sinkronisasi.
 
-**Generated at:** 2026-05-07 15:27:51.618334
+**Generated at:** 2026-05-07 18:07:19.778818
 **Detected nodes:** 18
 **Detected transitions:** 24
 
@@ -75,15 +75,15 @@ flowchart TD
 - HalamanKatalog -> ProductDetailScreen (push) [lib/home/catalog_page.dart:496]
 - KonfirmasiPengajuanPage -> HondakuApp (pushAndRemoveUntil) [lib/kredit/konfirmasi_pengajuan_page.dart:258]
 - LoginScreen -> HondakuApp (pushReplacement) [lib/auth/login_screen.dart:237]
-- LoginScreen -> RegisterScreen (push) [lib/auth/login_screen.dart:348]
+- LoginScreen -> RegisterScreen (push) [lib/auth/login_screen.dart:346]
 - MyApp -> SplashScreen (MaterialApp.home) [lib/main.dart:20]
 - OnboardingScreen -> LoginScreen (pushReplacement) [lib/auth/onboarding_screen.dart:45]
 - PembayaranBookingPage -> BookingBerhasilPage (pushReplacement) [lib/booking/pembayaran_booking_page.dart:497]
 - ProductDetailScreen -> CheckoutPaymentMethodPage (push) [lib/home/product_detail_screen.dart:652]
 - ProductDetailScreen -> HondakuApp (pushAndRemoveUntil) [lib/home/product_detail_screen.dart:703]
-- RegisterScreen -> HondakuApp (pushReplacement) [lib/auth/register_screen.dart:160]
+- RegisterScreen -> HondakuApp (pushReplacement) [lib/auth/register_screen.dart:162]
 - RingkasanPembayaranPage -> PembayaranBookingPage (push) [lib/booking/ringkasan_pembayaran_page.dart:441]
 - SimulasiKreditPage -> UploadDokumenKreditPage (push) [lib/kredit/simulasi_kredit_page.dart:391]
-- SplashScreen -> OnboardingScreen (pushReplacement) [lib/auth/splash_screen.dart:18]
+- SplashScreen -> OnboardingScreen (pushReplacement) [lib/auth/splash_screen.dart:41]
 - UploadDokumenKreditPage -> KonfirmasiPengajuanPage (push) [lib/kredit/upload_dokumen_kredit_page.dart:122]
 <!-- AUTO_FLOW_END -->

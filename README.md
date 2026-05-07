@@ -1,5 +1,11 @@
 # Hondaku - Honda Mobile Experience
 
+> [!IMPORTANT]
+> **Kredensial Akses (Demo)**
+> Untuk mencoba aplikasi, silakan gunakan akun berikut pada halaman Login:
+> - **Email:** `admin@gmail.com`
+> - **Password:** `admin123`
+
 Hondaku adalah aplikasi mobile modern yang dirancang khusus untuk mempermudah konsumen dalam mengeksplorasi, mensimulasikan, dan melakukan pemesanan sepeda motor Honda secara digital. Aplikasi ini menawarkan pengalaman pengguna yang premium dengan antarmuka yang bersih, responsif, dan selaras dengan identitas brand Honda.
 
 ## ✨ Fitur Utama
