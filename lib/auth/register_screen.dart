@@ -173,7 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       borderRadius: BorderRadius.circular(99),
                     ),
                     elevation: 4, // Matching login shadow
-                    shadowColor: const Color(0xFFE00024).withValues(alpha: 0.3),
+                    shadowColor: const Color(0xFFE00024).withValues(alpha: 0.4),
                   ),
                   child: _isLoading
                       ? const SizedBox(
