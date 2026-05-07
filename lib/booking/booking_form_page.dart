@@ -20,6 +20,7 @@ class _BookingFormPageState extends State<BookingFormPage> {
 
   String? _selectedKecamatan;
   String? _selectedKelurahan;
+  bool _isFullPayment = false; // Default: Booking Fee (Reservation)
 
   static const List<String> _kecamatanList = [
     'Medan Kota',
@@ -115,10 +116,14 @@ class _BookingFormPageState extends State<BookingFormPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    _buildProductCard(),
+                    const SizedBox(height: 20),
+                    _buildPaymentTypeSelector(),
+                    const SizedBox(height: 16),
+                    _buildPaymentDetailCard(),
+                    const SizedBox(height: 24),
                     _buildPageHeader(),
                     const SizedBox(height: 16),
-                    _buildTandaJadiCard(),
-                    const SizedBox(height: 22),
 
                     // ── Informasi Identitas ──
                     _buildSectionTitle(
@@ -194,29 +199,7 @@ class _BookingFormPageState extends State<BookingFormPage> {
                       hint: 'Jl. Ahmad Yani No. 123, Medan',
                       keyboardType: TextInputType.streetAddress,
                     ),
-                    const SizedBox(height: 22),
-
-                    // ── Product card ──
-                    _buildSectionTitle(
-                      iconWidget: const Icon(
-                        Icons.motorcycle,
-                        color: Color(0xFFD32F2F),
-                        size: 18,
-                      ),
-                      title: 'Unit Pilihan',
-                    ),
-                    const SizedBox(height: 14),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF9F9F9),
-                        border: Border.all(color: const Color(0xFFEEEEEE)),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: _buildProductCard(),
-                    ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),
@@ -292,6 +275,117 @@ class _BookingFormPageState extends State<BookingFormPage> {
 
 
   // ─────────────────────────────────────────────────────────
+  // PRODUCT CARD
+  // ─────────────────────────────────────────────────────────
+  Widget _buildProductCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFEEEEEE)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 15,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          // 1. Image Section
+          Container(
+            width: 110,
+            height: 85,
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF9F9F9),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Image.asset(
+              widget.motor.imageAsset,
+              fit: BoxFit.contain,
+              errorBuilder: (_, __, ___) => const Icon(
+                Icons.two_wheeler,
+                color: Color(0xFFD32F2F),
+                size: 40,
+              ),
+            ),
+          ),
+          const SizedBox(width: 14),
+          // 2. Info Section
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  widget.motor.name,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.black,
+                    letterSpacing: -0.4,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  widget.motor.subtitle,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Color(0xFF757575),
+                    fontWeight: FontWeight.w500,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 10),
+                // Location & Price row for better space usage
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: const [
+                        Icon(Icons.location_on, size: 12, color: Color(0xFFD32F2F)),
+                        SizedBox(width: 3),
+                        Text(
+                          'Medan',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Color(0xFF616161),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFF1F1),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        widget.motor.price,
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w800,
+                          color: Color(0xFFD32F2F),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ─────────────────────────────────────────────────────────
   // PAGE HEADER
   // ─────────────────────────────────────────────────────────
   Widget _buildPageHeader() {
@@ -322,15 +416,62 @@ class _BookingFormPageState extends State<BookingFormPage> {
   // ─────────────────────────────────────────────────────────
   // TANDA JADI CARD
   // ─────────────────────────────────────────────────────────
-  Widget _buildTandaJadiCard() {
+  Widget _buildPaymentTypeSelector() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Tipe Pembayaran Cash',
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            _buildTypeChip('Booking Unit', !_isFullPayment),
+            const SizedBox(width: 10),
+            _buildTypeChip('Pelunasan Full', _isFullPayment),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTypeChip(String label, bool isSelected) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => setState(() => _isFullPayment = label == 'Pelunasan Full'),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFFD32F2F) : Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: isSelected ? const Color(0xFFD32F2F) : const Color(0xFFE0E0E0),
+            ),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: isSelected ? Colors.white : const Color(0xFF757575),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPaymentDetailCard() {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: const Color(0xFFF9F9F9),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFFE0E0E0), width: 1),
       ),
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+      padding: const EdgeInsets.all(16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -338,9 +479,9 @@ class _BookingFormPageState extends State<BookingFormPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'TANDA JADI',
-                  style: TextStyle(
+                Text(
+                  _isFullPayment ? 'TOTAL PELUNASAN (FULL)' : 'BIAYA RESERVASI (BOOKING)',
+                  style: const TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                     color: Color(0xFF9E9E9E),
@@ -349,9 +490,9 @@ class _BookingFormPageState extends State<BookingFormPage> {
                 ),
                 const SizedBox(height: 4),
                 RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     children: [
-                      TextSpan(
+                      const TextSpan(
                         text: 'Rp ',
                         style: TextStyle(
                           fontSize: 17,
@@ -360,9 +501,9 @@ class _BookingFormPageState extends State<BookingFormPage> {
                         ),
                       ),
                       TextSpan(
-                        text: '500.000',
-                        style: TextStyle(
-                          fontSize: 32,
+                        text: _isFullPayment ? widget.motor.price.replaceAll('Rp ', '') : '500.000',
+                        style: const TextStyle(
+                          fontSize: 28,
                           fontWeight: FontWeight.w800,
                           color: Color(0xFFD32F2F),
                           letterSpacing: -1,
@@ -372,9 +513,11 @@ class _BookingFormPageState extends State<BookingFormPage> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'Booking fee ini akan mengurangi total harga\nkendaraan saat pelunasan tunai.',
-                  style: TextStyle(
+                Text(
+                  _isFullPayment
+                      ? 'Pembayaran penuh untuk unit ${widget.motor.name}. Anda tidak perlu membayar lagi saat serah terima unit.'
+                      : 'Biaya untuk mengamankan antrian unit. Akan memotong harga OTR saat pelunasan nanti.',
+                  style: const TextStyle(
                     fontSize: 12,
                     color: Color(0xFF757575),
                     height: 1.45,
@@ -383,50 +526,16 @@ class _BookingFormPageState extends State<BookingFormPage> {
               ],
             ),
           ),
-          const SizedBox(width: 10),
-          // Cash icon illustration (rectangle + circle)
+          const SizedBox(width: 12),
           Container(
-            width: 56,
+            width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: const Color(0xFFF5F5F5),
-              borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: const Color(0xFFEEEEEE)),
             ),
-            child: Center(
-              child: SizedBox(
-                width: 36,
-                height: 36,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    // Outer rectangle
-                    Container(
-                      width: 34,
-                      height: 26,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(
-                          color: const Color(0xFF9E9E9E),
-                          width: 2.5,
-                        ),
-                      ),
-                    ),
-                    // Inner circle
-                    Container(
-                      width: 13,
-                      height: 13,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: const Color(0xFF9E9E9E),
-                          width: 2.5,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            child: const Icon(Icons.payments_outlined, color: Color(0xFFD32F2F), size: 24),
           ),
         ],
       ),
@@ -684,63 +793,7 @@ class _BookingFormPageState extends State<BookingFormPage> {
   // ─────────────────────────────────────────────────────────
   // PRODUCT CARD
   // ─────────────────────────────────────────────────────────
-  Widget _buildProductCard() {
-    return Row(
-      children: [
-        // Thumbnail
-        Container(
-          width: 72,
-          height: 58,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              widget.motor.imageAsset,
-              fit: BoxFit.contain,
-              errorBuilder: (_, __, ___) => const Icon(
-                Icons.two_wheeler,
-                color: Color(0xFFD32F2F),
-                size: 32,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.motor.name,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 3),
-              Text(
-                'Tipe: ${widget.motor.subtitle}',
-                style: const TextStyle(fontSize: 12, color: Color(0xFF757575)),
-              ),
-              const SizedBox(height: 3),
-              const Text(
-                'OTR Medan',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFFD32F2F),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+
 
   // ─────────────────────────────────────────────────────────
   // PAYMENT TOGGLE  (Tunai / Kredit chips)
@@ -748,20 +801,46 @@ class _BookingFormPageState extends State<BookingFormPage> {
   // BOTTOM BAR
   // ─────────────────────────────────────────────────────────
   Widget _buildBottomBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: const [
-        Text(
-          'Total Booking Fee',
-          style: TextStyle(fontSize: 13, color: Color(0xFF757575)),
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Harga OTR Unit',
+              style: TextStyle(fontSize: 13, color: Color(0xFF757575)),
+            ),
+            Text(
+              widget.motor.price,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+          ],
         ),
-        Text(
-          'Rp 500.000',
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w700,
-            color: Colors.black,
-          ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              _isFullPayment ? 'Total Bayar Sekarang' : 'Total Bayar Booking (Sekarang)',
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFFD32F2F),
+              ),
+            ),
+            Text(
+              _isFullPayment ? widget.motor.price : 'Rp 500.000',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: Color(0xFFD32F2F),
+              ),
+            ),
+          ],
         ),
       ],
     );
