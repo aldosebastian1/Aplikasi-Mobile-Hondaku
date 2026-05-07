@@ -109,16 +109,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16.0),
-                    borderSide: BorderSide.none,
+                    borderSide: BorderSide(color: Colors.grey.shade200),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16.0),
-                    borderSide: BorderSide.none,
+                    borderSide: BorderSide(color: Colors.grey.shade200),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16.0),
                     borderSide:
-                        const BorderSide(color: Color(0xFFE00024), width: 1),
+                        const BorderSide(color: Color(0xFFE00024), width: 1.5),
                   ),
                 ),
               ),
@@ -159,16 +159,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16.0),
-                    borderSide: BorderSide.none,
+                    borderSide: BorderSide(color: Colors.grey.shade200),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16.0),
-                    borderSide: BorderSide.none,
+                    borderSide: BorderSide(color: Colors.grey.shade200),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16.0),
                     borderSide:
-                        const BorderSide(color: Color(0xFFE00024), width: 1),
+                        const BorderSide(color: Color(0xFFE00024), width: 1.5),
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -267,9 +267,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFE00024), // Vibrant Red
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        16.0,
-                      ), // Matching input radius for a unified design
+                      borderRadius: BorderRadius.circular(99),
                     ),
                     elevation: 4, // Softer shadow
                     shadowColor: const Color(
