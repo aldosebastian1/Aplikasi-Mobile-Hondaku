@@ -10,11 +10,13 @@ import '../data/bank_data.dart';
 class PembayaranBookingPage extends StatefulWidget {
   final Motorcycle motor;
   final BankOption initialBank;
+  final bool isFullPayment;
 
   const PembayaranBookingPage({
     super.key,
     required this.motor,
     required this.initialBank,
+    this.isFullPayment = false,
   });
 
   @override
@@ -76,6 +78,7 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const SizedBox(height: 16),
                         // ── total bayar + VA card ──
                         _buildTotalCard(),
                         const SizedBox(height: 20),
@@ -150,8 +153,12 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('🕐', style: TextStyle(fontSize: 16)),
-              const SizedBox(width: 6),
+              const Icon(
+                Icons.timer_outlined,
+                size: 18,
+                color: Color(0xFFD32F2F),
+              ),
+              const SizedBox(width: 8),
               Text(
                 _timerLabel,
                 style: const TextStyle(
@@ -170,6 +177,8 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
 
   // ── Total Bayar + VA number ──────────────────────────────
   Widget _buildTotalCard() {
+    final String totalPrice = widget.isFullPayment ? widget.motor.price : 'Rp 500.000';
+    
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -186,8 +195,8 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
+                    children: [
+                      const Text(
                         'TOTAL BAYAR',
                         style: TextStyle(
                           fontSize: 11,
@@ -196,10 +205,10 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
                           letterSpacing: 0.6,
                         ),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
-                        'Rp 500.000',
-                        style: TextStyle(
+                        totalPrice,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
                           color: Color(0xFFD32F2F),
@@ -213,12 +222,15 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
                   width: 40,
                   height: 36,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF0F0F0),
+                    color: const Color(0xFFFFF1F1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Center(
-                    child: Icon(Icons.account_balance_wallet_outlined,
-                        color: Color(0xFF9E9E9E), size: 20),
+                    child: Icon(
+                      Icons.account_balance_wallet_outlined,
+                      color: Color(0xFFD32F2F),
+                      size: 20,
+                    ),
                   ),
                 ),
               ],
@@ -236,7 +248,10 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
                 SizedBox(
                   width: 52,
                   height: 36,
-                  child: _currentBank.logo,
+                  child: SvgPicture.asset(
+                    _currentBank.logoPath,
+                    fit: BoxFit.contain,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -269,9 +284,30 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
                                 const ClipboardData(text: '88010812345678900'),
                               );
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Nomor VA berhasil disalin'),
-                                  duration: Duration(seconds: 2),
+                                SnackBar(
+                                  content: Row(
+                                    children: const [
+                                      Icon(Icons.check_circle_outline, color: Color(0xFFD32F2F), size: 18),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        'Nomor VA berhasil disalin',
+                                        style: TextStyle(
+                                          color: Color(0xFFD32F2F),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.white,
+                                  duration: const Duration(seconds: 2),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    side: const BorderSide(color: Color(0xFFEEEEEE), width: 1),
+                                  ),
+                                  margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                                  elevation: 4,
                                 ),
                               );
                             },
@@ -334,7 +370,10 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
                       SizedBox(
                         width: 52,
                         height: 36,
-                        child: bank.logo,
+                        child: SvgPicture.asset(
+                          bank.logoPath,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
@@ -491,7 +530,3 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
     );
   }
 }
-
-
-// ─── Data model & Bank logo widgets are now handled by BankOption ───
-
