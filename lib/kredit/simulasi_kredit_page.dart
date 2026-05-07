@@ -323,13 +323,13 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
+                      color: const Color(0xFFFFF1F1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Icon(
                       Icons.account_balance,
                       size: 20,
-                      color: Colors.grey,
+                      color: Color(0xFFC40000),
                     ),
                   ),
                   const SizedBox(width: 12),
