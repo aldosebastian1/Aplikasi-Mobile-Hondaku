@@ -17,24 +17,24 @@ class HeroBanner {
 // Simulasi database khusus untuk Hero Banner agar mudah ditambahkan
 final List<HeroBanner> heroBannersDatabase = [
   const HeroBanner(
-    image: 'assets/images/home-hero.png',
-    tag: 'NEW ARRIVAL',
+    image: 'assets/images/home-hero1.png',
+    tag: 'PRODUK TERBARU',
     title1: 'CBR650R',
-    title2: 'The Kinetic Spirit.',
-    subtitle: 'Precision 4-cylinder performance and\nracing aesthetics.',
+    title2: 'Kendalikan Jalanan.',
+    subtitle: 'Performa 4-silinder presisi yang dirancang untuk adrenalin murni.',
   ),
   const HeroBanner(
-    image: 'assets/images/home-hero.png',
-    tag: 'BEST SELLER',
+    image: 'assets/images/home-hero2.png',
+    tag: 'PALING LARIS',
     title1: 'PCX160',
-    title2: 'Urban Excellence.',
-    subtitle: 'Elevate your daily commute with\nunmatched comfort.',
+    title2: 'Level Tertinggi.',
+    subtitle: 'Rasakan kemewahan berkendara kota dengan kenyamanan tak tertandingi.',
   ),
   const HeroBanner(
-    image: 'assets/images/home-hero.png',
-    tag: 'ADVENTURE',
+    image: 'assets/images/home-hero3.png',
+    tag: 'PETUALANG',
     title1: 'CRF250 Rally',
-    title2: 'Escape Ordinary.',
-    subtitle: 'Conquer any terrain with confidence\nand style.',
+    title2: 'Jelajahi Dunia.',
+    subtitle: 'Taklukkan segala medan dengan percaya diri dan gaya tangguh.',
   ),
 ];
