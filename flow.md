@@ -28,7 +28,7 @@ Struktur file telah dikelompokkan ke dalam folder fungsional untuk memudahkan pe
 > Bagian ini dihasilkan otomatis oleh `tool/sync_app_flow.dart`.
 > Jangan edit manual di antara marker START/END karena akan ditimpa saat sinkronisasi.
 
-**Generated at:** 2026-05-07 13:16:26.783329
+**Generated at:** 2026-05-07 15:27:51.618334
 **Detected nodes:** 18
 **Detected transitions:** 24
 
@@ -62,7 +62,7 @@ flowchart TD
 
 ### Detected Transitions
 
-- AktivitasPage -> HalamanKatalog (pushAndRemoveUntil) [lib/home/aktivitas_page.dart:166]
+- AktivitasPage -> HalamanKatalog (pushAndRemoveUntil) [lib/home/aktivitas_page.dart:176]
 - BookingBerhasilPage -> HondakuApp (pushAndRemoveUntil) [lib/booking/booking_berhasil_page.dart:184]
 - BookingBerhasilPage -> HondakuApp (pushAndRemoveUntil) [lib/booking/booking_berhasil_page.dart:216]
 - BookingFormPage -> RingkasanPembayaranPage (push) [lib/booking/booking_form_page.dart:768]
