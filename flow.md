@@ -28,9 +28,9 @@ Struktur file telah dikelompokkan ke dalam folder fungsional untuk memudahkan pe
 > Bagian ini dihasilkan otomatis oleh `tool/sync_app_flow.dart`.
 > Jangan edit manual di antara marker START/END karena akan ditimpa saat sinkronisasi.
 
-**Generated at:** 2026-05-07 12:35:42.644837
+**Generated at:** 2026-05-07 13:16:26.783329
 **Detected nodes:** 18
-**Detected transitions:** 23
+**Detected transitions:** 24
 
 ```mermaid
 flowchart TD
@@ -45,6 +45,7 @@ flowchart TD
   HalamanHome -->|push| ProductDetailScreen
   HalamanKatalog -->|push| CheckoutPaymentMethodPage
   HalamanKatalog -->|push| ProductDetailScreen
+  KonfirmasiPengajuanPage -->|pushAndRemoveUntil| HondakuApp
   LoginScreen -->|pushReplacement| HondakuApp
   LoginScreen -->|push| RegisterScreen
   MyApp -->|MaterialApp.home| SplashScreen
@@ -72,6 +73,7 @@ flowchart TD
 - HalamanHome -> ProductDetailScreen (push) [lib/home/home_page.dart:615]
 - HalamanKatalog -> CheckoutPaymentMethodPage (push) [lib/home/catalog_page.dart:525]
 - HalamanKatalog -> ProductDetailScreen (push) [lib/home/catalog_page.dart:496]
+- KonfirmasiPengajuanPage -> HondakuApp (pushAndRemoveUntil) [lib/kredit/konfirmasi_pengajuan_page.dart:258]
 - LoginScreen -> HondakuApp (pushReplacement) [lib/auth/login_screen.dart:237]
 - LoginScreen -> RegisterScreen (push) [lib/auth/login_screen.dart:348]
 - MyApp -> SplashScreen (MaterialApp.home) [lib/main.dart:20]
