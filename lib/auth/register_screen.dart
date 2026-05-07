@@ -37,7 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: IconButton(
                     iconSize: 22,
                     icon: const Icon(
-                      Icons.arrow_back_ios_new,
+                      Icons.arrow_back,
                       color: Colors.black87,
                     ),
                     onPressed: () {
@@ -139,62 +139,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 48.0),
 
-              // Register Button
-              ElevatedButton(
-                onPressed: _isLoading
-                    ? null
-                    : () async {
-                        // Set loading state
-                        setState(() {
-                          _isLoading = true;
-                        });
-
-                        // Fake network register action time
-                        await Future.delayed(const Duration(seconds: 2));
-
-                        if (context.mounted) {
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: _isLoading
+                      ? null
+                      : () async {
+                          // Set loading state
                           setState(() {
-                            _isLoading = false;
+                            _isLoading = true;
                           });
 
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const HondakuApp(),
-                            ),
-                          );
-                        }
-                      },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFE00024), // Vibrant Red
-                  padding: const EdgeInsets.symmetric(vertical: 18.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      30.0,
-                    ), // Fully rounded like the design
+                          // Fake network register action time
+                          await Future.delayed(const Duration(seconds: 2));
+
+                          if (context.mounted) {
+                            setState(() {
+                              _isLoading = false;
+                            });
+
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HondakuApp(),
+                              ),
+                            );
+                          }
+                        },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFE00024), // Vibrant Red
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(99),
+                    ),
+                    elevation: 4, // Matching login shadow
+                    shadowColor: const Color(0xFFE00024).withValues(alpha: 0.3),
                   ),
-                  elevation: 8, // Soft shadow
-                  shadowColor: const Color(
-                    0xFFE00024,
-                  ).withValues(alpha: 0.5), // Red glow
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 3.0,
+                          ),
+                        )
+                      : const Text(
+                          'Daftar Sekarang',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
                 ),
-                child: _isLoading
-                    ? const SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 3.0,
-                        ),
-                      )
-                    : const Text(
-                        'Daftar Sekarang',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
               ),
               const SizedBox(height: 48.0),
 
@@ -295,15 +294,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.0),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(color: Colors.grey.shade200),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.0),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(color: Colors.grey.shade200),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.0),
-          borderSide: const BorderSide(color: Color(0xFFE00024), width: 1),
+          borderSide: const BorderSide(color: Color(0xFFE00024), width: 1.5),
         ),
       ),
     );
@@ -339,15 +338,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.0),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(color: Colors.grey.shade200),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.0),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(color: Colors.grey.shade200),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.0),
-          borderSide: const BorderSide(color: Color(0xFFE00024), width: 1),
+          borderSide: const BorderSide(color: Color(0xFFE00024), width: 1.5),
         ),
         suffixIcon: IconButton(
           icon: Icon(
