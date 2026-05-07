@@ -1,16 +1,28 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../data/motorcycle_data.dart';
 import '../home/aktivitas_store.dart';
 import 'booking_berhasil_page.dart';
+import 'booking_models.dart';
 
 class PembayaranBookingPage extends StatefulWidget {
-  const PembayaranBookingPage({super.key});
+  final Motorcycle motor;
+  final BankOption initialBank;
+
+  const PembayaranBookingPage({
+    super.key,
+    required this.motor,
+    required this.initialBank,
+  });
+
   @override
   State<PembayaranBookingPage> createState() => _PembayaranBookingPageState();
 }
 
 class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
+  late BankOption _currentBank;
   // ── countdown: 24 jam ──
   static const int _totalSeconds = 24 * 3600 - 1; // 23:59:59
   int _remainingSeconds = _totalSeconds;
@@ -19,6 +31,7 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
   @override
   void initState() {
     super.initState();
+    _currentBank = widget.initialBank;
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (_remainingSeconds > 0) {
         setState(() => _remainingSeconds--);
@@ -48,7 +61,7 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-      appBar: _appBar(),
+      appBar: _buildAppBar(),
       body: Column(
         children: [
           Expanded(
@@ -97,7 +110,7 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
   }
 
   // ── AppBar ──────────────────────────────────────────────
-  PreferredSizeWidget _appBar() => AppBar(
+  PreferredSizeWidget _buildAppBar() => AppBar(
     backgroundColor: Colors.white,
     elevation: 0.5,
     centerTitle: true,
@@ -106,7 +119,7 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
       onPressed: () => Navigator.maybePop(context),
     ),
     title: const Text(
-      'Pembayaran',
+      'Instruksi Pembayaran',
       style: TextStyle(
         color: Colors.black,
         fontSize: 16,
@@ -195,7 +208,7 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
                     ],
                   ),
                 ),
-                // cash icon box (grey)
+                // Wallet icon
                 Container(
                   width: 40,
                   height: 36,
@@ -203,38 +216,9 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
                     color: const Color(0xFFF0F0F0),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Center(
-                    child: SizedBox(
-                      width: 22,
-                      height: 22,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: 20,
-                            height: 15,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(2),
-                              border: Border.all(
-                                color: const Color(0xFF9E9E9E),
-                                width: 1.8,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 8,
-                            height: 8,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: const Color(0xFF9E9E9E),
-                                width: 1.8,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  child: const Center(
+                    child: Icon(Icons.account_balance_wallet_outlined,
+                        color: Color(0xFF9E9E9E), size: 20),
                   ),
                 ),
               ],
@@ -243,39 +227,25 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
 
           const Divider(height: 1, thickness: 1, color: Color(0xFFF0F0F0)),
 
-          // bottom row: BCA logo + VA name + number + copy icon
+          // bottom row: selected bank logo + VA name + number + copy icon
           Padding(
             padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
             child: Row(
               children: [
-                // BCA black logo box
-                Container(
-                  width: 44,
+                // Bank logo box
+                SizedBox(
+                  width: 52,
                   height: 36,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'BCA',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ),
+                  child: _currentBank.logo,
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Virtual Account BCA',
-                        style: TextStyle(
+                      Text(
+                        'Virtual Account ${_currentBank.name.split(' ')[0]}',
+                        style: const TextStyle(
                           fontSize: 12,
                           color: Color(0xFF757575),
                         ),
@@ -326,10 +296,19 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
 
   // ── Bank list (Pilih Bank Lain) ──────────────────────────
   Widget _buildBankList() {
-    final banks = [
-      _BankItem(name: 'BCA Virtual Account', logo: const _BcaLogo()),
-      _BankItem(name: 'Mandiri Virtual Account', logo: const _MandiriLogo()),
-      _BankItem(name: 'BSI Virtual Account', logo: const _BsiLogo()),
+    final List<BankOption> banks = [
+      BankOption(
+        name: 'BCA Virtual Account',
+        logo: SvgPicture.asset('assets/payments/bca.svg', fit: BoxFit.contain),
+      ),
+      BankOption(
+        name: 'Mandiri Virtual Account',
+        logo: SvgPicture.asset('assets/payments/mandiri.svg', fit: BoxFit.contain),
+      ),
+      BankOption(
+        name: 'BSI Virtual Account',
+        logo: SvgPicture.asset('assets/payments/bsi.svg', fit: BoxFit.contain),
+      ),
     ];
 
     return Container(
@@ -341,10 +320,17 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
       child: Column(
         children: List.generate(banks.length, (i) {
           final isLast = i == banks.length - 1;
+          final bank = banks[i];
+          final isSelected = _currentBank.name == bank.name;
+
           return Column(
             children: [
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  setState(() {
+                    _currentBank = bank;
+                  });
+                },
                 borderRadius: BorderRadius.only(
                   topLeft: i == 0 ? const Radius.circular(12) : Radius.zero,
                   topRight: i == 0 ? const Radius.circular(12) : Radius.zero,
@@ -358,41 +344,25 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
                   ),
                   child: Row(
                     children: [
-                      Container(
+                      SizedBox(
                         width: 52,
                         height: 36,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(6),
-                          border: Border.all(
-                            color: const Color(0xFFE8E8E8),
-                            width: 1,
-                          ),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: Padding(
-                            padding: const EdgeInsets.all(4),
-                            child: banks[i].logo,
-                          ),
-                        ),
+                        child: bank.logo,
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          banks[i].name,
-                          style: const TextStyle(
+                          bank.name,
+                          style: TextStyle(
                             fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
+                            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                            color: isSelected ? const Color(0xFFD32F2F) : Colors.black,
                           ),
                         ),
                       ),
-                      const Icon(
-                        Icons.chevron_right,
-                        color: Color(0xFFBDBDBD),
-                        size: 20,
-                      ),
+                      if (isSelected)
+                        const Icon(Icons.check_circle,
+                            color: Color(0xFFD32F2F), size: 20),
                     ],
                   ),
                 ),
@@ -495,15 +465,15 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
                 onPressed: () {
                   AktivitasStore.upsertCashCompleted(
                     id: '#HND-M6-8821',
-                    namaMotor: 'Honda BeAT',
-                    tipeUnit: 'BeAT Deluxe Black',
+                    namaMotor: widget.motor.name,
+                    tipeUnit: widget.motor.subtitle,
                   );
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => const BookingBerhasilPage(
+                      builder: (_) => BookingBerhasilPage(
                         orderId: '#HND-M6-8821',
-                        tipeUnit: 'BeAT Deluxe Black',
+                        tipeUnit: widget.motor.subtitle,
                         dealer: 'Honda Medan Center',
                       ),
                     ),
@@ -535,106 +505,6 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
   }
 }
 
-// ─── Data model ──────────────────────────────────────────────
-class _BankItem {
-  final String name;
-  final Widget logo;
-  const _BankItem({required this.name, required this.logo});
-}
 
-// ─── Bank logo widgets ────────────────────────────────────────
-class _BcaLogo extends StatelessWidget {
-  const _BcaLogo();
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFF005BAA),
-        borderRadius: BorderRadius.circular(3),
-      ),
-      child: const Center(
-        child: Text(
-          'BCA',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 11,
-            fontWeight: FontWeight.w800,
-            letterSpacing: 0.5,
-          ),
-        ),
-      ),
-    );
-  }
-}
+// ─── Data model & Bank logo widgets are now handled by BankOption ───
 
-class _MandiriLogo extends StatelessWidget {
-  const _MandiriLogo();
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 8,
-          decoration: const BoxDecoration(
-            color: Color(0xFFF5A623),
-            borderRadius: BorderRadius.vertical(top: Radius.circular(3)),
-          ),
-        ),
-        Expanded(
-          child: Container(
-            color: const Color(0xFF003082),
-            child: const Center(
-              child: Text(
-                'mandiri',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 7,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.3,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _BsiLogo extends StatelessWidget {
-  const _BsiLogo();
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Container(
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              color: Color(0xFF1B7F3A),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(3)),
-            ),
-            child: const Center(
-              child: Text(
-                'BSI',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 9,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ),
-          ),
-        ),
-        Container(
-          height: 7,
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            color: Color(0xFFE0E0E0),
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(3)),
-          ),
-        ),
-      ],
-    );
-  }
-}
