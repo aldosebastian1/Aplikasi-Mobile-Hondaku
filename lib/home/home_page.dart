@@ -4,9 +4,11 @@ import '../data/motorcycle_data.dart';
 import 'product_detail_screen.dart';
 import '../booking/checkout_payment_method_page.dart';
 import '../data/hero_banner_data.dart';
+import 'catalog_page.dart';
 
 class HalamanHome extends StatefulWidget {
-  const HalamanHome({super.key});
+  final VoidCallback? onSeeAll;
+  const HalamanHome({super.key, this.onSeeAll});
 
   @override
   State<HalamanHome> createState() => _HalamanHomeState();
@@ -19,6 +21,7 @@ class _HalamanHomeState extends State<HalamanHome> {
   final PageController _bannerController = PageController();
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
+  String _selectedCategory = '';
   Timer? _bannerTimer;
 
   final List<Map<String, dynamic>> _kategori = [
@@ -59,8 +62,18 @@ class _HalamanHomeState extends State<HalamanHome> {
   }
 
   List<Motorcycle> get _filteredMotors {
-    if (_searchQuery.isEmpty) return motorcycleDatabase;
-    return motorcycleDatabase.where((m) {
+    List<Motorcycle> motors = motorcycleDatabase;
+
+    // Filter by category (if selected)
+    if (_selectedCategory.isNotEmpty) {
+      motors = motors
+          .where((m) => m.categoryBadge.toUpperCase() == _selectedCategory)
+          .toList();
+    }
+
+    // Filter by search query
+    if (_searchQuery.isEmpty) return motors;
+    return motors.where((m) {
       return m.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
           m.categoryBadge.toLowerCase().contains(_searchQuery.toLowerCase()) ||
           m.subtitle.toLowerCase().contains(_searchQuery.toLowerCase());
@@ -416,27 +429,45 @@ class _HalamanHomeState extends State<HalamanHome> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: _kategori.map((k) {
-            return Column(
-              children: [
-                Container(
-                  width: 64,
-                  height: 64,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: Colors.grey.shade200),
+            final isSelected = _selectedCategory == k['label'];
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  // Toggle category: if already selected, reset to all ('')
+                  _selectedCategory = isSelected ? '' : k['label'] as String;
+                });
+              },
+              child: Column(
+                children: [
+                  Container(
+                    width: 64,
+                    height: 64,
+                    decoration: BoxDecoration(
+                      color: isSelected ? _red.withOpacity(0.1) : Colors.white,
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: isSelected ? _red : Colors.grey.shade200,
+                        width: isSelected ? 1.5 : 1,
+                      ),
+                    ),
+                    child: Icon(
+                      k['icon'] as IconData,
+                      color: _red,
+                      size: 28,
+                    ),
                   ),
-                  child: Icon(k['icon'] as IconData, color: _red, size: 28),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  k['label'] as String,
-                  style: const TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
+                  const SizedBox(height: 6),
+                  Text(
+                    k['label'] as String,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight:
+                          isSelected ? FontWeight.bold : FontWeight.w600,
+                      color: isSelected ? _red : Colors.black87,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           }).toList(),
         ),
@@ -467,7 +498,19 @@ class _HalamanHomeState extends State<HalamanHome> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                if (widget.onSeeAll != null) {
+                  widget.onSeeAll!();
+                } else {
+                  // Fallback if not inside HondakuApp
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HalamanKatalog(),
+                    ),
+                  );
+                }
+              },
               child: const Text(
                 'LIHAT SEMUA',
                 style: TextStyle(
