@@ -66,24 +66,25 @@ class HondakuBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double sysBottom = MediaQuery.of(context).padding.bottom;
-    final double bottomInset = sysBottom > 6.0 ? sysBottom - 6.0 : 0.0;
+    // Jarak yang lebih seimbang untuk semua jenis perangkat
+    final double bottomInset = sysBottom > 0 ? 4 : 14;
 
     return SafeArea(
       top: false,
       bottom: true,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(12, 6, 12, bottomInset),
+        padding: EdgeInsets.fromLTRB(32, 6, 32, bottomInset),
         child: Container(
-          height: 68,
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          height: 72,
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
           decoration: BoxDecoration(
-            color: const Color(0xFFF0F0F0),
-            borderRadius: BorderRadius.circular(100),
+            color: const Color(0xFFF5F5F5),
+            borderRadius: BorderRadius.circular(999),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
+                color: Colors.black.withValues(alpha: 0.04),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
               ),
             ],
           ),
@@ -158,15 +159,15 @@ class _HondakuBottomNavItem extends StatelessWidget {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 180),
           curve: Curves.easeOut,
-          width: 56,
-          height: 56,
-          margin: const EdgeInsets.symmetric(horizontal: 4),
+          width: 54,
+          height: 54,
+          margin: const EdgeInsets.symmetric(horizontal: 2),
           padding: const EdgeInsets.symmetric(vertical: 6),
           decoration: BoxDecoration(
             color: isActive
                 ? HondakuBottomNavBar._activeColor
                 : Colors.transparent,
-            borderRadius: BorderRadius.circular(isActive ? 100 : 28),
+            borderRadius: BorderRadius.circular(999),
             boxShadow: isActive
                 ? [
                     BoxShadow(
@@ -186,14 +187,14 @@ class _HondakuBottomNavItem extends StatelessWidget {
                 duration: const Duration(milliseconds: 180),
                 curve: Curves.easeOut,
                 scale: isActive ? 1.0 : 0.95,
-                child: Icon(icon, size: 18, color: iconColor),
+                child: Icon(icon, size: 20, color: iconColor),
               ),
               const SizedBox(height: 2),
               AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 180),
                 curve: Curves.easeOut,
                 style: TextStyle(
-                  fontSize: 8,
+                  fontSize: 9,
                   fontWeight: FontWeight.w600,
                   color: labelColor,
                   letterSpacing: 0.2,
