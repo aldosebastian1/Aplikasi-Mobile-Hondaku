@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: IconButton(
                     iconSize: 22,
                     icon: const Icon(
-                      Icons.arrow_back_ios_new,
+                      Icons.arrow_back,
                       color: Colors.black87,
                     ),
                     onPressed: () {
