@@ -40,10 +40,10 @@ class KonfirmasiPengajuanPage extends StatelessWidget {
         elevation: 0.5,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black, size: 22),
-          onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text(
-          'Honda BeAT',
+          'Pengajuan Berhasil',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,
