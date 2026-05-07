@@ -15,7 +15,8 @@ class _HalamanKatalogState extends State<HalamanKatalog> {
   static const _surface = Colors.white;
 
   int _selectedFilter = 0;
-  final List<String> _filters = ['All Models', 'Price', 'Popularity'];
+  String _activeCategory = 'Semua Kategori';
+  final List<String> _filters = ['Semua', 'Harga Termurah', 'Harga Tertinggi'];
 
   double _parsePrice(String priceString) {
     final cleanString = priceString.replaceAll(RegExp(r'[^0-9]'), '');
@@ -23,44 +24,137 @@ class _HalamanKatalogState extends State<HalamanKatalog> {
   }
 
   List<Motorcycle> get _filteredMotors {
-    final list = List<Motorcycle>.from(motorcycleDatabase);
-    if (_selectedFilter == 1) {
-      list.sort((a, b) => _parsePrice(a.price).compareTo(_parsePrice(b.price)));
-    } else if (_selectedFilter == 2) {
-      list.sort((a, b) => _parsePrice(b.price).compareTo(_parsePrice(a.price)));
+    Iterable<Motorcycle> list = motorcycleDatabase;
+
+    // 1. Filter by Category
+    if (_activeCategory != 'Semua Kategori') {
+      list = list.where((m) =>
+          m.categoryBadge.toUpperCase() == _activeCategory.toUpperCase());
     }
-    return list;
+
+    // 2. Sort by Selected Filter (Price)
+    final result = list.toList();
+    if (_selectedFilter == 1) {
+      result.sort((a, b) => _parsePrice(a.price).compareTo(_parsePrice(b.price)));
+    } else if (_selectedFilter == 2) {
+      result.sort((a, b) => _parsePrice(b.price).compareTo(_parsePrice(a.price)));
+    }
+    return result;
   }
 
   void _showFilterSheet() {
     showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
-      builder: (_) => Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Filter',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            ...['Semua Kategori', 'Matic', 'Sport', 'Cruiser', 'Electric'].map(
-              (e) => ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(e, style: const TextStyle(fontSize: 14)),
-                trailing: const Icon(Icons.chevron_right, size: 18),
-                onTap: () => Navigator.pop(context),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Container(
+              padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Filter Kategori',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                          color: Color(0xFF1A1A1A),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() => _activeCategory = 'Semua Kategori');
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'Reset',
+                          style: TextStyle(
+                            color: _red,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  ...['Semua Kategori', 'MATIC', 'SPORT', 'ADVENTURE'].map(
+                    (category) {
+                      final isSelected = _activeCategory == category;
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: InkWell(
+                          onTap: () {
+                            setState(() => _activeCategory = category);
+                            Navigator.pop(context);
+                          },
+                          borderRadius: BorderRadius.circular(14),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 16,
+                            ),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? _red.withOpacity(0.05)
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color: isSelected
+                                    ? _red
+                                    : Colors.grey.shade100,
+                                width: isSelected ? 1.5 : 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  category,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: isSelected
+                                        ? FontWeight.bold
+                                        : FontWeight.w500,
+                                    color: isSelected
+                                        ? _red
+                                        : Colors.black87,
+                                  ),
+                                ),
+                                if (isSelected)
+                                  const Icon(Icons.check_circle,
+                                      color: _red, size: 20),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 8),
-          ],
-        ),
-      ),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -225,50 +319,53 @@ class _HalamanKatalogState extends State<HalamanKatalog> {
   }
 
   Widget _buildFilterChips() {
-    return Row(
-      children: _filters.asMap().entries.map((entry) {
-        final i = entry.key;
-        final label = entry.value;
-        final isSelected = i == _selectedFilter;
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: _filters.asMap().entries.map((entry) {
+          final i = entry.key;
+          final label = entry.value;
+          final isSelected = i == _selectedFilter;
 
-        return Padding(
-          padding: EdgeInsets.only(right: i < _filters.length - 1 ? 8 : 0),
-          child: GestureDetector(
-            onTap: () => setState(() => _selectedFilter = i),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              decoration: BoxDecoration(
-                color: isSelected ? _red : Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(
-                  color: isSelected ? _red : Colors.grey.shade300,
+          return Padding(
+            padding: EdgeInsets.only(right: i < _filters.length - 1 ? 8 : 0),
+            child: GestureDetector(
+              onTap: () => setState(() => _selectedFilter = i),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: BoxDecoration(
+                  color: isSelected ? _red : Colors.white,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: isSelected ? _red : Colors.grey.shade300,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (i == 0) ...[
+                      Icon(
+                        Icons.tune,
+                        size: 14,
+                        color: isSelected ? Colors.white : Colors.black87,
+                      ),
+                      const SizedBox(width: 6),
+                    ],
+                    Text(
+                      label,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: isSelected ? Colors.white : Colors.black87,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (i == 0) ...[
-                    Icon(
-                      Icons.tune,
-                      size: 14,
-                      color: isSelected ? Colors.white : Colors.black87,
-                    ),
-                    const SizedBox(width: 6),
-                  ],
-                  Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: isSelected ? Colors.white : Colors.black87,
-                    ),
-                  ),
-                ],
-              ),
             ),
-          ),
-        );
-      }).toList(),
+          );
+        }).toList(),
+      ),
     );
   }
 
@@ -441,7 +538,7 @@ class _HalamanKatalogState extends State<HalamanKatalog> {
                           ),
                         ),
                         child: const Text(
-                          'Book Now',
+                          'Beli',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
