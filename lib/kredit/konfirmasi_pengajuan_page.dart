@@ -37,8 +37,11 @@ class KonfirmasiPengajuanPage extends StatelessWidget {
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0,
-        automaticallyImplyLeading: false,
+        elevation: 0.5,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black, size: 22),
+          onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
+        ),
         title: const Text(
           'Honda BeAT',
           style: TextStyle(
@@ -60,8 +63,6 @@ class KonfirmasiPengajuanPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildStepper(),
-            const SizedBox(height: 24),
             _buildSuccessCard(),
             const SizedBox(height: 12),
             _buildRingkasanCard(noRef),
@@ -84,23 +85,7 @@ class KonfirmasiPengajuanPage extends StatelessWidget {
     );
   }
 
-  Widget _buildStepper() {
-    const totalStep = 3;
-    return Row(
-      children: List.generate(totalStep, (i) {
-        return Expanded(
-          child: Container(
-            margin: EdgeInsets.only(right: i < totalStep - 1 ? 6 : 0),
-            height: 4,
-            decoration: BoxDecoration(
-              color: _red,
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-        );
-      }),
-    );
-  }
+
 
   Widget _buildSuccessCard() {
     return Container(
