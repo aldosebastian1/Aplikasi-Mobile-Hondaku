@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../core/hondaku_app.dart';
 
 class KonfirmasiPengajuanPage extends StatelessWidget {
   final String referenceId;
@@ -254,7 +255,10 @@ class KonfirmasiPengajuanPage extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          Navigator.of(context).popUntil((route) => route.isFirst);
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (_) => const HondakuApp(initialIndex: 0)),
+            (route) => false,
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: _red,
