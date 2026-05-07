@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../data/motorcycle_data.dart';
-import 'ringkasan_pembayaran_page.dart';
+import 'checkout_summary_page.dart';
 
 class BookingFormPage extends StatefulWidget {
   final Motorcycle motor;
@@ -43,6 +43,22 @@ class _BookingFormPageState extends State<BookingFormPage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    // Tambahkan listener ke semua controller agar tombol validasi
+    // diperbarui secara real-time saat teks berubah (termasuk autofill).
+    _namaController.addListener(_updateState);
+    _nikController.addListener(_updateState);
+    _phoneController.addListener(_updateState);
+    _alamatController.addListener(_updateState);
+    _emailController.addListener(_updateState);
+  }
+
+  void _updateState() {
+    if (mounted) setState(() {});
+  }
+
+  @override
   void dispose() {
     _namaController.dispose();
     _nikController.dispose();
@@ -53,13 +69,31 @@ class _BookingFormPageState extends State<BookingFormPage> {
   }
 
   bool get _isFormValid {
-    return _namaController.text.isNotEmpty &&
-        _nikController.text.length == 16 &&
-        _phoneController.text.isNotEmpty &&
-        _alamatController.text.isNotEmpty &&
-        _emailController.text.contains('@') &&
+    final nama = _namaController.text.trim();
+    final nik = _nikController.text.trim();
+    final phone = _phoneController.text.trim();
+    final alamat = _alamatController.text.trim();
+    final email = _emailController.text.trim();
+
+    return nama.isNotEmpty &&
+        nik.length >= 15 &&
+        phone.isNotEmpty &&
+        alamat.isNotEmpty &&
+        email.contains('@') &&
         _selectedKecamatan != null &&
         _selectedKelurahan != null;
+  }
+
+  String _getValidationMessage() {
+    if (_namaController.text.trim().isEmpty) return "Nama belum diisi";
+    if (_nikController.text.trim().length < 15) return "NIK harus minimal 15-16 digit";
+    if (_emailController.text.trim().isEmpty) return "Email belum diisi";
+    if (!_emailController.text.contains('@')) return "Format email tidak valid (butuh @)";
+    if (_selectedKecamatan == null) return "Kecamatan belum dipilih";
+    if (_selectedKelurahan == null) return "Kelurahan belum dipilih";
+    if (_phoneController.text.trim().isEmpty) return "Nomor HP belum diisi";
+    if (_alamatController.text.trim().isEmpty) return "Alamat belum diisi";
+    return "";
   }
 
   // ─────────────────────────────────────────────────────────
@@ -200,10 +234,22 @@ class _BookingFormPageState extends State<BookingFormPage> {
                 ),
               ],
             ),
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 28),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                if (!_isFormValid && _namaController.text.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text(
+                      _getValidationMessage(),
+                      style: const TextStyle(
+                        color: Color(0xFFD32F2F),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 _buildBottomBar(),
                 const SizedBox(height: 12),
                 _buildPilihBookingButton(),
@@ -218,17 +264,17 @@ class _BookingFormPageState extends State<BookingFormPage> {
   // ─────────────────────────────────────────────────────────
   // APPBAR
   // ─────────────────────────────────────────────────────────
-  PreferredSizeWidget _buildAppBar() {
+    PreferredSizeWidget _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.white,
-      elevation: 0.5,
+      elevation: 0,
       centerTitle: true,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black, size: 20),
+        icon: const Icon(Icons.arrow_back, color: Colors.black, size: 22),
         onPressed: () => Navigator.maybePop(context),
       ),
       title: const Text(
-        'Lengkapi Data',
+        'Metode Pembayaran',
         style: TextStyle(
           color: Colors.black,
           fontSize: 16,
@@ -243,6 +289,7 @@ class _BookingFormPageState extends State<BookingFormPage> {
       ],
     );
   }
+
 
   // ─────────────────────────────────────────────────────────
   // PAGE HEADER
@@ -496,8 +543,6 @@ class _BookingFormPageState extends State<BookingFormPage> {
         controller: controller,
         keyboardType: keyboardType,
         inputFormatters: formatters,
-        onChanged: (_) => setState(() {}),
-        style: const TextStyle(fontSize: 14, color: Colors.black),
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: const TextStyle(fontSize: 14, color: Color(0xFFBDBDBD)),
@@ -583,7 +628,6 @@ class _BookingFormPageState extends State<BookingFormPage> {
               controller: _phoneController,
               keyboardType: TextInputType.phone,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              onChanged: (_) => setState(() {}),
               style: const TextStyle(fontSize: 14, color: Colors.black),
               decoration: const InputDecoration(
                 hintText: '812xxxx',
@@ -615,7 +659,7 @@ class _BookingFormPageState extends State<BookingFormPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const RingkasanPembayaranPage(),
+                    builder: (context) => CheckoutSummaryPage(motor: widget.motor),
                   ),
                 );
               }
