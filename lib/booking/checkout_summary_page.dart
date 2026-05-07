@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../data/motorcycle_data.dart';
 import 'pembayaran_booking_page.dart';
-import 'booking_models.dart';
+import '../data/bank_data.dart';
 
 // ─────────────────────────────────────────────────────────────
 // PAGE
@@ -24,20 +24,7 @@ class _CheckoutSummaryPageState extends State<CheckoutSummaryPage> {
   @override
   void initState() {
     super.initState();
-    _banks = [
-      BankOption(
-        name: 'BCA Virtual Account',
-        logo: SvgPicture.asset('assets/payments/bca.svg', fit: BoxFit.contain),
-      ),
-      BankOption(
-        name: 'Mandiri Virtual Account',
-        logo: SvgPicture.asset('assets/payments/mandiri.svg', fit: BoxFit.contain),
-      ),
-      BankOption(
-        name: 'BSI Virtual Account',
-        logo: SvgPicture.asset('assets/payments/bsi.svg', fit: BoxFit.contain),
-      ),
-    ];
+    _banks = bankOptions;
   }
 
   // ───── BUILD ─────────────────────────────────────────────
