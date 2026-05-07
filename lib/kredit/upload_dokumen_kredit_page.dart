@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import '../home/aktivitas_store.dart';
 import 'konfirmasi_pengajuan_page.dart';
 
@@ -12,6 +12,8 @@ class DokumenItem {
   final String deskripsi;
   DocStatus status;
   File? file;
+  String? fileName;
+  bool isPdf;
 
   DokumenItem({
     required this.id,
@@ -19,6 +21,8 @@ class DokumenItem {
     required this.deskripsi,
     this.status = DocStatus.belum,
     this.file,
+    this.fileName,
+    this.isPdf = false,
   });
 }
 
@@ -47,7 +51,7 @@ class UploadDokumenKreditPage extends StatefulWidget {
 
 class _UploadDokumenKreditPageState extends State<UploadDokumenKreditPage> {
   static const _red = Color(0xFFC40000);
-  final _picker = ImagePicker();
+  static const int _maxFileSize = 5 * 1024 * 1024; // 5MB
 
   final List<DokumenItem> _dokumen = [
     DokumenItem(
@@ -70,16 +74,37 @@ class _UploadDokumenKreditPageState extends State<UploadDokumenKreditPage> {
   bool get _semuaTerunggah =>
       _dokumen.every((d) => d.status == DocStatus.terunggah);
 
-  Future<void> _pickImage(DokumenItem item) async {
-    final picked = await _picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 80,
-    );
-    if (picked != null) {
-      setState(() {
-        item.file = File(picked.path);
-        item.status = DocStatus.terunggah;
-      });
+  Future<void> _pickDocument(DokumenItem item) async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf'],
+      );
+
+      if (result != null && result.files.single.path != null) {
+        final file = File(result.files.single.path!);
+        final size = await file.length();
+
+        if (size > _maxFileSize) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Ukuran file terlalu besar. Maksimal 5MB.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+          return;
+        }
+
+        setState(() {
+          item.file = file;
+          item.fileName = result.files.single.name;
+          item.isPdf = result.files.single.extension?.toLowerCase() == 'pdf';
+          item.status = DocStatus.terunggah;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error picking file: $e');
     }
   }
 
@@ -183,20 +208,19 @@ class _UploadDokumenKreditPageState extends State<UploadDokumenKreditPage> {
   }
 
   Widget _buildStepper() {
-    // Step 1: Simulasi Kredit (done), Step 2: Upload Dokumen (current), Step 3: Konfirmasi
-    const totalStep = 3;
-    const currentStep = 2;
+    // Menghitung berapa banyak dokumen yang sudah diunggah
+    final uploadedCount = _dokumen.where((d) => d.status == DocStatus.terunggah).length;
+    const totalDocs = 3;
+
     return Row(
-      children: List.generate(totalStep, (i) {
-        final stepNo = i + 1;
-        final isDone = stepNo < currentStep;
-        final isCurrent = stepNo == currentStep;
+      children: List.generate(totalDocs, (i) {
+        final isCompleted = i < uploadedCount;
         return Expanded(
           child: Container(
-            margin: EdgeInsets.only(right: i < totalStep - 1 ? 6 : 0),
+            margin: EdgeInsets.only(right: i < totalDocs - 1 ? 6 : 0),
             height: 4,
             decoration: BoxDecoration(
-              color: (isDone || isCurrent) ? _red : Colors.grey.shade300,
+              color: isCompleted ? _red : Colors.grey.shade300,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -209,7 +233,7 @@ class _UploadDokumenKreditPageState extends State<UploadDokumenKreditPage> {
     final isTerunggah = item.status == DocStatus.terunggah;
 
     return GestureDetector(
-      onTap: () => _pickImage(item),
+      onTap: () => _pickDocument(item),
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(16),
@@ -301,21 +325,52 @@ class _UploadDokumenKreditPageState extends State<UploadDokumenKreditPage> {
             ),
             if (isTerunggah && item.file != null) ...[
               const SizedBox(height: 12),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.file(
-                  item.file!,
-                  height: 140,
+              if (item.isPdf)
+                Container(
+                  height: 100,
                   width: double.infinity,
-                  fit: BoxFit.cover,
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade50,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.red.shade200),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.picture_as_pdf, color: _red, size: 32),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          item.fileName ?? 'Dokumen PDF',
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                    ],
+                  ),
+                )
+              else
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.file(
+                    item.file!,
+                    height: 140,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
               const SizedBox(height: 6),
               GestureDetector(
-                onTap: () => _pickImage(item),
-                child: const Text(
-                  'Ganti foto',
-                  style: TextStyle(
+                onTap: () => _pickDocument(item),
+                child: Text(
+                  item.isPdf ? 'Ganti dokumen' : 'Ganti foto',
+                  style: const TextStyle(
                     fontSize: 12,
                     color: _red,
                     fontWeight: FontWeight.w500,
@@ -356,21 +411,21 @@ class _UploadDokumenKreditPageState extends State<UploadDokumenKreditPage> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: _semuaTerunggah ? _kirimPengajuan : null,
+        onPressed: () => _kirimPengajuan(),
         style: ElevatedButton.styleFrom(
           backgroundColor: _red,
-          disabledBackgroundColor: Colors.grey.shade300,
+          foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
+          elevation: 0,
         ),
         child: const Text(
           'Kirim Pengajuan',
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
           ),
         ),
       ),
