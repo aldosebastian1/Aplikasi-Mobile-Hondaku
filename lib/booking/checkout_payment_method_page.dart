@@ -407,6 +407,7 @@ class _CheckoutPaymentMethodPageState extends State<CheckoutPaymentMethodPage> {
   }
 
   Widget _buildBenefitBox() {
+    final isCash = _selectedMethod == 0;
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFFFFF8F8),
@@ -432,13 +433,19 @@ class _CheckoutPaymentMethodPageState extends State<CheckoutPaymentMethodPage> {
             ],
           ),
           const SizedBox(height: 10),
-          _buildBenefitItem('Bebas biaya bunga bulanan'),
-          const SizedBox(height: 6),
-          _buildBenefitItem('BPKB diterima lebih cepat setelah pelunasan'),
-          const SizedBox(height: 6),
-          _buildBenefitItem(
-            'Diskon khusus untuk pembelian cash\n(Program Dealer)',
-          ),
+          if (isCash) ...[
+            _buildBenefitItem('Bebas biaya bunga bulanan'),
+            const SizedBox(height: 6),
+            _buildBenefitItem('BPKB diterima lebih cepat setelah pelunasan'),
+            const SizedBox(height: 6),
+            _buildBenefitItem('Potongan harga khusus untuk pembelian tunai'),
+          ] else ...[
+            _buildBenefitItem('Cicilan ringan dengan tenor hingga 35 bulan'),
+            const SizedBox(height: 6),
+            _buildBenefitItem('Sudah termasuk asuransi kehilangan & kerusakan'),
+            const SizedBox(height: 6),
+            _buildBenefitItem('Proses pengajuan cepat & syarat mudah'),
+          ],
         ],
       ),
     );
@@ -483,15 +490,15 @@ class _CheckoutPaymentMethodPageState extends State<CheckoutPaymentMethodPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     'Total Tagihan',
                     style: TextStyle(fontSize: 12, color: Color(0xFF757575)),
                   ),
-                  SizedBox(height: 2),
+                  const SizedBox(height: 2),
                   Text(
-                    'Rp 19.155.000',
-                    style: TextStyle(
+                    widget.motor.price,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: Colors.black,
