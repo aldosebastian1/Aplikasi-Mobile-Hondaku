@@ -355,9 +355,21 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _specItem(Icons.settings_suggest_outlined, '190,5cc', 'ENGINE'),
-              _specItem(Icons.speed_outlined, '6,6kW', 'POWER'),
-              _specItem(Icons.local_gas_station_outlined, '4,2L', 'FUEL'),
+              _specItem(
+                Icons.settings_suggest_outlined,
+                widget.motor.engine,
+                'ENGINE',
+              ),
+              _specItem(
+                Icons.speed_outlined,
+                widget.motor.maxPower,
+                'POWER',
+              ),
+              _specItem(
+                Icons.local_gas_station_outlined,
+                widget.motor.fuelCapacity,
+                'FUEL',
+              ),
             ],
           ),
         ],
@@ -411,16 +423,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         children: [
           _buildSectionHeader('FITUR TEKNOLOGI'),
           const SizedBox(height: 16),
-          _featureItem(
-            Icons.electric_bolt_outlined,
-            'Quick Shifter System',
-            'Pengoperasian gigi lebih cepat tanpa menarik tuas kopling, memberikan akselerasi maksimal.',
-          ),
-          const SizedBox(height: 16),
-          _featureItem(
-            Icons.swap_calls_outlined,
-            'Throttle by Wire',
-            'Respon gas lebih presisi dan halus, dilengkapi dengan 3 mode berkendara (Comfort, Sport, Sport+).',
+          ...widget.motor.features.map(
+            (feature) => Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: _featureItem(
+                feature.icon,
+                feature.title,
+                feature.description,
+              ),
+            ),
           ),
         ],
       ),
@@ -485,21 +496,33 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           const SizedBox(height: 16),
           _detailedSpecCategory('Mesin', Icons.settings_suggest_outlined),
           const SizedBox(height: 16),
-          _buildSpecTableMesin(),
+          _specTable(
+            widget.motor.specsMesin.entries
+                .map((e) => _specTableRow(e.key, e.value))
+                .toList(),
+          ),
           const SizedBox(height: 20),
           _detailedSpecCategory(
             'Rangka & Kaki-Kaki',
             Icons.motorcycle_outlined,
           ),
           const SizedBox(height: 16),
-          _buildSpecTableRangka(),
+          _specTable(
+            widget.motor.specsRangka.entries
+                .map((e) => _specTableRow(e.key, e.value))
+                .toList(),
+          ),
           const SizedBox(height: 20),
           _detailedSpecCategory(
             'Dimensi & Kapasitas',
             Icons.linear_scale_outlined,
           ),
           const SizedBox(height: 16),
-          _buildSpecTableDimensi(),
+          _specTable(
+            widget.motor.specsDimensi.entries
+                .map((e) => _specTableRow(e.key, e.value))
+                .toList(),
+          ),
         ],
       ),
     );
@@ -525,33 +548,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     );
   }
 
-  Widget _buildSpecTableMesin() {
-    return _specTable([
-      _specTableRow('Tipe', '4-Langkah, SOHC, eSP'),
-      _specTableRow('Kapasitas', '109,5 cc'),
-      _specTableRow('Daya Maksimal', '6,6 kW (9,0 PS) / 7.500 rpm'),
-      _specTableRow('Torsi Maksimal', '9,2 Nm (0,94 kgf.m) / 6.000 rpm'),
-      _specTableRow('Sistem Suplai', 'PGM-FI'),
-    ]);
-  }
 
-  Widget _buildSpecTableRangka() {
-    return _specTable([
-      _specTableRow('Tipe Rangka', 'Tulang punggung - eSAF'),
-      _specTableRow('Tipe Ban Depan', '80/90 - 14M/C 40P (Tubeless)'),
-      _specTableRow('Tipe Ban Belakang', '90/90 - 14M/C 40P (Tubeless)'),
-      _specTableRow('Sistem Pengereman', 'COMBI BRAKE SYSTEM'),
-    ]);
-  }
-
-  Widget _buildSpecTableDimensi() {
-    return _specTable([
-      _specTableRow('Panjang x Lebar x Tinggi', '1876 X 669 X 1080 mm'),
-      _specTableRow('Jarak Sumbu Roda', '1.255 mm'),
-      _specTableRow('Berat Kosong', '88 kg'),
-      _specTableRow('Kapasitas Tangki Bensin', '4,2 Liter'),
-    ]);
-  }
 
   Widget _specTable(List<Widget> rows) {
     return Container(
