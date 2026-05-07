@@ -72,7 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               const SizedBox(height: 8.0),
-              _buildTextField('Nama Lengkap'),
+              _buildTextField('Masukkan nama lengkap', icon: Icons.person_outline),
               const SizedBox(height: 16.0),
 
               // Email Label
@@ -87,7 +87,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 8.0),
               _buildTextField(
-                'nama@email.com',
+                'Masukkan alamat email',
+                icon: Icons.email_outlined,
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 16.0),
@@ -104,7 +105,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 8.0),
               _buildPasswordField(
-                hint: 'Min. 8 karakter',
+                hint: 'Masukkan kata sandi (Min. 8 karakter)',
+                icon: Icons.lock_outline,
                 isVisible: _isPasswordVisible,
                 onToggle: () {
                   setState(() {
@@ -126,7 +128,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 8.0),
               _buildPasswordField(
-                hint: '••••••••',
+                hint: 'Konfirmasi kata sandi Anda',
+                icon: Icons.lock_reset_outlined,
                 isVisible: _isConfirmPasswordVisible,
                 onToggle: () {
                   setState(() {
@@ -266,21 +269,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _buildTextField(
     String hint, {
     TextInputType keyboardType = TextInputType.text,
+    IconData? icon,
   }) {
     return TextField(
       keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: Colors.grey[500], fontSize: 16.0),
+        hintStyle: TextStyle(
+          color: Colors.grey[500],
+          fontSize: 15.0,
+          fontWeight: FontWeight.w400,
+        ),
+        prefixIcon: icon != null
+            ? Icon(
+                icon,
+                color: const Color(0xFF5A4D4C).withValues(alpha: 0.6),
+                size: 22,
+              )
+            : null,
         filled: true,
-        fillColor: const Color(0xFFE8E8E8), // Light gray background
+        fillColor: const Color(0xFFE8E8E8).withValues(alpha: 0.5),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16.0,
           vertical: 18.0,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
+          borderRadius: BorderRadius.circular(16.0),
           borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.0),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.0),
+          borderSide: const BorderSide(color: Color(0xFFE00024), width: 1),
         ),
       ),
     );
@@ -290,6 +313,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     required String hint,
     required bool isVisible,
     required VoidCallback onToggle,
+    IconData? icon,
   }) {
     return TextField(
       obscureText: !isVisible,
@@ -297,26 +321,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
         hintText: hint,
         hintStyle: TextStyle(
           color: Colors.grey[500],
-          letterSpacing: 4.0,
-          fontSize: 16.0,
+          fontSize: 15.0,
+          fontWeight: FontWeight.w400,
         ),
+        prefixIcon: icon != null
+            ? Icon(
+                icon,
+                color: const Color(0xFF5A4D4C).withValues(alpha: 0.6),
+                size: 22,
+              )
+            : null,
         filled: true,
-        fillColor: const Color(0xFFE8E8E8),
+        fillColor: const Color(0xFFE8E8E8).withValues(alpha: 0.5),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16.0,
           vertical: 18.0,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
+          borderRadius: BorderRadius.circular(16.0),
           borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.0),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.0),
+          borderSide: const BorderSide(color: Color(0xFFE00024), width: 1),
         ),
         suffixIcon: IconButton(
           icon: Icon(
             isVisible ? Icons.visibility : Icons.visibility_off,
             color: const Color(
               0xFF5A4D4C,
-            ).withValues(alpha: 0.8), // Matches label color hint
-            size: 22.0,
+            ).withValues(alpha: 0.8),
+            size: 20.0,
           ),
           onPressed: onToggle,
         ),
