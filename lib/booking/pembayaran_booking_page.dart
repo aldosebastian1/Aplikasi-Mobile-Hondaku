@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../data/motorcycle_data.dart';
 import '../home/aktivitas_store.dart';
 import 'booking_berhasil_page.dart';
-import 'booking_models.dart';
+import '../data/bank_data.dart';
 
 class PembayaranBookingPage extends StatefulWidget {
   final Motorcycle motor;
@@ -296,20 +296,7 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
 
   // ── Bank list (Pilih Bank Lain) ──────────────────────────
   Widget _buildBankList() {
-    final List<BankOption> banks = [
-      BankOption(
-        name: 'BCA Virtual Account',
-        logo: SvgPicture.asset('assets/payments/bca.svg', fit: BoxFit.contain),
-      ),
-      BankOption(
-        name: 'Mandiri Virtual Account',
-        logo: SvgPicture.asset('assets/payments/mandiri.svg', fit: BoxFit.contain),
-      ),
-      BankOption(
-        name: 'BSI Virtual Account',
-        logo: SvgPicture.asset('assets/payments/bsi.svg', fit: BoxFit.contain),
-      ),
-    ];
+    final List<BankOption> banks = bankOptions;
 
     return Container(
       decoration: BoxDecoration(
