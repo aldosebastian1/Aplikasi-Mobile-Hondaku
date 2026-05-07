@@ -261,13 +261,37 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      order.namaMotor,
-                      style: const TextStyle(
-                        fontSize: 19,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF2B2B2B),
-                      ),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            order.namaMotor,
+                            style: const TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF2B2B2B),
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: order.tipe == TipeTransaksi.cash ? Colors.blue.shade50 : Colors.red.shade50,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            order.tipe == TipeTransaksi.cash ? 'CASH' : 'KREDIT',
+                            style: TextStyle(
+                              fontSize: 9,
+                              fontWeight: FontWeight.w800,
+                              color: order.tipe == TipeTransaksi.cash ? Colors.blue.shade700 : _red,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 2),
                     Text(
@@ -328,9 +352,11 @@ class ProfilePage extends StatelessWidget {
                   child: Text(
                     order.status == StatusAktivitas.ditolak 
                       ? 'Pesanan Dibatalkan'
-                      : 'Estimasi Pengiriman:\n2-3 Hari',
+                      : order.status == StatusAktivitas.menunggu
+                        ? 'Menunggu Pembayaran'
+                        : 'Estimasi Pengiriman:\n2-3 Hari',
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 15,
                       height: 1.15,
                       color: Color(0xFF6A6A6A),
                     ),
@@ -357,27 +383,45 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            height: 48,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: _red,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(999),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  'No. Ref: ${order.id}',
+                  style: const TextStyle(
+                    fontSize: 10,
+                    color: Colors.grey,
+                    fontFamily: 'monospace',
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              child: const Text(
-                'Lacak Detail Pesanan',
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
+              const SizedBox(width: 8),
+              SizedBox(
+                height: 44,
+                width: 150,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _red,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                  ),
+                  child: const Text(
+                    'Detail Pesanan',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
         ],
       ),
