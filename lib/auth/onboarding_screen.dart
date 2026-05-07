@@ -76,33 +76,28 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   letterSpacing: -0.9,
                 ),
               ),
-              GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: _navigateToLogin,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8.0,
-                    horizontal: 8.0,
+              TextButton(
+                onPressed: _navigateToLogin,
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.black54,
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Text(
-                        'Skip',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black54,
-                        ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Text(
+                      'Skip',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
                       ),
-                      SizedBox(width: 2),
-                      Icon(
-                        Icons.chevron_right,
-                        size: 20,
-                        color: Colors.black54,
-                      ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(width: 2),
+                    Icon(Icons.chevron_right, size: 18),
+                  ],
                 ),
               ),
             ],
@@ -132,18 +127,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 itemCount: 3, // 3 pages as per indicator
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 28.0),
+                    padding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 32.0),
                     child: AspectRatio(
-                      aspectRatio: 4 / 5,
+                      aspectRatio: 1.0,
                       child: Container(
                         decoration: BoxDecoration(
                           color: const Color(0xFF2C2C2C),
-                          borderRadius: BorderRadius.circular(28.0),
+                          borderRadius: BorderRadius.circular(32.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.12),
+                              blurRadius: 24,
+                              offset: const Offset(0, 12),
+                            ),
+                          ],
                         ),
                         clipBehavior: Clip.hardEdge,
                         child: Image.asset(
                           'assets/images/onboarding${index + 1}.png',
-                          fit: BoxFit.contain,
+                          fit: BoxFit.cover,
                           width: double.infinity,
                           height: double.infinity,
                           alignment: Alignment.center,
@@ -212,21 +214,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   Text(
                     _onboardingData[_currentPage]['title1'],
                     style: const TextStyle(
-                      fontSize: 32,
+                      fontSize: 30,
                       fontWeight: FontWeight.w900,
-                      color: Colors.black87,
+                      color: Color(0xFF1A1A1A),
                       height: 1.1,
-                      letterSpacing: -1.0,
+                      letterSpacing: -0.8,
                     ),
                   ),
                   Text(
                     _onboardingData[_currentPage]['title2'],
                     style: TextStyle(
-                      fontSize: 32,
+                      fontSize: 30,
                       fontWeight: FontWeight.w900,
                       color: _onboardingData[_currentPage]['title2Color'],
                       height: 1.1,
-                      letterSpacing: -1.0,
+                      letterSpacing: -0.8,
                     ),
                   ),
                   const SizedBox(height: 16.0),
@@ -235,11 +237,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   Text(
                     _onboardingData[_currentPage]['subtitle'],
                     style: TextStyle(
-                      fontSize: 17, // HIG Body standard text size
-                      color: const Color(0xFF3C3C43).withValues(
-                        alpha: 0.8,
-                      ), // HIG System Gray (High contrast secondary text)
-                      height: 1.3, // Standard iOS line height for body
+                      fontSize: 16,
+                      color: Colors.grey[700],
+                      height: 1.5,
+                      letterSpacing: 0.1,
                     ),
                   ),
                   const SizedBox(height: 32.0),
