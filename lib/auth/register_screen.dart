@@ -302,7 +302,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.0),
-          borderSide: const BorderSide(color: Color(0xFFE00024), width: 1.5),
+          borderSide: const BorderSide(color: Color(0xFFE00024), width: 2.0),
         ),
       ),
     );
@@ -346,7 +346,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.0),
-          borderSide: const BorderSide(color: Color(0xFFE00024), width: 1.5),
+          borderSide: const BorderSide(color: Color(0xFFE00024), width: 2.0),
         ),
         suffixIcon: IconButton(
           icon: Icon(
