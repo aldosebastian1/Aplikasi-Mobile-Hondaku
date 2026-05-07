@@ -76,7 +76,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               IconButton(
                 onPressed: () => Navigator.pop(context),
                 icon: const Icon(
-                  Icons.arrow_back_ios_new,
+                  Icons.arrow_back,
                   size: 20,
                   color: Colors.black87,
                 ),
