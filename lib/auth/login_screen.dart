@@ -90,17 +90,35 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                  hintText: 'nama@email.com',
-                  hintStyle: TextStyle(color: Colors.grey[500], fontSize: 16.0),
+                  hintText: 'Masukkan alamat email',
+                  hintStyle: TextStyle(
+                    color: Colors.grey[500],
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.email_outlined,
+                    color: const Color(0xFF5A4D4C).withValues(alpha: 0.6),
+                    size: 22,
+                  ),
                   filled: true,
-                  fillColor: const Color(0xFFE8E8E8), // Light gray background
+                  fillColor: const Color(0xFFE8E8E8).withValues(alpha: 0.5),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16.0,
                     vertical: 18.0,
                   ),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.0),
+                    borderRadius: BorderRadius.circular(16.0),
                     borderSide: BorderSide.none,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16.0),
+                    borderSide:
+                        const BorderSide(color: Color(0xFFE00024), width: 1),
                   ),
                 ),
               ),
@@ -122,17 +140,35 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _passwordController,
                 obscureText: !_isPasswordVisible,
                 decoration: InputDecoration(
-                  hintText: '••••••••',
-                  hintStyle: TextStyle(color: Colors.grey[500], fontSize: 16.0),
+                  hintText: 'Masukkan kata sandi',
+                  hintStyle: TextStyle(
+                    color: Colors.grey[500],
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.lock_outline,
+                    color: const Color(0xFF5A4D4C).withValues(alpha: 0.6),
+                    size: 22,
+                  ),
                   filled: true,
-                  fillColor: const Color(0xFFE8E8E8),
+                  fillColor: const Color(0xFFE8E8E8).withValues(alpha: 0.5),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16.0,
                     vertical: 18.0,
                   ),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.0),
+                    borderRadius: BorderRadius.circular(16.0),
                     borderSide: BorderSide.none,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16.0),
+                    borderSide:
+                        const BorderSide(color: Color(0xFFE00024), width: 1),
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -141,8 +177,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           : Icons.visibility_off,
                       color: const Color(
                         0xFF5A4D4C,
-                      ).withValues(alpha: 0.8), // Matches label color hint
-                      size: 22.0,
+                      ).withValues(alpha: 0.8),
+                      size: 20.0,
                     ),
                     onPressed: () {
                       setState(() {
@@ -176,86 +212,89 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 32.0),
 
-              // Login Button
-              ElevatedButton(
-                onPressed: _isLoading
-                    ? null
-                    : () async {
-                        // SET Loading UI True
-                        setState(() {
-                          _isLoading = true;
-                        });
-
-                        // Simulate generic system lag/processing network request for login
-                        await Future.delayed(const Duration(seconds: 2));
-
-                        if (context.mounted) {
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: _isLoading
+                      ? null
+                      : () async {
+                          // SET Loading UI True
                           setState(() {
-                            _isLoading = false;
+                            _isLoading = true;
                           });
 
-                          if (_emailController.text == 'admin@gmail.com' &&
-                              _passwordController.text == 'admin123') {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const HondakuApp(),
-                              ),
-                            );
-                          } else {
-                            // Show error message using Apple HIG standard (Cupertino Dialog)
-                            showCupertinoDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return CupertinoAlertDialog(
-                                  title: const Text('Login Gagal'),
-                                  content: const Text(
-                                    'Email atau kata sandi yang Anda masukkan salah. Silakan coba lagi.',
-                                  ),
-                                  actions: <Widget>[
-                                    CupertinoDialogAction(
-                                      child: const Text('OK'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
+                          // Simulate generic system lag/processing network request for login
+                          await Future.delayed(const Duration(seconds: 2));
+
+                          if (context.mounted) {
+                            setState(() {
+                              _isLoading = false;
+                            });
+
+                            if (_emailController.text == 'admin@gmail.com' &&
+                                _passwordController.text == 'admin123') {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const HondakuApp(),
+                                ),
+                              );
+                            } else {
+                              // Show error message using Apple HIG standard (Cupertino Dialog)
+                              showCupertinoDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return CupertinoAlertDialog(
+                                    title: const Text('Login Gagal'),
+                                    content: const Text(
+                                      'Email atau kata sandi yang Anda masukkan salah. Silakan coba lagi.',
                                     ),
-                                  ],
-                                );
-                              },
-                            );
+                                    actions: <Widget>[
+                                      CupertinoDialogAction(
+                                        child: const Text('OK'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           }
-                        }
-                      },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFE00024), // Vibrant Red
-                  padding: const EdgeInsets.symmetric(vertical: 18.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      30.0,
-                    ), // Fully rounded like the design
+                        },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFE00024), // Vibrant Red
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        16.0,
+                      ), // Matching input radius for a unified design
+                    ),
+                    elevation: 4, // Softer shadow
+                    shadowColor: const Color(
+                      0xFFE00024,
+                    ).withValues(alpha: 0.3),
                   ),
-                  elevation: 8, // Soft shadow
-                  shadowColor: const Color(
-                    0xFFE00024,
-                  ).withValues(alpha: 0.5), // Red glow
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 3.0,
+                          ),
+                        )
+                      : const Text(
+                          'Masuk',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
                 ),
-                child: _isLoading
-                    ? const SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 3.0,
-                        ),
-                      )
-                    : const Text(
-                        'Masuk',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
               ),
               const SizedBox(height: 48.0),
 
