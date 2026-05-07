@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'aktivitas_store.dart';
+import '../data/garage_data.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -15,38 +17,50 @@ class ProfilePage extends StatelessWidget {
       backgroundColor: _background,
       body: SafeArea(
         top: false,
-        child: Column(
-          children: [
-            _buildHeader(),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 26),
-                    _buildProfileHero(),
-                    const SizedBox(height: 32),
-                    _buildActiveOrderCard(),
-                    const SizedBox(height: 20),
-                    _buildGarageSection(),
-                    const SizedBox(height: 24),
-                    _buildMenuSection(),
-                    const SizedBox(height: 14),
-                    _buildLogoutButton(),
-                    const SizedBox(height: 14),
-                    Text(
-                      'OTR JAKARTA V2.4.1 (BUILD 1082)',
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey.shade500,
-                        letterSpacing: 1.1,
-                      ),
+        child: ValueListenableBuilder<List<AktivitasItem>>(
+          valueListenable: AktivitasStore.items,
+          builder: (context, allItems, _) {
+            // Data aktif: Transaksi yang belum selesai
+            final activeOrders = allItems.where((i) => i.status != StatusAktivitas.selesai).toList();
+            // Data Garasi: Diambil dari store terpisah (hanya satu data sesuai instruksi)
+            final myVehicle = GarageStore.myVehicle;
+
+            return Column(
+              children: [
+                _buildHeader(),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 26),
+                        _buildProfileHero(),
+                        const SizedBox(height: 32),
+                        if (activeOrders.isNotEmpty) ...[
+                          _buildActiveOrderCard(activeOrders.first),
+                          const SizedBox(height: 20),
+                        ],
+                        _buildGarageSection(myVehicle),
+                        const SizedBox(height: 24),
+                        _buildMenuSection(),
+                        const SizedBox(height: 14),
+                        _buildLogoutButton(),
+                        const SizedBox(height: 14),
+                        Text(
+                          'OTR JAKARTA V2.4.1 (BUILD 1082)',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.grey.shade500,
+                            letterSpacing: 1.1,
+                          ),
+                        ),
+                        const SizedBox(height: 18),
+                      ],
                     ),
-                    const SizedBox(height: 18),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ],
+              ],
+            );
+          },
         ),
       ),
     );
@@ -177,7 +191,41 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildActiveOrderCard() {
+  Widget _buildActiveOrderCard(AktivitasItem order) {
+    String statusText = '';
+    double progressFactor = 0.1;
+    Color statusBgColor = const Color(0xFFFFF2DF);
+    Color statusTextColor = const Color(0xFFD97D00);
+
+    switch (order.status) {
+      case StatusAktivitas.menunggu:
+        statusText = 'MENUNGGU';
+        progressFactor = 0.15;
+        break;
+      case StatusAktivitas.diproses:
+        statusText = 'DIPROSES';
+        progressFactor = 0.35;
+        break;
+      case StatusAktivitas.diverifikasi:
+        statusText = 'VERIFIKASI';
+        progressFactor = 0.55;
+        break;
+      case StatusAktivitas.disetujui:
+        statusText = 'DISETUJUI';
+        progressFactor = 0.8;
+        statusBgColor = const Color(0xFFE5F6ED);
+        statusTextColor = const Color(0xFF2B8F5C);
+        break;
+      case StatusAktivitas.ditolak:
+        statusText = 'DITOLAK';
+        progressFactor = 1.0;
+        statusBgColor = const Color(0xFFFDECEE);
+        statusTextColor = const Color(0xFFD32F2F);
+        break;
+      default:
+        statusText = 'PROSES';
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24),
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
@@ -199,11 +247,11 @@ class ProfilePage extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'PESANAN AKTIF',
                       style: TextStyle(
                         fontSize: 17,
@@ -212,13 +260,21 @@ class ProfilePage extends StatelessWidget {
                         letterSpacing: 1.2,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
-                      'Honda BeAT',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
+                      order.namaMotor,
+                      style: const TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.w700,
                         color: Color(0xFF2B2B2B),
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      order.tipeUnit,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Color(0xFF6A6A6A),
                       ),
                     ),
                   ],
@@ -230,15 +286,15 @@ class ProfilePage extends StatelessWidget {
                   vertical: 11,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFF2DF),
+                  color: statusBgColor,
                   borderRadius: BorderRadius.circular(999),
                 ),
-                child: const Text(
-                  'PROSES VERIFIKASI',
+                child: Text(
+                  statusText,
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFFD97D00),
+                    color: statusTextColor,
                     letterSpacing: 0.2,
                   ),
                 ),
@@ -268,10 +324,12 @@ class ProfilePage extends StatelessWidget {
                   color: Color(0xFF8A8A8A),
                 ),
                 const SizedBox(width: 8),
-                const Expanded(
+                Expanded(
                   child: Text(
-                    'Estimasi Pengiriman:\n2-3 Hari',
-                    style: TextStyle(
+                    order.status == StatusAktivitas.ditolak 
+                      ? 'Pesanan Dibatalkan'
+                      : 'Estimasi Pengiriman:\n2-3 Hari',
+                    style: const TextStyle(
                       fontSize: 16,
                       height: 1.15,
                       color: Color(0xFF6A6A6A),
@@ -290,9 +348,9 @@ class ProfilePage extends StatelessWidget {
                 children: [
                   Container(color: const Color(0xFFE3E3E3)),
                   FractionallySizedBox(
-                    widthFactor: 0.29,
+                    widthFactor: progressFactor,
                     alignment: Alignment.centerLeft,
-                    child: Container(color: _red),
+                    child: Container(color: order.status == StatusAktivitas.ditolak ? Colors.grey : _red),
                   ),
                 ],
               ),
@@ -326,7 +384,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildGarageSection() {
+  Widget _buildGarageSection(GarageItem? item) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -344,19 +402,12 @@ class ProfilePage extends StatelessWidget {
                   letterSpacing: -0.5,
                 ),
               ),
-              Text(
-                'Lihat Semua',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: _red,
-                ),
-              ),
+              const SizedBox(), // Removed 'Lihat Semua' as requested
             ],
           ),
           const SizedBox(height: 12),
           Container(
-            height: 194,
+            height: 164,
             decoration: BoxDecoration(
               color: _surface,
               borderRadius: BorderRadius.circular(18),
@@ -372,9 +423,9 @@ class ProfilePage extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  flex: 45,
+                  flex: 50,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(18, 18, 10, 18),
+                    padding: const EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -388,51 +439,74 @@ class ProfilePage extends StatelessWidget {
                             color: const Color(0xFFF7E9EC),
                             borderRadius: BorderRadius.circular(999),
                           ),
-                          child: const Text(
-                            'DAILY RIDE',
-                            style: TextStyle(
+                          child: Text(
+                            item?.category ?? 'KOSONG',
+                            style: const TextStyle(
                               color: Color(0xFFD61B43),
-                              fontSize: 11,
+                              fontSize: 10,
                               fontWeight: FontWeight.w800,
                               letterSpacing: 0.8,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 12),
-                        const Text(
-                          'CBR1000R\nR-R',
-                          style: TextStyle(
-                            fontSize: 21,
-                            height: 1.0,
+                        const SizedBox(height: 10),
+                        Text(
+                          item?.name ?? 'Belum Ada\nMotor',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            height: 1.1,
                             fontWeight: FontWeight.w800,
                             color: _textPrimary,
-                            letterSpacing: -0.9,
+                            letterSpacing: -0.5,
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          'Fireblade SP',
-                          style: TextStyle(
-                            fontSize: 15,
+                        const SizedBox(height: 6),
+                        Text(
+                          item?.type ?? 'Mulai eksplorasi sekarang',
+                          style: const TextStyle(
+                            fontSize: 13,
                             color: _textSecondary,
                             fontWeight: FontWeight.w400,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
                   ),
                 ),
                 Expanded(
-                  flex: 55,
+                  flex: 50,
                   child: Container(
-                    color: const Color(0xFF171717),
-                    padding: const EdgeInsets.all(10),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(14),
-                      child: Image.asset(
-                        'assets/images/Beat 1.png',
-                        fit: BoxFit.cover,
-                        alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color(0xFF1A1A1A), Color(0xFF2D0B0B)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(18),
+                        bottomRight: Radius.circular(18),
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(12),
+                    child: Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: item != null
+                            ? Image.asset(
+                                item.imagePath,
+                                fit: BoxFit.contain,
+                                alignment: Alignment.center,
+                              )
+                            : Opacity(
+                                opacity: 0.3,
+                                child: Image.asset(
+                                  'assets/images/Beat 1.png',
+                                  fit: BoxFit.contain,
+                                  alignment: Alignment.center,
+                                ),
+                              ),
                       ),
                     ),
                   ),
