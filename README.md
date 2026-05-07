@@ -70,4 +70,3 @@ Aplikasi ini menggunakan berbagai aset gambar dan ikon yang terletak di folder `
 
 ---
 **Hondaku** - *The Power of Dreams.*
-Dikembangkan dengan ❤️ untuk kemudahan pecinta Honda di Indonesia.
