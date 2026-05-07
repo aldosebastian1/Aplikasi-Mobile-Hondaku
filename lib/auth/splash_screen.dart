@@ -9,23 +9,49 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool _isVisible = false;
+
   @override
   void initState() {
     super.initState();
-    // Navigate to the Onboarding Screen after 2 seconds
-    Future.delayed(const Duration(seconds: 2), () {
-      if (!mounted) return;
-      Navigator.of(context).pushReplacement(
-        PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 800),
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const OnboardingScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return FadeTransition(opacity: animation, child: child);
-          },
-        ),
-      );
+
+    // Start fade-in animation
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (mounted) setState(() => _isVisible = true);
     });
+
+    // Navigate to Onboarding after 3 seconds to ensure smooth precaching
+    // Navigate to Onboarding after 2.5 seconds - Industry Standard Sweet Spot
+    Future.delayed(const Duration(milliseconds: 2500), () {
+      if (!mounted) return;
+      _startExitTransition();
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Precache onboarding images to prevent stuttering
+    for (int i = 1; i <= 3; i++) {
+      precacheImage(AssetImage('assets/images/onboarding$i.png'), context);
+    }
+  }
+
+  void _startExitTransition() {
+    Navigator.of(context).pushReplacement(
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 800),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const OnboardingScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          final curvedAnimation = CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeInOut,
+          );
+          return FadeTransition(opacity: curvedAnimation, child: child);
+        },
+      ),
+    );
   }
 
   @override
@@ -33,39 +59,42 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Stack(
-          children: [
-            // Center Logo
-            Center(
-              child: Text(
-                'HONDAKU',
-                style: TextStyle(
-                  fontSize: 48,
-                  fontWeight: FontWeight.w900, // Very bold font for logo
-                  color: const Color(0xFFCC0000), // Honda Red color
-                  letterSpacing: -1.5,
-                ),
-              ),
-            ),
-            // Bottom Text
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 48.0,
-                ), // HIG: multiple of 8
+        child: AnimatedOpacity(
+          opacity: _isVisible ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 1000),
+          curve: Curves.easeIn,
+          child: Stack(
+            children: [
+              // Center Logo
+              Center(
                 child: Text(
-                  'THE POWER OF DREAMS',
+                  'HONDAKU',
                   style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey.shade600, // Grayish text color
-                    letterSpacing: 2.0, // HIG: balanced tracking
+                    fontSize: 48,
+                    fontWeight: FontWeight.w900,
+                    color: const Color(0xFFCC0000), // Honda Red
+                    letterSpacing: -1.5,
                   ),
                 ),
               ),
-            ),
-          ],
+              // Bottom Text
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 48.0),
+                  child: Text(
+                    'THE POWER OF DREAMS',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade600,
+                      letterSpacing: 2.0,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
