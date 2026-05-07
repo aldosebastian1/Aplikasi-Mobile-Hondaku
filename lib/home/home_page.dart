@@ -262,7 +262,7 @@ class _HalamanHomeState extends State<HalamanHome> {
     return Column(
       children: [
         SizedBox(
-          height: 320, // Final touch: Sedikit lebih tinggi untuk estetika maksimal
+          height: 320, // Reverted to original height while maintaining new style
           child: PageView.builder(
             controller: _bannerController,
             onPageChanged: (i) => setState(() => _currentBanner = i),
@@ -296,123 +296,127 @@ class _HalamanHomeState extends State<HalamanHome> {
       margin: const EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(32),
+        image: DecorationImage(
+          image: AssetImage(data.image),
+          fit: BoxFit.cover,
+        ),
       ),
-      clipBehavior: Clip.antiAlias,
-      child: Stack(
-        children: [
-          // Background Image
-          Positioned.fill(
-            child: Image.asset(
-              data.image,
-              fit: BoxFit.cover,
-            ),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(32),
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Colors.black.withOpacity(0.85),
+              Colors.black.withOpacity(0.4),
+              Colors.transparent,
+            ],
+            stops: const [0.0, 0.45, 0.9],
           ),
-          // Gradient Overlays (Bottom and Left)
-          Positioned.fill(
-            child: Container(
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 28),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Tag / Badge
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 6,
+              ),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [
-                    Colors.black.withOpacity(0.9),
-                    Colors.black.withOpacity(0.4),
-                    Colors.transparent,
-                  ],
-                  stops: const [0.0, 0.5, 0.9],
+                color: _red,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                data.tag,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 0.8,
                 ),
               ),
             ),
-          ),
-          // Content
-          Padding(
-            padding: const EdgeInsets.all(28),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Spacer(),
-                // Tag / Badge
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: _red,
-                    borderRadius: BorderRadius.circular(99),
-                  ),
-                  child: Text(
-                    data.tag,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
+            const SizedBox(height: 16),
+            // Title 1
+            Text(
+              data.title1,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 48,
+                fontWeight: FontWeight.w900,
+                fontStyle: FontStyle.italic,
+                height: 0.9,
+                letterSpacing: -2.0,
+              ),
+            ),
+            // Title 2
+            Text(
+              data.title2,
+              style: const TextStyle(
+                color: _red,
+                fontSize: 32,
+                fontWeight: FontWeight.w800,
+                height: 1.1,
+                letterSpacing: -0.8,
+              ),
+            ),
+            const SizedBox(height: 12),
+            // Divider Line
+            Container(
+              width: 28,
+              height: 2.5,
+              color: _red,
+            ),
+            const SizedBox(height: 12),
+            // Subtitle / Description
+            SizedBox(
+              width: 220,
+              child: Text(
+                data.subtitle,
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.95),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  height: 1.4,
                 ),
-                const SizedBox(height: 14),
-                // Title 1
-                Text(
-                  data.title1,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.w900,
-                    height: 1.0,
-                    letterSpacing: -1.2,
-                  ),
-                ),
-                // Title 2 (Salmon/Pink)
-                Text(
-                  data.title2,
-                  style: const TextStyle(
-                    color: Color(0xFFF68685),
-                    fontSize: 32,
-                    fontWeight: FontWeight.w800,
-                    height: 1.1,
-                    letterSpacing: -0.5,
-                  ),
-                ),
-                const SizedBox(height: 14),
-                // Subtitle / Description
-                Text(
-                  data.subtitle,
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.85),
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                    height: 1.4,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                // Learn More Button
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: _red,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30,
-                      vertical: 15,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(99),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: const Text(
-                    'Learn More',
+              ),
+            ),
+            const Spacer(),
+            // Explore Button
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 22,
+                vertical: 12,
+              ),
+              decoration: BoxDecoration(
+                color: _red,
+                borderRadius: BorderRadius.circular(99),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Explore Sekarang',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.white,
+                    size: 12,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
