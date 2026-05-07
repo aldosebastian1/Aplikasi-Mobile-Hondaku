@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../data/motorcycle_data.dart';
-import 'checkout_summary_page.dart';
+import 'ringkasan_pembayaran_page.dart';
 
 class BookingFormPage extends StatefulWidget {
   final Motorcycle motor;
@@ -768,7 +768,10 @@ class _BookingFormPageState extends State<BookingFormPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CheckoutSummaryPage(motor: widget.motor),
+                    builder: (context) => RingkasanPembayaranPage(
+                      motor: widget.motor,
+                      isFullPayment: _isFullPayment,
+                    ),
                   ),
                 );
               }
