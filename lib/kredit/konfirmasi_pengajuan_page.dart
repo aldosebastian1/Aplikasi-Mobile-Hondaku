@@ -55,7 +55,28 @@ class KonfirmasiPengajuanPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.help_outline, color: Colors.black),
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Bantuan Pengajuan Kredit'),
+                  content: const Text(
+                    'Pertanyaan seputar proses verifikasi:\n\n'
+                    '• Berapa lama proses verifikasi?\n'
+                    'Proses analisis dokumen biasanya memakan waktu maksimal 1x24 jam kerja.\n\n'
+                    '• Apa langkah selanjutnya?\n'
+                    'Pihak leasing yang Anda pilih (e.g. FIF, Adira) akan melakukan survei atau telepon konfirmasi.\n\n'
+                    'Jika Anda butuh bantuan mendesak, silakan hubungi dealer terdekat dengan menyebutkan No. Referensi Anda.',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Tutup', style: TextStyle(color: _red)),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ],
       ),
