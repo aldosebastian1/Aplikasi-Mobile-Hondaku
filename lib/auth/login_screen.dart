@@ -195,7 +195,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 alignment: Alignment.centerRight,
                 child: GestureDetector(
                   onTap: () {
-                    // Navigate to Forgot Password
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Lupa Kata Sandi'),
+                        content: const Text(
+                          'Fitur pengaturan ulang kata sandi mandiri belum tersedia.\n\n'
+                          'Silakan hubungi customer service kami atau kunjungi dealer resmi Honda terdekat untuk bantuan reset akun.',
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text(
+                              'Tutup',
+                              style: TextStyle(color: Color(0xFFE00024)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
                   },
                   child: const Text(
                     'Lupa Kata Sandi?',
