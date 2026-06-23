@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../home/aktivitas_store.dart';
 import '../core/hondaku_app.dart';
+import '../ui/core/toast/hondaku_toast.dart';
 
 class KonfirmasiPesananPage extends StatefulWidget {
   final AktivitasItem item;
@@ -308,12 +309,7 @@ class _KonfirmasiPesananPageState extends State<KonfirmasiPesananPage> {
                     ? 'Terima kasih atas penilaian $_rating bintang! Pesanan Anda telah selesai dikonfirmasi.'
                     : 'Terima kasih! Pesanan Anda telah selesai dikonfirmasi.';
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(message),
-                    backgroundColor: Colors.green,
-                  ),
-                );
+                HondakuToastHelper.showSuccess(context, message);
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (_) => const HondakuApp(initialIndex: 0)),
