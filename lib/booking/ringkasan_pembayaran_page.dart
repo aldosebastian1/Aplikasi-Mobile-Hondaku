@@ -258,9 +258,9 @@ class _RingkasanPembayaranPageState extends State<RingkasanPembayaranPage> {
   Widget _buildRingkasanHargaCard() {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFFAF0F0),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFEEDDDD), width: 1),
+        border: Border.all(color: const Color(0xFFE0E0E0), width: 1.2),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       child: Row(
