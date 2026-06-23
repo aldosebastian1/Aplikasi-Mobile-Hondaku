@@ -140,20 +140,23 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Simulasi Kredit',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 2),
-            Text(
-              'Atur anggaran sesuai kebutuhan Anda',
-              style: TextStyle(fontSize: 12, color: Colors.grey),
-            ),
-          ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text(
+                'Simulasi Kredit',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 2),
+              Text(
+                'Atur anggaran sesuai kebutuhan Anda',
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+            ],
+          ),
         ),
+        const SizedBox(width: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
@@ -174,6 +177,7 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
       ],
     );
   }
+
 
   Widget _buildMotoImage() {
     return Container(
