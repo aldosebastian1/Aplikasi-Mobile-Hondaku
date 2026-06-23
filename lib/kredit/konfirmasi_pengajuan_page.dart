@@ -34,23 +34,37 @@ class KonfirmasiPengajuanPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final noRef = referenceId;
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.5,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black, size: 22),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: const Text(
-          'Pengajuan Berhasil',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w600,
-            fontSize: 16,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const HondakuApp(initialIndex: 0)),
+          (route) => false,
+        );
+      },
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF5F5F5),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0.5,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.black, size: 22),
+            onPressed: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => const HondakuApp(initialIndex: 0)),
+                (route) => false,
+              );
+            },
           ),
-        ),
+          title: const Text(
+            'Pengajuan Berhasil',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
         centerTitle: true,
         actions: [
           IconButton(
@@ -104,7 +118,7 @@ class KonfirmasiPengajuanPage extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ),);
   }
 
 
