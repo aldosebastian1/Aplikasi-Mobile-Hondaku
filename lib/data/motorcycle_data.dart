@@ -1,58 +1,8 @@
 import 'package:flutter/material.dart';
+import '../domain/models/motorcycle.dart';
+export '../domain/models/motorcycle.dart';
 
-class MotorcycleFeature {
-  final IconData icon;
-  final String title;
-  final String description;
 
-  const MotorcycleFeature({
-    required this.icon,
-    required this.title,
-    required this.description,
-  });
-}
-
-class Motorcycle {
-  final String id;
-  final String name;
-  final String categoryBadge;
-  final String subtitle;
-  final String description;
-  final String price;
-  final String imageAsset;
-  final bool isNew;
-  final bool isRecommended;
-
-  // New fields for Product Detail
-  final String engine;
-  final String maxPower;
-  final String fuelCapacity;
-
-  final List<MotorcycleFeature> features;
-
-  final Map<String, String> specsMesin;
-  final Map<String, String> specsRangka;
-  final Map<String, String> specsDimensi;
-
-  const Motorcycle({
-    required this.id,
-    required this.name,
-    required this.categoryBadge,
-    required this.subtitle,
-    required this.description,
-    required this.price,
-    required this.imageAsset,
-    this.isNew = false,
-    this.isRecommended = false,
-    required this.engine,
-    required this.maxPower,
-    required this.fuelCapacity,
-    required this.features,
-    required this.specsMesin,
-    required this.specsRangka,
-    required this.specsDimensi,
-  });
-}
 
 // Pusat Data Base List Mockup
 final List<Motorcycle> motorcycleDatabase = [
