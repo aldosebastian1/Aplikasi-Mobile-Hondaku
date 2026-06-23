@@ -86,7 +86,27 @@ class _CheckoutPaymentMethodPageState extends State<CheckoutPaymentMethodPage> {
       actions: [
         IconButton(
           icon: const Icon(Icons.info_outline, color: Colors.black, size: 22),
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Pilihan Metode Pembayaran'),
+                content: const Text(
+                  'Anda dapat memilih metode pembayaran yang paling sesuai:\n\n'
+                  '1. Tunai (Cash):\n'
+                  'Pembayaran booking fee Rp 500.000 atau pelunasan penuh secara langsung. Mempercepat proses administrasi.\n\n'
+                  '2. Kredit (Installment):\n'
+                  'Pengajuan cicilan motor melalui leasing pilihan Anda (FIF Group, Adira, dll). Pembayaran uang muka (DP) dilakukan setelah pengajuan disetujui.',
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Tutup', style: TextStyle(color: Color(0xFFD32F2F))),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ],
     );
@@ -244,7 +264,7 @@ class _CheckoutPaymentMethodPageState extends State<CheckoutPaymentMethodPage> {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: const Color(0xFFD32F2F).withOpacity(0.08),
+                    color: const Color(0xFFD32F2F).withValues(alpha: 0.08),
                     blurRadius: 8,
                     spreadRadius: 1,
                   ),
