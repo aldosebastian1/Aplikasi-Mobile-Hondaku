@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'aktivitas_store.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../domain/models/aktivitas_item.dart';
+import '../ui/features/home/view_models/aktivitas_view_model.dart';
 import 'catalog_page.dart';
+import '../booking/status_pesanan_page.dart';
+
 
 class AktivitasPage extends StatefulWidget {
   const AktivitasPage({super.key});
@@ -48,18 +52,42 @@ class _AktivitasPageState extends State<AktivitasPage>
 
   _StatusStyle _getStatusStyle(StatusAktivitas status) {
     switch (status) {
-      case StatusAktivitas.menunggu:
-        return const _StatusStyle('Menunggu Konfirmasi', Colors.orange);
-      case StatusAktivitas.diproses:
-        return const _StatusStyle('Diproses', Colors.blue);
-      case StatusAktivitas.diverifikasi:
-        return const _StatusStyle('Dokumen Diverifikasi', Colors.blue);
-      case StatusAktivitas.disetujui:
-        return const _StatusStyle('Disetujui', Colors.green);
-      case StatusAktivitas.ditolak:
-        return const _StatusStyle('Ditolak', Colors.red);
+      case StatusAktivitas.bookingBerhasil:
+        return const _StatusStyle(
+          'Booking Berhasil',
+          Color(0xFFFFF3E0),
+          Color(0xFFE65100),
+        );
+      case StatusAktivitas.verifikasiSales:
+        return const _StatusStyle(
+          'Verifikasi Sales',
+          Color(0xFFE3F2FD),
+          Color(0xFF0D47A1),
+        );
+      case StatusAktivitas.persiapanUnit:
+        return const _StatusStyle(
+          'Persiapan Unit (PDI)',
+          Color(0xFFE3F2FD),
+          Color(0xFF0D47A1),
+        );
+      case StatusAktivitas.pengiriman:
+        return const _StatusStyle(
+          'Sedang Dikirim',
+          Color(0xFFE8EAF6),
+          Color(0xFF1A237E),
+        );
       case StatusAktivitas.selesai:
-        return const _StatusStyle('Selesai', Colors.green);
+        return const _StatusStyle(
+          'Selesai',
+          Color(0xFFE8F5E9),
+          Color(0xFF1B5E20),
+        );
+      case StatusAktivitas.ditolak:
+        return const _StatusStyle(
+          'Ditolak',
+          Color(0xFFFFEBEE),
+          Color(0xFFB71C1C),
+        );
     }
   }
 
@@ -69,9 +97,9 @@ class _AktivitasPageState extends State<AktivitasPage>
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 0.5,
         title: const Text(
-          'Aktivitas',
+          'Aktivitas Transaksi',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,
@@ -106,9 +134,9 @@ class _AktivitasPageState extends State<AktivitasPage>
           ],
         ),
       ),
-      body: ValueListenableBuilder<List<AktivitasItem>>(
-        valueListenable: AktivitasStore.items,
-        builder: (context, allItems, _) {
+      body: Consumer(
+        builder: (context, ref, _) {
+          final allItems = ref.watch(aktivitasViewModelProvider);
           final cash = allItems
               .where((e) => e.tipe == TipeTransaksi.cash)
               .toList(growable: false);
@@ -208,82 +236,148 @@ class _AktivitasPageState extends State<AktivitasPage>
     final isKredit = item.tipe == TipeTransaksi.kredit;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: isKredit ? Colors.blue.shade50 : Colors.green.shade50,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  isKredit ? 'Kredit' : 'Cash',
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: isKredit
-                        ? Colors.blue.shade700
-                        : Colors.green.shade700,
-                  ),
-                ),
-              ),
-              Text(
-                _formatTanggal(item.tanggal),
-                style: const TextStyle(fontSize: 11, color: Colors.grey),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Text(
-            item.namaMotor,
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            item.tipeUnit,
-            style: const TextStyle(fontSize: 12, color: Colors.grey),
-          ),
-          const SizedBox(height: 10),
-          const Divider(height: 1, thickness: 0.5),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                item.id,
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: statusStyle.color.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  statusStyle.label,
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: statusStyle.color,
-                  ),
-                ),
-              ),
-            ],
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(16),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => StatusPesananPage(item: item)),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Top Row: Transaction Badge & Date
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: isKredit ? Colors.blue.shade50 : Colors.green.shade50,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        isKredit ? 'Kredit' : 'Cash',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: isKredit
+                              ? Colors.blue.shade700
+                              : Colors.green.shade700,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      _formatTanggal(item.tanggal),
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Color(0xFF757575),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+
+                // Middle Row: Motor Image & Info
+                Row(
+                  children: [
+                    Container(
+                      width: 52,
+                      height: 52,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF5F5F5),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.all(4),
+                      child: Image.asset(
+                        item.imagePath,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item.namaMotor,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            item.tipeUnit,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF757575),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Divider(height: 1, thickness: 0.5, color: Colors.grey.shade200),
+                const SizedBox(height: 12),
+
+                // Bottom Row: ID & Status Badge
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      item.id,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Color(0xFF757575),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: statusStyle.bgColor,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        statusStyle.label,
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: statusStyle.textColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -291,7 +385,8 @@ class _AktivitasPageState extends State<AktivitasPage>
 
 class _StatusStyle {
   final String label;
-  final Color color;
+  final Color bgColor;
+  final Color textColor;
 
-  const _StatusStyle(this.label, this.color);
+  const _StatusStyle(this.label, this.bgColor, this.textColor);
 }
