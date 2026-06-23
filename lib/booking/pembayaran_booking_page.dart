@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,6 +51,107 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
   void dispose() {
     _timer?.cancel();
     super.dispose();
+  }
+
+  void _showChangeBankConfirmation(BuildContext context, BankOption newBank) {
+    HapticFeedback.mediumImpact();
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: Colors.white,
+          title: Column(
+            children: const [
+              Icon(
+                Icons.warning_amber_rounded,
+                color: Color(0xFFC40000),
+                size: 44,
+              ),
+              SizedBox(height: 12),
+              Text(
+                'Ganti Metode Pembayaran?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+            'Apakah Anda yakin ingin mengubah metode pembayaran menjadi ${newBank.name}? Nomor Virtual Account Anda sebelumnya akan hangus dan tidak dapat digunakan lagi.',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 13,
+              height: 1.5,
+              color: Color(0xFF666666),
+            ),
+          ),
+          actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          actions: [
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      side: BorderSide(color: Colors.grey.shade300),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                    ),
+                    child: const Text(
+                      'Batal',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      setState(() {
+                        _currentBank = newBank;
+                      });
+                      HondakuToastHelper.showSuccess(
+                        context,
+                        'Metode pembayaran berhasil diubah!',
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFC40000),
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                    ),
+                    child: const Text(
+                      'Ya, Ubah',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   String get _timerLabel {
@@ -246,8 +348,9 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
                   width: 40,
                   height: 36,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFF1F1),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0xFFE0E0E0), width: 1.0),
                   ),
                   child: const Center(
                     child: Icon(
@@ -348,9 +451,9 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
             children: [
               InkWell(
                 onTap: () {
-                  setState(() {
-                    _currentBank = bank;
-                  });
+                  if (_currentBank.name != bank.name) {
+                    _showChangeBankConfirmation(context, bank);
+                  }
                 },
                 borderRadius: BorderRadius.only(
                   topLeft: i == 0 ? const Radius.circular(12) : Radius.zero,
