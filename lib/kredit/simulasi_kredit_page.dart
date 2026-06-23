@@ -81,7 +81,27 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.help_outline, color: Colors.black),
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Panduan Simulasi Kredit'),
+                  content: const Text(
+                    'Gunakan halaman ini untuk menghitung skema cicilan motor Anda:\n\n'
+                    '1. Geser slider Uang Muka (DP) untuk menyesuaikan pembayaran awal (10% - 75% OTR).\n'
+                    '2. Pilih Tenor (durasi cicilan) yang diinginkan (11, 23, atau 35 bulan).\n'
+                    '3. Bandingkan tarif bunga dan keunggulan masing-masing mitra leasing di bagian bawah.\n\n'
+                    'Estimasi angsuran bersifat simulasi awal dan dapat sedikit berubah tergantung kebijakan leasing saat verifikasi.',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Tutup', style: TextStyle(color: Color(0xFFC40000))),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -171,7 +191,7 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
             widget.motor.imageAsset,
             height: 140,
             fit: BoxFit.contain,
-            errorBuilder: (_, __, ___) => const Icon(
+            errorBuilder: (_, _, _) => const Icon(
               Icons.directions_bike,
               size: 80,
               color: Color(0xFFC40000),
