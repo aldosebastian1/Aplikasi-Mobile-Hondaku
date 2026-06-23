@@ -26,13 +26,37 @@ class _HondakuAppState extends State<HondakuApp> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      HalamanHome(onSeeAll: () {
-        setState(() {
-          _selectedIndex = 1;
-        });
-      }),
-      const HalamanKatalog(),
-      const AktivitasPage(),
+      HalamanHome(
+        onSeeAll: () {
+          setState(() {
+            _selectedIndex = 1;
+          });
+        },
+        onProfileClick: () {
+          setState(() {
+            _selectedIndex = 3;
+          });
+        },
+      ),
+      HalamanKatalog(
+        onProfileClick: () {
+          setState(() {
+            _selectedIndex = 3;
+          });
+        },
+      ),
+      AktivitasPage(
+        onProfileClick: () {
+          setState(() {
+            _selectedIndex = 3;
+          });
+        },
+        onStartShopping: () {
+          setState(() {
+            _selectedIndex = 1;
+          });
+        },
+      ),
       ProfilePage(),
     ];
 
