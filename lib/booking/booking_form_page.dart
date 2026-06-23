@@ -833,14 +833,17 @@ class _BookingFormPageState extends State<BookingFormPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              _isFullPayment ? 'Total Bayar Sekarang' : 'Total Bayar Booking (Sekarang)',
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFFD32F2F),
+            Expanded(
+              child: Text(
+                _isFullPayment ? 'Total Bayar Sekarang' : 'Total Bayar Booking (Sekarang)',
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFFD32F2F),
+                ),
               ),
             ),
+            const SizedBox(width: 16),
             Text(
               _isFullPayment ? widget.motor.price : 'Rp 500.000',
               style: const TextStyle(
