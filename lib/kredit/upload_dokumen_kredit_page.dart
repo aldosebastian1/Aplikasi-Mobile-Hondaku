@@ -291,8 +291,9 @@ class _UploadDokumenKreditPageState extends ConsumerState<UploadDokumenKreditPag
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFF0F0),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0xFFE0E0E0), width: 1.0),
                   ),
                   child: Icon(
                     isTerunggah ? Icons.insert_drive_file : Icons.camera_alt,
