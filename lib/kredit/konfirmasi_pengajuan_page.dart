@@ -211,16 +211,21 @@ class KonfirmasiPengajuanPage extends StatelessWidget {
                           color: Colors.grey,
                         ),
                       ),
-                      Text(
-                        row['value'] as String,
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: isHighlight
-                              ? FontWeight.bold
-                              : FontWeight.w500,
-                          color: isHighlight ? _red : Colors.black87,
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Text(
+                          row['value'] as String,
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: isHighlight
+                                ? FontWeight.bold
+                                : FontWeight.w500,
+                            color: isHighlight ? _red : Colors.black87,
+                          ),
+                          textAlign: TextAlign.end,
                         ),
                       ),
+
                     ],
                   ),
                 ),
