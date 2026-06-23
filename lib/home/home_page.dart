@@ -1,20 +1,26 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/motorcycle_data.dart';
+import '../domain/models/motorcycle.dart';
+import '../domain/models/hero_banner.dart';
+import '../ui/features/home/view_models/home_view_model.dart';
 import 'product_detail_screen.dart';
 import '../booking/checkout_payment_method_page.dart';
 import '../data/hero_banner_data.dart';
 import 'catalog_page.dart';
+import 'user_store.dart';
 
-class HalamanHome extends StatefulWidget {
+
+class HalamanHome extends ConsumerStatefulWidget {
   final VoidCallback? onSeeAll;
   const HalamanHome({super.key, this.onSeeAll});
 
   @override
-  State<HalamanHome> createState() => _HalamanHomeState();
+  ConsumerState<HalamanHome> createState() => _HalamanHomeState();
 }
 
-class _HalamanHomeState extends State<HalamanHome> {
+class _HalamanHomeState extends ConsumerState<HalamanHome> {
   static const _red = Color(0xFFC40000);
   static const _surface = Colors.white;
   int _currentBanner = 0;
@@ -41,7 +47,8 @@ class _HalamanHomeState extends State<HalamanHome> {
     _bannerTimer = Timer.periodic(const Duration(seconds: 4), (timer) {
       if (_bannerController.hasClients) {
         int nextPage = _currentBanner + 1;
-        if (nextPage >= heroBannersDatabase.length) {
+        final banners = ref.read(homeBannersProvider).value ?? heroBannersDatabase;
+        if (nextPage >= banners.length) {
           nextPage = 0;
         }
         _bannerController.animateToPage(
@@ -62,7 +69,8 @@ class _HalamanHomeState extends State<HalamanHome> {
   }
 
   List<Motorcycle> get _filteredMotors {
-    List<Motorcycle> motors = motorcycleDatabase;
+    final database = ref.watch(homeMotorcyclesProvider).value ?? motorcycleDatabase;
+    List<Motorcycle> motors = database;
 
     // Filter by category (if selected)
     if (_selectedCategory.isNotEmpty) {
@@ -132,7 +140,7 @@ class _HalamanHomeState extends State<HalamanHome> {
                                     ),
                                     const SizedBox(height: 16),
                                     Text(
-                                      'Motor "${_searchQuery}" tidak ditemukan',
+                                      'Motor "$_searchQuery" tidak ditemukan',
                                       style: TextStyle(
                                         color: Colors.grey.shade600,
                                         fontSize: 15,
@@ -206,11 +214,7 @@ class _HalamanHomeState extends State<HalamanHome> {
                 ),
               ),
               const Spacer(),
-              CircleAvatar(
-                radius: 20,
-                backgroundColor: const Color(0xFFE9E9E9),
-                backgroundImage: const AssetImage('assets/images/profile.png'),
-              ),
+              UserStore.buildReactiveAvatar(radius: 20, fontSize: 12),
             ],
           ),
         ),
@@ -259,6 +263,7 @@ class _HalamanHomeState extends State<HalamanHome> {
   }
 
   Widget _buildBanner() {
+    final banners = ref.watch(homeBannersProvider).value ?? heroBannersDatabase;
     return Column(
       children: [
         SizedBox(
@@ -266,14 +271,14 @@ class _HalamanHomeState extends State<HalamanHome> {
           child: PageView.builder(
             controller: _bannerController,
             onPageChanged: (i) => setState(() => _currentBanner = i),
-            itemCount: heroBannersDatabase.length,
-            itemBuilder: (_, i) => _buildBannerItem(heroBannersDatabase[i]),
+            itemCount: banners.length,
+            itemBuilder: (_, i) => _buildBannerItem(banners[i]),
           ),
         ),
         const SizedBox(height: 12),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(heroBannersDatabase.length, (i) {
+          children: List.generate(banners.length, (i) {
             final isActive = i == _currentBanner;
             return AnimatedContainer(
               duration: const Duration(milliseconds: 250),
@@ -308,8 +313,8 @@ class _HalamanHomeState extends State<HalamanHome> {
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
             colors: [
-              Colors.black.withOpacity(0.85),
-              Colors.black.withOpacity(0.4),
+              Colors.black.withValues(alpha: 0.85),
+              Colors.black.withValues(alpha: 0.4),
               Colors.transparent,
             ],
             stops: const [0.0, 0.45, 0.9],
@@ -377,7 +382,7 @@ class _HalamanHomeState extends State<HalamanHome> {
               child: Text(
                 data.subtitle,
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.95),
+                  color: Colors.white.withValues(alpha: 0.95),
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   height: 1.4,
@@ -447,7 +452,7 @@ class _HalamanHomeState extends State<HalamanHome> {
                     width: 64,
                     height: 64,
                     decoration: BoxDecoration(
-                      color: isSelected ? _red.withOpacity(0.1) : Colors.white,
+                      color: isSelected ? _red.withValues(alpha: 0.1) : Colors.white,
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
                         color: isSelected ? _red : Colors.grey.shade200,
