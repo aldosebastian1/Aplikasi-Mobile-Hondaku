@@ -11,7 +11,6 @@ import '../data/hero_banner_data.dart';
 import 'catalog_page.dart';
 import 'user_store.dart';
 
-
 class HalamanHome extends ConsumerStatefulWidget {
   final VoidCallback? onSeeAll;
   const HalamanHome({super.key, this.onSeeAll});
@@ -47,7 +46,8 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
     _bannerTimer = Timer.periodic(const Duration(seconds: 4), (timer) {
       if (_bannerController.hasClients) {
         int nextPage = _currentBanner + 1;
-        final banners = ref.read(homeBannersProvider).value ?? heroBannersDatabase;
+        final banners =
+            ref.read(homeBannersProvider).value ?? heroBannersDatabase;
         if (nextPage >= banners.length) {
           nextPage = 0;
         }
@@ -69,7 +69,8 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
   }
 
   List<Motorcycle> get _filteredMotors {
-    final database = ref.watch(homeMotorcyclesProvider).value ?? motorcycleDatabase;
+    final database =
+        ref.watch(homeMotorcyclesProvider).value ?? motorcycleDatabase;
     List<Motorcycle> motors = database;
 
     // Filter by category (if selected)
@@ -168,7 +169,7 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
     );
   }
 
- Widget _buildHeader() {
+  Widget _buildHeader() {
     return Container(
       decoration: const BoxDecoration(
         color: _surface,
@@ -191,7 +192,10 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
               ),
               const SizedBox(width: 10),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.grey.shade100,
                   borderRadius: BorderRadius.circular(20),
@@ -267,7 +271,8 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
     return Column(
       children: [
         SizedBox(
-          height: 320, // Reverted to original height while maintaining new style
+          height:
+              320, // Reverted to original height while maintaining new style
           child: PageView.builder(
             controller: _bannerController,
             onPageChanged: (i) => setState(() => _currentBanner = i),
@@ -297,132 +302,149 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
   }
 
   Widget _buildBannerItem(HeroBanner data) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(32),
-        image: DecorationImage(
-          image: AssetImage(data.image),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(32),
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [
-              Colors.black.withValues(alpha: 0.85),
-              Colors.black.withValues(alpha: 0.4),
-              Colors.transparent,
-            ],
-            stops: const [0.0, 0.45, 0.9],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final horizontalPadding = (constraints.maxWidth * 0.08).clamp(16.0, 28.0);
+        final verticalPadding = (constraints.maxWidth * 0.08).clamp(16.0, 28.0);
+        final title1Size = (constraints.maxWidth * 0.12).clamp(28.0, 44.0);
+        final title2Size = (constraints.maxWidth * 0.08).clamp(20.0, 28.0);
+        final subtitleSize = (constraints.maxWidth * 0.042).clamp(11.5, 14.0);
+        final gap1 = (constraints.maxWidth * 0.045).clamp(8.0, 16.0);
+        final gap2 = (constraints.maxWidth * 0.035).clamp(6.0, 12.0);
+        final badgePaddingV = (constraints.maxWidth * 0.018).clamp(4.0, 6.0);
+        final badgePaddingH = (constraints.maxWidth * 0.04).clamp(10.0, 14.0);
+        final buttonPaddingV = (constraints.maxWidth * 0.035).clamp(8.0, 12.0);
+        final buttonPaddingH = (constraints.maxWidth * 0.065).clamp(16.0, 22.0);
+
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(32),
+            image: DecorationImage(
+              image: AssetImage(data.image),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 28),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Tag / Badge
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 14,
-                vertical: 6,
-              ),
-              decoration: BoxDecoration(
-                color: _red,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                data.tag,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 0.8,
-                ),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(32),
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Colors.black.withValues(alpha: 0.85),
+                  Colors.black.withValues(alpha: 0.4),
+                  Colors.transparent,
+                ],
+                stops: const [0.0, 0.45, 0.9],
               ),
             ),
-            const SizedBox(height: 16),
-            // Title 1
-            Text(
-              data.title1,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 48,
-                fontWeight: FontWeight.w900,
-                fontStyle: FontStyle.italic,
-                height: 0.9,
-                letterSpacing: -2.0,
-              ),
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: verticalPadding,
             ),
-            // Title 2
-            Text(
-              data.title2,
-              style: const TextStyle(
-                color: _red,
-                fontSize: 32,
-                fontWeight: FontWeight.w800,
-                height: 1.1,
-                letterSpacing: -0.8,
-              ),
-            ),
-            const SizedBox(height: 12),
-            // Divider Line
-            Container(
-              width: 28,
-              height: 2.5,
-              color: _red,
-            ),
-            const SizedBox(height: 12),
-            // Subtitle / Description
-            SizedBox(
-              width: 220,
-              child: Text(
-                data.subtitle,
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.95),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  height: 1.4,
-                ),
-              ),
-            ),
-            const Spacer(),
-            // Explore Button
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 22,
-                vertical: 12,
-              ),
-              decoration: BoxDecoration(
-                color: _red,
-                borderRadius: BorderRadius.circular(99),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'Explore Sekarang',
-                    style: TextStyle(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Tag / Badge
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: badgePaddingH,
+                    vertical: badgePaddingV,
+                  ),
+                  decoration: BoxDecoration(
+                    color: _red,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    data.tag,
+                    style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 10.5,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 0.8,
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  const Icon(
-                    Icons.arrow_forward_ios,
+                ),
+                SizedBox(height: gap1),
+                // Title 1
+                Text(
+                  data.title1,
+                  style: TextStyle(
                     color: Colors.white,
-                    size: 12,
+                    fontSize: title1Size,
+                    fontWeight: FontWeight.w900,
+                    fontStyle: FontStyle.italic,
+                    height: 0.9,
+                    letterSpacing: -1.5,
                   ),
-                ],
-              ),
+                ),
+                // Title 2
+                Text(
+                  data.title2,
+                  style: TextStyle(
+                    color: _red,
+                    fontSize: title2Size,
+                    fontWeight: FontWeight.w800,
+                    height: 1.1,
+                    letterSpacing: -0.8,
+                  ),
+                ),
+                SizedBox(height: gap2),
+                // Divider Line
+                Container(width: 28, height: 2.5, color: _red),
+                SizedBox(height: gap2),
+                // Subtitle / Description
+                SizedBox(
+                  width: constraints.maxWidth * 0.7,
+                  child: Text(
+                    data.subtitle,
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.95),
+                      fontSize: subtitleSize,
+                      fontWeight: FontWeight.w500,
+                      height: 1.35,
+                    ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const Spacer(),
+                // Explore Button
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: buttonPaddingH,
+                    vertical: buttonPaddingV,
+                  ),
+                  decoration: BoxDecoration(
+                    color: _red,
+                    borderRadius: BorderRadius.circular(99),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        'Explore Sekarang',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12.5,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      const Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.white,
+                        size: 11,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -452,26 +474,25 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
                     width: 64,
                     height: 64,
                     decoration: BoxDecoration(
-                      color: isSelected ? _red.withValues(alpha: 0.1) : Colors.white,
+                      color: isSelected
+                          ? _red.withValues(alpha: 0.1)
+                          : Colors.white,
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
                         color: isSelected ? _red : Colors.grey.shade200,
                         width: isSelected ? 1.5 : 1,
                       ),
                     ),
-                    child: Icon(
-                      k['icon'] as IconData,
-                      color: _red,
-                      size: 28,
-                    ),
+                    child: Icon(k['icon'] as IconData, color: _red, size: 28),
                   ),
                   const SizedBox(height: 6),
                   Text(
                     k['label'] as String,
                     style: TextStyle(
                       fontSize: 11,
-                      fontWeight:
-                          isSelected ? FontWeight.bold : FontWeight.w600,
+                      fontWeight: isSelected
+                          ? FontWeight.bold
+                          : FontWeight.w600,
                       color: isSelected ? _red : Colors.black87,
                     ),
                   ),
@@ -620,8 +641,10 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  ProductDetailScreen(parentIndex: 0, motor: motor),
+                              builder: (context) => ProductDetailScreen(
+                                parentIndex: 0,
+                                motor: motor,
+                              ),
                             ),
                           );
                         },
