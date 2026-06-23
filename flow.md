@@ -28,62 +28,74 @@ Struktur file telah dikelompokkan ke dalam folder fungsional untuk memudahkan pe
 > Bagian ini dihasilkan otomatis oleh `tool/sync_app_flow.dart`.
 > Jangan edit manual di antara marker START/END karena akan ditimpa saat sinkronisasi.
 
-**Generated at:** 2026-05-07 18:07:19.778818
-**Detected nodes:** 18
-**Detected transitions:** 24
+**Generated at:** 2026-06-23 09:55:38.198782
+**Detected nodes:** 22
+**Detected transitions:** 30
 
 ```mermaid
 flowchart TD
   AktivitasPage -->|pushAndRemoveUntil| HalamanKatalog
+  AktivitasPage -->|push| StatusPesananPage
   BookingBerhasilPage -->|pushAndRemoveUntil| HondakuApp
   BookingBerhasilPage -->|pushAndRemoveUntil| HondakuApp
   BookingFormPage -->|push| RingkasanPembayaranPage
+  CatalogPage -->|push| CheckoutPaymentMethodPage
+  CatalogPage -->|push| ProductDetailScreen
   CheckoutPaymentMethodPage -->|push| BookingFormPage
   CheckoutPaymentMethodPage -->|push| SimulasiKreditPage
-  HalamanHome -->|push| CheckoutPaymentMethodPage
-  HalamanHome -->|push| HalamanKatalog
-  HalamanHome -->|push| ProductDetailScreen
-  HalamanKatalog -->|push| CheckoutPaymentMethodPage
-  HalamanKatalog -->|push| ProductDetailScreen
+  HomePage -->|push| CheckoutPaymentMethodPage
+  HomePage -->|push| HalamanKatalog
+  HomePage -->|push| ProductDetailScreen
   KonfirmasiPengajuanPage -->|pushAndRemoveUntil| HondakuApp
+  KonfirmasiPesananPage -->|pushAndRemoveUntil| HondakuApp
   LoginScreen -->|pushReplacement| HondakuApp
   LoginScreen -->|push| RegisterScreen
-  MyApp -->|MaterialApp.home| SplashScreen
   OnboardingScreen -->|pushReplacement| LoginScreen
   PembayaranBookingPage -->|pushReplacement| BookingBerhasilPage
   ProductDetailScreen -->|push| CheckoutPaymentMethodPage
   ProductDetailScreen -->|pushAndRemoveUntil| HondakuApp
+  ProfilePage -->|pushAndRemoveUntil| LoginScreen
+  ProfilePage -->|push| StatusPesananPage
+  ProfilePage -->|push| StatusPesananPage
+  ProfilePage -->|push| destination
   RegisterScreen -->|pushReplacement| HondakuApp
   RingkasanPembayaranPage -->|push| PembayaranBookingPage
   SimulasiKreditPage -->|push| UploadDokumenKreditPage
   SplashScreen -->|pushReplacement| OnboardingScreen
+  StatusPesananPage -->|pushReplacement| KonfirmasiPesananPage
   UploadDokumenKreditPage -->|push| KonfirmasiPengajuanPage
 ```
 
 ### Detected Transitions
 
-- AktivitasPage -> HalamanKatalog (pushAndRemoveUntil) [lib/home/aktivitas_page.dart:176]
-- BookingBerhasilPage -> HondakuApp (pushAndRemoveUntil) [lib/booking/booking_berhasil_page.dart:184]
-- BookingBerhasilPage -> HondakuApp (pushAndRemoveUntil) [lib/booking/booking_berhasil_page.dart:216]
-- BookingFormPage -> RingkasanPembayaranPage (push) [lib/booking/booking_form_page.dart:768]
-- CheckoutPaymentMethodPage -> BookingFormPage (push) [lib/booking/checkout_payment_method_page.dart:526]
-- CheckoutPaymentMethodPage -> SimulasiKreditPage (push) [lib/booking/checkout_payment_method_page.dart:516]
-- HalamanHome -> CheckoutPaymentMethodPage (push) [lib/home/home_page.dart:644]
-- HalamanHome -> HalamanKatalog (push) [lib/home/home_page.dart:510]
-- HalamanHome -> ProductDetailScreen (push) [lib/home/home_page.dart:615]
-- HalamanKatalog -> CheckoutPaymentMethodPage (push) [lib/home/catalog_page.dart:525]
-- HalamanKatalog -> ProductDetailScreen (push) [lib/home/catalog_page.dart:496]
-- KonfirmasiPengajuanPage -> HondakuApp (pushAndRemoveUntil) [lib/kredit/konfirmasi_pengajuan_page.dart:258]
-- LoginScreen -> HondakuApp (pushReplacement) [lib/auth/login_screen.dart:237]
-- LoginScreen -> RegisterScreen (push) [lib/auth/login_screen.dart:346]
-- MyApp -> SplashScreen (MaterialApp.home) [lib/main.dart:20]
+- AktivitasPage -> HalamanKatalog (pushAndRemoveUntil) [lib/home/aktivitas_page.dart:201]
+- AktivitasPage -> StatusPesananPage (push) [lib/home/aktivitas_page.dart:254]
+- BookingBerhasilPage -> HondakuApp (pushAndRemoveUntil) [lib/booking/booking_berhasil_page.dart:210]
+- BookingBerhasilPage -> HondakuApp (pushAndRemoveUntil) [lib/booking/booking_berhasil_page.dart:242]
+- BookingFormPage -> RingkasanPembayaranPage (push) [lib/booking/booking_form_page.dart:775]
+- CatalogPage -> CheckoutPaymentMethodPage (push) [lib/home/catalog_page.dart:527]
+- CatalogPage -> ProductDetailScreen (push) [lib/home/catalog_page.dart:498]
+- CheckoutPaymentMethodPage -> BookingFormPage (push) [lib/booking/checkout_payment_method_page.dart:546]
+- CheckoutPaymentMethodPage -> SimulasiKreditPage (push) [lib/booking/checkout_payment_method_page.dart:536]
+- HomePage -> CheckoutPaymentMethodPage (push) [lib/home/home_page.dart:672]
+- HomePage -> HalamanKatalog (push) [lib/home/home_page.dart:536]
+- HomePage -> ProductDetailScreen (push) [lib/home/home_page.dart:641]
+- KonfirmasiPengajuanPage -> HondakuApp (pushAndRemoveUntil) [lib/kredit/konfirmasi_pengajuan_page.dart:284]
+- KonfirmasiPesananPage -> HondakuApp (pushAndRemoveUntil) [lib/booking/konfirmasi_pesanan_page.dart:313]
+- LoginScreen -> HondakuApp (pushReplacement) [lib/auth/login_screen.dart:255]
+- LoginScreen -> RegisterScreen (push) [lib/auth/login_screen.dart:364]
 - OnboardingScreen -> LoginScreen (pushReplacement) [lib/auth/onboarding_screen.dart:45]
-- PembayaranBookingPage -> BookingBerhasilPage (pushReplacement) [lib/booking/pembayaran_booking_page.dart:497]
+- PembayaranBookingPage -> BookingBerhasilPage (pushReplacement) [lib/booking/pembayaran_booking_page.dart:500]
 - ProductDetailScreen -> CheckoutPaymentMethodPage (push) [lib/home/product_detail_screen.dart:652]
 - ProductDetailScreen -> HondakuApp (pushAndRemoveUntil) [lib/home/product_detail_screen.dart:703]
+- ProfilePage -> LoginScreen (pushAndRemoveUntil) [lib/home/profile.dart:736]
+- ProfilePage -> StatusPesananPage (push) [lib/home/profile.dart:325]
+- ProfilePage -> StatusPesananPage (push) [lib/home/profile.dart:519]
+- ProfilePage -> destination (push) [lib/home/profile.dart:1057]
 - RegisterScreen -> HondakuApp (pushReplacement) [lib/auth/register_screen.dart:162]
-- RingkasanPembayaranPage -> PembayaranBookingPage (push) [lib/booking/ringkasan_pembayaran_page.dart:441]
-- SimulasiKreditPage -> UploadDokumenKreditPage (push) [lib/kredit/simulasi_kredit_page.dart:391]
+- RingkasanPembayaranPage -> PembayaranBookingPage (push) [lib/booking/ringkasan_pembayaran_page.dart:459]
+- SimulasiKreditPage -> UploadDokumenKreditPage (push) [lib/kredit/simulasi_kredit_page.dart:415]
 - SplashScreen -> OnboardingScreen (pushReplacement) [lib/auth/splash_screen.dart:41]
-- UploadDokumenKreditPage -> KonfirmasiPengajuanPage (push) [lib/kredit/upload_dokumen_kredit_page.dart:122]
+- StatusPesananPage -> KonfirmasiPesananPage (pushReplacement) [lib/booking/status_pesanan_page.dart:52]
+- UploadDokumenKreditPage -> KonfirmasiPengajuanPage (push) [lib/kredit/upload_dokumen_kredit_page.dart:139]
 <!-- AUTO_FLOW_END -->
