@@ -264,9 +264,9 @@ class _CheckoutPaymentMethodPageState extends State<CheckoutPaymentMethodPage> {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: const Color(0xFFD32F2F).withValues(alpha: 0.08),
-                    blurRadius: 8,
-                    spreadRadius: 1,
+                    color: Colors.black.withValues(alpha: 0.04),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
                   ),
                 ]
               : [],
@@ -342,8 +342,12 @@ class _CheckoutPaymentMethodPageState extends State<CheckoutPaymentMethodPage> {
       width: 48,
       height: 48,
       decoration: BoxDecoration(
-        color: isSelected ? const Color(0xFFFFEBEE) : const Color(0xFFF5F5F5),
+        color: isSelected ? Colors.white : const Color(0xFFF5F5F5),
         borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: isSelected ? const Color(0xFFD32F2F) : const Color(0xFFE0E0E0),
+          width: 1.5,
+        ),
       ),
       child: Center(
         child: Stack(
@@ -389,8 +393,12 @@ class _CheckoutPaymentMethodPageState extends State<CheckoutPaymentMethodPage> {
       width: 48,
       height: 48,
       decoration: BoxDecoration(
-        color: isSelected ? const Color(0xFFFFEBEE) : const Color(0xFFF5F5F5),
+        color: isSelected ? Colors.white : const Color(0xFFF5F5F5),
         borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: isSelected ? const Color(0xFFD32F2F) : const Color(0xFFE0E0E0),
+          width: 1.5,
+        ),
       ),
       child: Center(
         child: Column(
@@ -430,9 +438,9 @@ class _CheckoutPaymentMethodPageState extends State<CheckoutPaymentMethodPage> {
     final isCash = _selectedMethod == 0;
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFFFF8F8),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFFFCDD2), width: 1),
+        border: Border.all(color: const Color(0xFFE0E0E0), width: 1.2),
       ),
       padding: const EdgeInsets.all(14),
       child: Column(
