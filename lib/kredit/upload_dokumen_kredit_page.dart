@@ -1,8 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../home/aktivitas_store.dart';
+import '../ui/features/home/view_models/aktivitas_view_model.dart';
 import 'konfirmasi_pengajuan_page.dart';
+import '../data/motorcycle_data.dart';
+
 
 enum DocStatus { belum, terunggah }
 
@@ -26,7 +30,7 @@ class DokumenItem {
   });
 }
 
-class UploadDokumenKreditPage extends StatefulWidget {
+class UploadDokumenKreditPage extends ConsumerStatefulWidget {
   const UploadDokumenKreditPage({
     super.key,
     required this.namaMotor,
@@ -45,11 +49,11 @@ class UploadDokumenKreditPage extends StatefulWidget {
   final double hargaOTR;
 
   @override
-  State<UploadDokumenKreditPage> createState() =>
+  ConsumerState<UploadDokumenKreditPage> createState() =>
       _UploadDokumenKreditPageState();
 }
 
-class _UploadDokumenKreditPageState extends State<UploadDokumenKreditPage> {
+class _UploadDokumenKreditPageState extends ConsumerState<UploadDokumenKreditPage> {
   static const _red = Color(0xFFC40000);
   static const int _maxFileSize = 5 * 1024 * 1024; // 5MB
 
@@ -109,14 +113,33 @@ class _UploadDokumenKreditPageState extends State<UploadDokumenKreditPage> {
   }
 
   void _kirimPengajuan() {
+    if (!_semuaTerunggah) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Harap unggah semua dokumen wajib (KTP, Foto Selfie, dan Kartu Keluarga) terlebih dahulu.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
     final now = DateTime.now();
     final referenceId =
         'AHM-${now.year}${now.month.toString().padLeft(2, '0')}${now.day.toString().padLeft(2, '0')}-${now.millisecondsSinceEpoch.toString().substring(7)}';
 
-    AktivitasStore.upsertKreditSubmitted(
+    final motor = motorcycleDatabase.firstWhere(
+      (e) => e.name.toLowerCase() == widget.namaMotor.toLowerCase(),
+      orElse: () => motorcycleDatabase.first,
+    );
+    final imagePath = motor.imageAsset;
+    const dealer = 'Honda Sisingamangaraja';
+
+    ref.read(aktivitasViewModelProvider.notifier).submitKreditTransaction(
       id: referenceId,
       namaMotor: widget.namaMotor,
       tipeUnit: 'Kredit ${widget.tenor} Bulan - ${widget.selectedLeasing}',
+      dealer: dealer,
+      imagePath: imagePath,
     );
 
     Navigator.push(
@@ -158,7 +181,27 @@ class _UploadDokumenKreditPageState extends State<UploadDokumenKreditPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.help_outline, color: Colors.black),
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Bantuan Unggah Dokumen'),
+                  content: const Text(
+                    'Persyaratan file yang diunggah:\n\n'
+                    '• KTP Pemohon: Harus jelas, tidak blur, dan seluruh sudut KTP terlihat.\n'
+                    '• Kartu Keluarga: Pastikan NIK anggota keluarga terbaca.\n'
+                    '• Slip Gaji / Bukti Penghasilan: Rekening koran 3 bulan terakhir atau slip gaji bulan lalu.\n\n'
+                    'Semua data yang Anda unggah dilindungi dengan enkripsi ketat dan hanya digunakan untuk keperluan pengajuan kredit.',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Tutup', style: TextStyle(color: Color(0xFFC40000))),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ],
       ),
