@@ -5,12 +5,14 @@ class BookingBerhasilPage extends StatelessWidget {
   final String orderId;
   final String tipeUnit;
   final String dealer;
+  final String namaMotor;
 
   const BookingBerhasilPage({
     super.key,
     required this.orderId,
     required this.tipeUnit,
     required this.dealer,
+    required this.namaMotor,
   });
 
   static const _red = Color(0xFFC40000);
@@ -26,9 +28,9 @@ class BookingBerhasilPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Honda BeAT',
-          style: TextStyle(
+        title: Text(
+          namaMotor,
+          style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,
             fontSize: 16,
@@ -38,7 +40,27 @@ class BookingBerhasilPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.info_outline, color: Colors.black),
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Informasi Booking'),
+                  content: const Text(
+                    'Selamat! Booking Anda telah tercatat di sistem kami.\n\n'
+                    'Langkah selanjutnya:\n'
+                    '1. Pantau status pesanan secara berkala pada tab Aktivitas.\n'
+                    '2. Sales kami akan menghubungi Anda melalui WhatsApp untuk verifikasi data.\n'
+                    '3. Unit akan disiapkan dan dikirim setelah verifikasi selesai.',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Tutup', style: TextStyle(color: _red)),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -57,7 +79,7 @@ class BookingBerhasilPage extends StatelessWidget {
             const SizedBox(height: 12),
             _buildKembaliButton(context),
             const SizedBox(height: 16),
-            _buildBantuanText(),
+            _buildBantuanText(context),
             const SizedBox(height: 24),
           ],
         ),
@@ -240,17 +262,27 @@ class BookingBerhasilPage extends StatelessWidget {
     );
   }
 
-  Widget _buildBantuanText() {
-    return RichText(
-      text: const TextSpan(
-        text: 'Butuh bantuan? Hubungi ',
-        style: TextStyle(fontSize: 12, color: Colors.grey),
-        children: [
-          TextSpan(
-            text: 'Honda Care Medan',
-            style: TextStyle(color: _red, fontWeight: FontWeight.w500),
+  Widget _buildBantuanText(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Menghubungi Honda Care Medan via WhatsApp...'),
+            backgroundColor: _red,
           ),
-        ],
+        );
+      },
+      child: RichText(
+        text: const TextSpan(
+          text: 'Butuh bantuan? Hubungi ',
+          style: TextStyle(fontSize: 12, color: Colors.grey),
+          children: [
+            TextSpan(
+              text: 'Honda Care Medan',
+              style: TextStyle(color: _red, fontWeight: FontWeight.w500),
+            ),
+          ],
+        ),
       ),
     );
   }
