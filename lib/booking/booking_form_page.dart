@@ -46,17 +46,7 @@ class _BookingFormPageState extends State<BookingFormPage> {
   @override
   void initState() {
     super.initState();
-    // Tambahkan listener ke semua controller agar tombol validasi
-    // diperbarui secara real-time saat teks berubah (termasuk autofill).
-    _namaController.addListener(_updateState);
-    _nikController.addListener(_updateState);
-    _phoneController.addListener(_updateState);
-    _alamatController.addListener(_updateState);
-    _emailController.addListener(_updateState);
-  }
-
-  void _updateState() {
-    if (mounted) setState(() {});
+    // Validasi dilakukan secara On-Submit untuk performa pengetikan yang 100% responsif & lancar.
   }
 
   @override
@@ -221,18 +211,6 @@ class _BookingFormPageState extends State<BookingFormPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (!_isFormValid && _namaController.text.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Text(
-                      _getValidationMessage(),
-                      style: const TextStyle(
-                        color: Color(0xFFD32F2F),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
                 _buildBottomBar(),
                 const SizedBox(height: 12),
                 _buildPilihBookingButton(),
@@ -267,7 +245,27 @@ class _BookingFormPageState extends State<BookingFormPage> {
       actions: [
         IconButton(
           icon: const Icon(Icons.info_outline, color: Colors.black, size: 22),
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Panduan Pengisian Form'),
+                content: const Text(
+                  'Harap isi data Anda dengan benar sesuai dengan KTP untuk mempercepat proses verifikasi oleh pihak dealer:\n\n'
+                  '• Nama Lengkap: Sesuai yang tertera pada KTP.\n'
+                  '• NIK: 16 digit nomor induk kependudukan.\n'
+                  '• Email: Pastikan aktif untuk menerima salinan kwitansi/invoice.\n'
+                  '• Alamat Pengiriman: Lokasi tujuan pengiriman unit motor di wilayah Medan.',
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Tutup', style: TextStyle(color: Color(0xFFD32F2F))),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ],
     );
@@ -307,7 +305,7 @@ class _BookingFormPageState extends State<BookingFormPage> {
             child: Image.asset(
               widget.motor.imageAsset,
               fit: BoxFit.contain,
-              errorBuilder: (_, __, ___) => const Icon(
+              errorBuilder: (_, _, _) => const Icon(
                 Icons.two_wheeler,
                 color: Color(0xFFD32F2F),
                 size: 40,
@@ -763,19 +761,27 @@ class _BookingFormPageState extends State<BookingFormPage> {
       width: double.infinity,
       height: 50,
       child: ElevatedButton(
-        onPressed: _isFormValid
-            ? () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RingkasanPembayaranPage(
-                      motor: widget.motor,
-                      isFullPayment: _isFullPayment,
-                    ),
-                  ),
-                );
-              }
-            : null,
+        onPressed: () {
+          if (!_isFormValid) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(_getValidationMessage()),
+                backgroundColor: const Color(0xFFD32F2F),
+              ),
+            );
+            return;
+          }
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RingkasanPembayaranPage(
+                motor: widget.motor,
+                isFullPayment: _isFullPayment,
+              ),
+            ),
+          );
+        },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFFD32F2F),
           foregroundColor: Colors.white,
