@@ -6,6 +6,7 @@ import '../home/aktivitas_store.dart';
 import '../ui/features/home/view_models/aktivitas_view_model.dart';
 import 'konfirmasi_pengajuan_page.dart';
 import '../data/motorcycle_data.dart';
+import '../ui/core/toast/hondaku_toast.dart';
 
 
 enum DocStatus { belum, terunggah }
@@ -91,12 +92,7 @@ class _UploadDokumenKreditPageState extends ConsumerState<UploadDokumenKreditPag
 
         if (size > _maxFileSize) {
           if (!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Ukuran file terlalu besar. Maksimal 5MB.'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          HondakuToastHelper.showError(context, 'Ukuran file terlalu besar. Maksimal 5MB.');
           return;
         }
 
@@ -114,11 +110,9 @@ class _UploadDokumenKreditPageState extends ConsumerState<UploadDokumenKreditPag
 
   void _kirimPengajuan() {
     if (!_semuaTerunggah) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Harap unggah semua dokumen wajib (KTP, Foto Selfie, dan Kartu Keluarga) terlebih dahulu.'),
-          backgroundColor: Colors.red,
-        ),
+      HondakuToastHelper.showError(
+        context,
+        'Harap unggah semua dokumen wajib (KTP, Foto Selfie, dan Kartu Keluarga) terlebih dahulu.',
       );
       return;
     }
