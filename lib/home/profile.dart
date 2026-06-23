@@ -23,9 +23,9 @@ class ProfileThemeColors {
   Color get background => isDark ? const Color(0xFF121212) : const Color(0xFFF5F5F5);
   Color get surface => isDark ? const Color(0xFF1E1E1E) : Colors.white;
   Color get textPrimary => isDark ? const Color(0xFFF5F5F5) : const Color(0xFF1F1F1F);
-  Color get textSecondary => isDark ? const Color(0xFFA08888) : const Color(0xFF7A5E5E);
+  Color get textSecondary => isDark ? const Color(0xFF9E9E9E) : const Color(0xFF757575);
   Color get border => isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE9E9E9);
-  Color get cardBorder => isDark ? const Color(0xFF332220) : const Color(0xFFF0E4E1);
+  Color get cardBorder => isDark ? const Color(0xFF2E2E2E) : const Color(0xFFEBEBEB);
   Color get tileBg => isDark ? const Color(0xFF2A2A2A) : const Color(0xFFF3F3F3);
 }
 
@@ -108,7 +108,18 @@ class ProfilePage extends StatelessWidget {
                 final activeOrders = allItems
                     .where((i) => i.status != StatusAktivitas.selesai && i.status != StatusAktivitas.ditolak)
                     .toList();
-                final myVehicle = GarageStore.myVehicle;
+                final completedOrders = allItems
+                    .where((e) => e.status == StatusAktivitas.selesai)
+                    .toList();
+                final myVehicle = completedOrders.isNotEmpty
+                    ? GarageItem(
+                        id: completedOrders.first.id,
+                        name: completedOrders.first.namaMotor,
+                        type: completedOrders.first.tipeUnit,
+                        imagePath: completedOrders.first.imagePath,
+                        category: 'DAILY RIDE',
+                      )
+                    : null;
 
                 return ValueListenableBuilder<UserProfile>(
                   valueListenable: UserStore.profile,
@@ -128,8 +139,10 @@ class ProfilePage extends StatelessWidget {
                                   _buildActiveOrderCard(context, theme, activeOrders.first, loc),
                                   const SizedBox(height: 20),
                                 ],
-                                _buildGarageSection(theme, myVehicle, loc),
-                                const SizedBox(height: 24),
+                                if (myVehicle != null) ...[
+                                  _buildGarageSection(context, theme, myVehicle, loc),
+                                  const SizedBox(height: 24),
+                                ],
                                 _buildMenuSection(theme, loc),
                                 const SizedBox(height: 14),
                                 _buildLogoutButton(context, theme, loc),
@@ -332,13 +345,13 @@ class ProfilePage extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
         decoration: BoxDecoration(
           color: theme.surface,
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(color: theme.cardBorder),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: theme.isDark ? 0.3 : 0.05),
-              blurRadius: 18,
-              offset: const Offset(0, 7),
+              color: Colors.black.withValues(alpha: theme.isDark ? 0.3 : 0.04),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
             ),
           ],
         ),
@@ -548,7 +561,12 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildGarageSection(ProfileThemeColors theme, GarageItem? item, ProfileLocalizations loc) {
+  Widget _buildGarageSection(
+    BuildContext context,
+    ProfileThemeColors theme,
+    GarageItem? item,
+    ProfileLocalizations loc,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -564,113 +582,415 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          Container(
-            height: 164,
-            decoration: BoxDecoration(
-              color: theme.surface,
-              borderRadius: BorderRadius.circular(18),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: theme.isDark ? 0.3 : 0.04),
-                  blurRadius: 16,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            clipBehavior: Clip.antiAlias,
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 50,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: theme.isDark ? const Color(0xFF3A1F25) : const Color(0xFFF7E9EC),
-                            borderRadius: BorderRadius.circular(999),
-                          ),
-                          child: Text(
-                            item?.category ?? 'KOSONG',
-                            style: TextStyle(
-                              color: theme.isDark ? const Color(0xFFFF6688) : const Color(0xFFD61B43),
-                              fontSize: 10,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 0.8,
+          GestureDetector(
+            onTap: item != null ? () => _showDigitalWarrantySheet(context, theme, item, loc) : null,
+            child: Container(
+              height: 164,
+              decoration: BoxDecoration(
+                color: theme.surface,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: theme.isDark ? 0.3 : 0.04),
+                    blurRadius: 16,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 50,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: theme.isDark ? const Color(0xFF3A1F25) : const Color(0xFFF7E9EC),
+                              borderRadius: BorderRadius.circular(999),
+                            ),
+                            child: Text(
+                              item?.category ?? 'KOSONG',
+                              style: TextStyle(
+                                color: theme.isDark ? const Color(0xFFFF6688) : const Color(0xFFD61B43),
+                                fontSize: 10,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 0.8,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          item != null ? item.name : loc.emptyGarage,
-                          style: TextStyle(
-                            fontSize: 20,
-                            height: 1.1,
-                            fontWeight: FontWeight.w800,
-                            color: theme.textPrimary,
-                            letterSpacing: -0.5,
+                          const SizedBox(height: 10),
+                          Text(
+                            item != null ? item.name : loc.emptyGarage,
+                            style: TextStyle(
+                              fontSize: 20,
+                              height: 1.1,
+                              fontWeight: FontWeight.w800,
+                              color: theme.textPrimary,
+                              letterSpacing: -0.5,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          item != null ? item.type : loc.startExploring,
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: theme.textSecondary,
-                            fontWeight: FontWeight.w400,
+                          const SizedBox(height: 6),
+                          Text(
+                            item != null ? item.type : loc.startExploring,
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: theme.textSecondary,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 50,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: theme.isDark
-                            ? [const Color(0xFF111111), const Color(0xFF1E0A0A)]
-                            : [const Color(0xFF1A1A1A), const Color(0xFF2D0B0B)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                  Expanded(
+                    flex: 50,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: theme.isDark
+                              ? [const Color(0xFF111111), const Color(0xFF1E0A0A)]
+                              : [const Color(0xFF1A1A1A), const Color(0xFF2D0B0B)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(16),
+                          bottomRight: Radius.circular(16),
+                        ),
                       ),
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(18),
-                        bottomRight: Radius.circular(18),
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(12),
-                    child: Center(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: item != null
-                            ? Image.asset(
-                                item.imagePath,
-                                fit: BoxFit.contain,
-                                alignment: Alignment.center,
-                              )
-                            : Opacity(
-                                opacity: 0.3,
-                                child: Image.asset(
-                                  'assets/images/Beat 1.png',
+                      padding: const EdgeInsets.all(12),
+                      child: Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: item != null
+                              ? Image.asset(
+                                  item.imagePath,
                                   fit: BoxFit.contain,
                                   alignment: Alignment.center,
+                                )
+                              : Opacity(
+                                  opacity: 0.3,
+                                  child: Image.asset(
+                                    'assets/images/Beat 1.png',
+                                    fit: BoxFit.contain,
+                                    alignment: Alignment.center,
+                                  ),
                                 ),
-                              ),
+                        ),
                       ),
                     ),
                   ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDigitalWarrantySheet(
+    BuildContext context,
+    ProfileThemeColors theme,
+    GarageItem item,
+    ProfileLocalizations loc,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+            color: theme.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 20),
+                  decoration: BoxDecoration(
+                    color: theme.isDark ? const Color(0xFF444444) : Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      loc.isEn ? 'Digital Service & Warranty Book' : 'Buku Servis & Garansi Digital',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        color: theme.textPrimary,
+                        letterSpacing: -0.5,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    color: theme.textSecondary,
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: theme.isDark ? const Color(0xFF252525) : Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: theme.border),
+                ),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.asset(
+                        item.imagePath,
+                        width: 70,
+                        height: 56,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item.name,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                              color: theme.textPrimary,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            item.type,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: theme.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                loc.isEn ? 'Vehicle Specifications' : 'Informasi Kendaraan',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w800,
+                  color: theme.textPrimary,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              const SizedBox(height: 10),
+              _buildSpecRow(theme, loc.isEn ? 'Plate Number' : 'Nomor Polisi', 'BK 1234 AAB'),
+              _buildSpecRow(theme, loc.isEn ? 'Chassis Number' : 'Nomor Rangka', 'MH1JM811xKxxxxxxx'),
+              _buildSpecRow(theme, loc.isEn ? 'Engine Number' : 'Nomor Mesin', 'JM81E1xxxxxx'),
+              _buildSpecRow(
+                theme,
+                loc.isEn ? 'Warranty Period' : 'Masa Garansi',
+                loc.isEn ? 'Active (Until June 2029)' : 'Aktif (s.d Juni 2029)',
+                valueColor: Colors.green,
+              ),
+              const SizedBox(height: 24),
+              Text(
+                loc.isEn ? 'Periodic Service Coupon (KPB)' : 'Kupon Perawatan Berkala (KPB)',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w800,
+                  color: theme.textPrimary,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              const SizedBox(height: 16),
+              _buildKpbTimelineItem(
+                theme,
+                loc.isEn ? 'KPB 1 (1,000 km / 2 Months)' : 'KPB 1 (1.000 km / 2 Bulan)',
+                loc.isEn ? 'Completed on June 20, 2026' : 'Selesai pada 20 Juni 2026',
+                isCompleted: true,
+                isLast: false,
+              ),
+              _buildKpbTimelineItem(
+                theme,
+                loc.isEn ? 'KPB 2 (4,000 km / 4 Months)' : 'KPB 2 (4.000 km / 4 Bulan)',
+                loc.isEn ? 'Available (Recommended: Sept 2026)' : 'Tersedia (Saran: Sept 2026)',
+                isActive: true,
+                isLast: false,
+              ),
+              _buildKpbTimelineItem(
+                theme,
+                loc.isEn ? 'KPB 3 (8,000 km / 8 Months)' : 'KPB 3 (8.000 km / 8 Bulan)',
+                loc.isEn ? 'Not yet active' : 'Belum aktif',
+                isLast: true,
+              ),
+              const SizedBox(height: 28),
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    HondakuToastHelper.showInfo(
+                      context,
+                      loc.isEn ? 'Service booking feature is coming soon!' : 'Fitur booking servis segera hadir!',
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: theme.red,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.build_circle_outlined, color: Colors.white),
+                      const SizedBox(width: 8),
+                      Text(
+                        loc.isEn ? 'Book Service Now' : 'Booking Servis Sekarang',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildSpecRow(ProfileThemeColors theme, String label, String value, {Color? valueColor}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 13,
+              color: theme.textSecondary,
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: valueColor ?? theme.textPrimary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildKpbTimelineItem(
+    ProfileThemeColors theme,
+    String title,
+    String subtitle, {
+    bool isCompleted = false,
+    bool isActive = false,
+    bool isLast = false,
+  }) {
+    Color dotColor = Colors.grey.shade400;
+    Widget dotChild = const SizedBox();
+    if (isCompleted) {
+      dotColor = Colors.green;
+      dotChild = const Icon(Icons.check, size: 10, color: Colors.white);
+    } else if (isActive) {
+      dotColor = theme.red;
+      dotChild = Container(
+        width: 6,
+        height: 6,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+        ),
+      );
+    }
+
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Column(
+            children: [
+              Container(
+                width: 18,
+                height: 18,
+                decoration: BoxDecoration(
+                  color: dotColor,
+                  shape: BoxShape.circle,
+                ),
+                child: Center(child: dotChild),
+              ),
+              if (!isLast)
+                Expanded(
+                  child: Container(
+                    width: 2,
+                    color: isCompleted ? Colors.green.shade200 : Colors.grey.shade300,
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: theme.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: theme.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 14),
               ],
             ),
           ),
@@ -685,11 +1005,11 @@ class ProfilePage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
         color: theme.surface,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: theme.isDark ? 0.3 : 0.03),
-            blurRadius: 12,
+            color: Colors.black.withValues(alpha: theme.isDark ? 0.3 : 0.04),
+            blurRadius: 16,
             offset: const Offset(0, 6),
           ),
         ],
