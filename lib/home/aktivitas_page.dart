@@ -4,6 +4,7 @@ import '../domain/models/aktivitas_item.dart';
 import '../ui/features/home/view_models/aktivitas_view_model.dart';
 import 'catalog_page.dart';
 import '../booking/status_pesanan_page.dart';
+import 'user_store.dart';
 
 
 class AktivitasPage extends StatefulWidget {
@@ -110,11 +111,7 @@ class _AktivitasPageState extends State<AktivitasPage>
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
-            child: CircleAvatar(
-              radius: 20,
-              backgroundColor: const Color(0xFFE9E9E9),
-              backgroundImage: const AssetImage('assets/images/profile.png'),
-            ),
+            child: UserStore.buildReactiveAvatar(radius: 20, fontSize: 12),
           ),
         ],
         bottom: TabBar(
