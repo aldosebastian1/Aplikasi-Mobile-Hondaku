@@ -24,6 +24,7 @@ class _HondakuToastState extends State<HondakuToast> with SingleTickerProviderSt
   late AnimationController _controller;
   late Animation<Offset> _slideAnimation;
   late Animation<double> _fadeAnimation;
+  bool _isDismissed = false;
 
   @override
   void initState() {
@@ -57,12 +58,10 @@ class _HondakuToastState extends State<HondakuToast> with SingleTickerProviderSt
     // Trigger haptic feedback when toast mounts
     _triggerHaptic();
 
-    // Auto-dismiss after 2.2 seconds
-    Future.delayed(const Duration(milliseconds: 2200), () {
-      if (mounted) {
-        _controller.reverse().then((_) {
-          widget.onDismiss();
-        });
+    // Auto-dismiss after 2.5 seconds (slightly longer to allow user action)
+    Future.delayed(const Duration(milliseconds: 2500), () {
+      if (mounted && !_isDismissed) {
+        _dismiss();
       }
     });
   }
@@ -79,6 +78,16 @@ class _HondakuToastState extends State<HondakuToast> with SingleTickerProviderSt
         HapticFeedback.selectionClick();
         break;
     }
+  }
+
+  void _dismiss() {
+    if (_isDismissed) return;
+    setState(() {
+      _isDismissed = true;
+    });
+    _controller.reverse().then((_) {
+      widget.onDismiss();
+    });
   }
 
   @override
@@ -110,6 +119,8 @@ class _HondakuToastState extends State<HondakuToast> with SingleTickerProviderSt
     IconData iconData;
     Color accentColor;
     Color iconBgColor;
+    Color cardBgColor = Colors.white;
+    Color textColor = const Color(0xFF1A1A1A);
 
     switch (widget.type) {
       case HondakuToastType.success:
@@ -121,6 +132,8 @@ class _HondakuToastState extends State<HondakuToast> with SingleTickerProviderSt
         iconData = Icons.error_rounded;
         accentColor = const Color(0xFFC40000); // Honda Red
         iconBgColor = const Color(0xFFFFEBEE);
+        cardBgColor = const Color(0xFFFFF5F5); // Soft red background tint
+        textColor = const Color(0xFF7A0000); // Darker red text for readability
         break;
       case HondakuToastType.info:
         iconData = Icons.info_rounded;
@@ -130,20 +143,20 @@ class _HondakuToastState extends State<HondakuToast> with SingleTickerProviderSt
     }
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      margin: const EdgeInsets.symmetric(horizontal: 16), // Wider width margin (stretches better)
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14), // Enlarge padding dimensions
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardBgColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: accentColor.withOpacity(0.24),
+          color: accentColor.withOpacity(0.32), // More visible border
           width: 1.0,
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -166,15 +179,32 @@ class _HondakuToastState extends State<HondakuToast> with SingleTickerProviderSt
           Flexible(
             child: Text(
               widget.message,
-              style: const TextStyle(
-                color: Color(0xFF1A1A1A),
-                fontSize: 13.0,
+              style: TextStyle(
+                color: textColor,
+                fontSize: 13.5, // Enlarge font size slightly
                 fontWeight: FontWeight.w600,
                 decoration: TextDecoration.none,
                 fontFamily: 'Inter',
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(width: 14),
+          // Vertical divider to separate close button
+          Container(
+            width: 1.0,
+            height: 18,
+            color: accentColor.withOpacity(0.2),
+          ),
+          const SizedBox(width: 12),
+          // Close button
+          GestureDetector(
+            onTap: _dismiss,
+            child: Icon(
+              Icons.close_rounded,
+              color: accentColor.withOpacity(0.6),
+              size: 20,
             ),
           ),
         ],
