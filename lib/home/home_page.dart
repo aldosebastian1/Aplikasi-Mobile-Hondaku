@@ -13,7 +13,8 @@ import 'user_store.dart';
 
 class HalamanHome extends ConsumerStatefulWidget {
   final VoidCallback? onSeeAll;
-  const HalamanHome({super.key, this.onSeeAll});
+  final VoidCallback? onProfileClick;
+  const HalamanHome({super.key, this.onSeeAll, this.onProfileClick});
 
   @override
   ConsumerState<HalamanHome> createState() => _HalamanHomeState();
@@ -68,6 +69,13 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
     super.dispose();
   }
 
+  Future<void> _handleRefresh() async {
+    await Future.wait([
+      ref.refresh(homeMotorcyclesProvider.future),
+      ref.refresh(homeBannersProvider.future),
+    ]);
+  }
+
   List<Motorcycle> get _filteredMotors {
     final database =
         ref.watch(homeMotorcyclesProvider).value ?? motorcycleDatabase;
@@ -99,68 +107,76 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
           children: [
             _buildHeader(),
             Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                      child: _buildSearchBar(),
-                    ),
+              child: RefreshIndicator(
+                onRefresh: _handleRefresh,
+                color: _red,
+                backgroundColor: Colors.white,
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(
+                    parent: BouncingScrollPhysics(),
                   ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
-                      child: _buildBanner(),
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                        child: _buildSearchBar(),
+                      ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
-                      child: _buildKategori(),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+                        child: _buildBanner(),
+                      ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
-                      child: _buildRekomendasiHeader(),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+                        child: _buildKategori(),
+                      ),
                     ),
-                  ),
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    sliver: _filteredMotors.isEmpty
-                        ? SliverToBoxAdapter(
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 40),
-                              child: Center(
-                                child: Column(
-                                  children: [
-                                    Icon(
-                                      Icons.search_off_rounded,
-                                      size: 64,
-                                      color: Colors.grey.shade300,
-                                    ),
-                                    const SizedBox(height: 16),
-                                    Text(
-                                      'Motor "$_searchQuery" tidak ditemukan',
-                                      style: TextStyle(
-                                        color: Colors.grey.shade600,
-                                        fontSize: 15,
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
+                        child: _buildRekomendasiHeader(),
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      sliver: _filteredMotors.isEmpty
+                          ? SliverToBoxAdapter(
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 40),
+                                child: Center(
+                                  child: Column(
+                                    children: [
+                                      Icon(
+                                        Icons.search_off_rounded,
+                                        size: 64,
+                                        color: Colors.grey.shade300,
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(height: 16),
+                                      Text(
+                                        'Motor "$_searchQuery" tidak ditemukan',
+                                        style: TextStyle(
+                                          color: Colors.grey.shade600,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
+                            )
+                          : SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (_, i) => _buildMotorCard(_filteredMotors[i]),
+                                childCount: _filteredMotors.length,
+                              ),
                             ),
-                          )
-                        : SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (_, i) => _buildMotorCard(_filteredMotors[i]),
-                              childCount: _filteredMotors.length,
-                            ),
-                          ),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                ],
+                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                  ],
+                ),
               ),
             ),
           ],
@@ -218,7 +234,10 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
                 ),
               ),
               const Spacer(),
-              UserStore.buildReactiveAvatar(radius: 20, fontSize: 12),
+              GestureDetector(
+                onTap: widget.onProfileClick,
+                child: UserStore.buildReactiveAvatar(radius: 20, fontSize: 12),
+              ),
             ],
           ),
         ),
