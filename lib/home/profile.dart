@@ -8,6 +8,7 @@ import '../data/garage_data.dart';
 import '../booking/status_pesanan_page.dart';
 import '../auth/login_screen.dart';
 import 'user_store.dart';
+import '../ui/core/toast/hondaku_toast.dart';
 
 
 // ─────────────────────────────────────────────────────────────
@@ -847,11 +848,9 @@ class ProfilePage extends StatelessWidget {
                       avatarPath: 'assets/images/profile.png',
                       isCustomAvatar: false,
                     );
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(loc.isEn ? 'Changed to default avatar' : 'Avatar diubah ke default'),
-                        backgroundColor: Colors.green,
-                      ),
+                    HondakuToastHelper.showSuccess(
+                      context,
+                      loc.isEn ? 'Changed to default avatar' : 'Avatar diubah ke default',
                     );
                   },
                 ),
@@ -904,12 +903,7 @@ class ProfilePage extends StatelessWidget {
             isCustomAvatar: true,
             avatarBgColor: color,
           );
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Avatar warna $name diaktifkan!'),
-              backgroundColor: Colors.green,
-            ),
-          );
+          HondakuToastHelper.showSuccess(context, 'Avatar warna $name diaktifkan!');
         },
         child: CircleAvatar(
           radius: 26,
@@ -978,11 +972,9 @@ class _GalleryUploadDialogState extends State<GalleryUploadDialog> {
               isCustomAvatar: false,
             );
             Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(widget.loc.isEn ? 'Avatar uploaded successfully!' : 'Avatar berhasil diunggah!'),
-                backgroundColor: Colors.green,
-              ),
+            HondakuToastHelper.showSuccess(
+              context,
+              widget.loc.isEn ? 'Avatar uploaded successfully!' : 'Avatar berhasil diunggah!',
             );
           }
         });
@@ -1170,22 +1162,12 @@ class _InformasiPribadiPageState extends State<InformasiPribadiPage> {
       avatarBgColor: UserStore.profile.value.avatarBgColor,
     );
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(loc.profileUpdated),
-        backgroundColor: Colors.green,
-      ),
-    );
+    HondakuToastHelper.showSuccess(context, loc.profileUpdated);
     Navigator.pop(context);
   }
 
   void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-      ),
-    );
+    HondakuToastHelper.showError(context, message);
   }
 
   @override
@@ -1569,11 +1551,9 @@ class MetodePembayaranPage extends StatelessWidget {
                 onTap: () {
                   UserStore.setDefaultPayment(item.id);
                   Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(loc.isEn ? 'Primary payment method updated!' : 'Metode pembayaran utama diperbarui!'),
-                      backgroundColor: Colors.green,
-                    ),
+                  HondakuToastHelper.showSuccess(
+                    context,
+                    loc.isEn ? 'Primary payment method updated!' : 'Metode pembayaran utama diperbarui!',
                   );
                 },
               ),
@@ -1583,11 +1563,9 @@ class MetodePembayaranPage extends StatelessWidget {
                 onTap: () {
                   UserStore.removePaymentMethod(item.id);
                   Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(loc.isEn ? 'Payment method deleted!' : 'Metode pembayaran dihapus!'),
-                      backgroundColor: Colors.green,
-                    ),
+                  HondakuToastHelper.showSuccess(
+                    context,
+                    loc.isEn ? 'Payment method deleted!' : 'Metode pembayaran dihapus!',
                   );
                 },
               ),
@@ -1672,18 +1650,14 @@ class _AddPaymentMethodSheetState extends State<AddPaymentMethodSheet> {
 
     UserStore.addPaymentMethod(newItem);
     Navigator.pop(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(loc.isEn ? 'New payment method added!' : 'Metode pembayaran berhasil ditambahkan!'),
-        backgroundColor: Colors.green,
-      ),
+    HondakuToastHelper.showSuccess(
+      context,
+      loc.isEn ? 'New payment method added!' : 'Metode pembayaran berhasil ditambahkan!',
     );
   }
 
   void _showErr(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(msg), backgroundColor: Colors.red),
-    );
+    HondakuToastHelper.showError(context, msg);
   }
 
   @override
@@ -2397,11 +2371,9 @@ class _SupportTicketSheetState extends State<SupportTicketSheet> {
   void _submitTicket() {
     final desc = _descController.text.trim();
     if (desc.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(widget.loc.isEn ? 'Please describe your issue!' : 'Harap jelaskan kendala Anda!'),
-          backgroundColor: Colors.red,
-        ),
+      HondakuToastHelper.showError(
+        context,
+        widget.loc.isEn ? 'Please describe your issue!' : 'Harap jelaskan kendala Anda!',
       );
       return;
     }
@@ -2623,13 +2595,11 @@ class _PengaturanPageState extends State<PengaturanPage> {
                 value: appSettings.biometricEnabled,
                 onChanged: (v) {
                   UserStore.updateSettings(biometricEnabled: v);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(v
-                          ? (loc.isEn ? 'Biometric login enabled!' : 'Login biometrik diaktifkan!')
-                          : (loc.isEn ? 'Biometric login disabled!' : 'Login biometrik dinonaktifkan!')),
-                      backgroundColor: Colors.green,
-                    ),
+                  HondakuToastHelper.showSuccess(
+                    context,
+                    v
+                        ? (loc.isEn ? 'Biometric login enabled!' : 'Login biometrik diaktifkan!')
+                        : (loc.isEn ? 'Biometric login disabled!' : 'Login biometrik dinonaktifkan!'),
                   );
                 },
                 theme: theme,
