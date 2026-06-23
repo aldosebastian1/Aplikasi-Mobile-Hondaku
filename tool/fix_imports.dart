@@ -18,7 +18,7 @@ void main() {
     
     // Replace all import '...';
     content = content.replaceAllMapped(RegExp(r"import\s+'([^']+)\.dart';"), (match) {
-      final oldImport = match.group(1)! + '.dart';
+      final oldImport = '${match.group(1)!}.dart';
       if (oldImport.startsWith('package:')) return match.group(0)!;
       
       final importedName = oldImport.split('/').last;
