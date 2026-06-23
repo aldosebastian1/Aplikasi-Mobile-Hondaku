@@ -534,8 +534,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: const Color(0xFFFFF1F1),
+            color: Colors.white,
             shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFFE0E0E0), width: 1.0),
           ),
           child: Icon(icon, size: 20, color: const Color(0xFFC01F2D)),
         ),
