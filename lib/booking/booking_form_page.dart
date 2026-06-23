@@ -361,8 +361,9 @@ class _BookingFormPageState extends State<BookingFormPage> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFFF1F1),
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: const Color(0xFFE0E0E0), width: 1.0),
                       ),
                       child: Text(
                         widget.motor.price,
