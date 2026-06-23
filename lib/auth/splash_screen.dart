@@ -63,37 +63,45 @@ class _SplashScreenState extends State<SplashScreen> {
           opacity: _isVisible ? 1.0 : 0.0,
           duration: const Duration(milliseconds: 1000),
           curve: Curves.easeIn,
-          child: Stack(
-            children: [
-              // Center Logo
-              Center(
-                child: Text(
-                  'HONDAKU',
-                  style: TextStyle(
-                    fontSize: 48,
-                    fontWeight: FontWeight.w900,
-                    color: const Color(0xFFCC0000), // Honda Red
-                    letterSpacing: -1.5,
-                  ),
-                ),
-              ),
-              // Bottom Text
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 48.0),
-                  child: Text(
-                    'THE POWER OF DREAMS',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey.shade600,
-                      letterSpacing: 2.0,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final double logoFontSize = constraints.maxHeight < 450 ? 36.0 : 48.0;
+              final double bottomPadding = constraints.maxHeight < 450 ? 24.0 : 48.0;
+              final double bottomFontSize = constraints.maxHeight < 450 ? 12.0 : 14.0;
+
+              return Stack(
+                children: [
+                  // Center Logo
+                  Center(
+                    child: Text(
+                      'HONDAKU',
+                      style: TextStyle(
+                        fontSize: logoFontSize,
+                        fontWeight: FontWeight.w900,
+                        color: const Color(0xFFC40000), // Honda Red
+                        letterSpacing: -1.5,
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ],
+                  // Bottom Text
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: bottomPadding),
+                      child: Text(
+                        'THE POWER OF DREAMS',
+                        style: TextStyle(
+                          fontSize: bottomFontSize,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey.shade600,
+                          letterSpacing: 2.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
