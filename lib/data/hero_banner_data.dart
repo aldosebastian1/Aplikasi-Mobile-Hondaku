@@ -1,18 +1,7 @@
-class HeroBanner {
-  final String image;
-  final String tag;
-  final String title1;
-  final String title2;
-  final String subtitle;
+import '../domain/models/hero_banner.dart';
+export '../domain/models/hero_banner.dart';
 
-  const HeroBanner({
-    required this.image,
-    required this.tag,
-    required this.title1,
-    required this.title2,
-    required this.subtitle,
-  });
-}
+
 
 // Simulasi database khusus untuk Hero Banner agar mudah ditambahkan
 final List<HeroBanner> heroBannersDatabase = [
