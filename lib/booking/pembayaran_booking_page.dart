@@ -1,13 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/motorcycle_data.dart';
 import '../home/aktivitas_store.dart';
+import '../ui/features/home/view_models/aktivitas_view_model.dart';
 import 'booking_berhasil_page.dart';
 import '../data/bank_data.dart';
 
-class PembayaranBookingPage extends StatefulWidget {
+
+class PembayaranBookingPage extends ConsumerStatefulWidget {
   final Motorcycle motor;
   final BankOption initialBank;
   final bool isFullPayment;
@@ -20,10 +22,10 @@ class PembayaranBookingPage extends StatefulWidget {
   });
 
   @override
-  State<PembayaranBookingPage> createState() => _PembayaranBookingPageState();
+  ConsumerState<PembayaranBookingPage> createState() => _PembayaranBookingPageState();
 }
 
-class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
+class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
   late BankOption _currentBank;
   // ── countdown: 24 jam ──
   static const int _totalSeconds = 24 * 3600 - 1; // 23:59:59
@@ -132,7 +134,28 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
     actions: [
       IconButton(
         icon: const Icon(Icons.info_outline, color: Colors.black, size: 22),
-        onPressed: () {},
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Bantuan Pembayaran'),
+              content: const Text(
+                'Langkah pembayaran via Virtual Account:\n\n'
+                '1. Salin Nomor Virtual Account yang tertera.\n'
+                '2. Masuk ke aplikasi Mobile Banking atau ATM bank pilihan Anda.\n'
+                '3. Pilih menu Transfer > Virtual Account.\n'
+                '4. Masukkan nomor Virtual Account dan pastikan nominal tagihan sesuai.\n\n'
+                'Pembayaran akan terverifikasi secara otomatis dalam waktu maksimal 10 menit setelah transfer berhasil.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Tutup', style: TextStyle(color: Color(0xFFD32F2F))),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     ],
   );
@@ -248,7 +271,7 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
                 SizedBox(
                   width: 52,
                   height: 36,
-                  child: SvgPicture.asset(
+                  child: Image.asset(
                     _currentBank.logoPath,
                     fit: BoxFit.contain,
                   ),
@@ -370,7 +393,7 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
                       SizedBox(
                         width: 52,
                         height: 36,
-                        child: SvgPicture.asset(
+                        child: Image.asset(
                           bank.logoPath,
                           fit: BoxFit.contain,
                         ),
@@ -489,18 +512,24 @@ class _PembayaranBookingPageState extends State<PembayaranBookingPage> {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  AktivitasStore.upsertCashCompleted(
-                    id: '#HND-M6-8821',
+                  final now = DateTime.now();
+                  final orderId = 'HND-${now.year}${now.month.toString().padLeft(2, '0')}${now.day.toString().padLeft(2, '0')}-${now.millisecondsSinceEpoch.toString().substring(7)}';
+
+                  ref.read(aktivitasViewModelProvider.notifier).submitCashTransaction(
+                    id: orderId,
                     namaMotor: widget.motor.name,
                     tipeUnit: widget.motor.subtitle,
+                    dealer: 'Honda Medan Center',
+                    imagePath: widget.motor.imageAsset,
                   );
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (_) => BookingBerhasilPage(
-                        orderId: '#HND-M6-8821',
+                        orderId: orderId,
                         tipeUnit: widget.motor.subtitle,
                         dealer: 'Honda Medan Center',
+                        namaMotor: widget.motor.name,
                       ),
                     ),
                   );
