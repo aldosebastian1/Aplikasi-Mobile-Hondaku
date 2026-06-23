@@ -5,6 +5,7 @@ import '../domain/models/motorcycle.dart';
 import '../ui/features/home/view_models/home_view_model.dart';
 import 'product_detail_screen.dart';
 import '../booking/checkout_payment_method_page.dart';
+import 'user_store.dart';
 
 
 class HalamanKatalog extends ConsumerStatefulWidget {
@@ -258,11 +259,7 @@ class _HalamanKatalogState extends ConsumerState<HalamanKatalog> {
                 ),
               ),
               const Spacer(),
-              CircleAvatar(
-                radius: 20,
-                backgroundColor: const Color(0xFFE9E9E9),
-                backgroundImage: const AssetImage('assets/images/profile.png'),
-              ),
+              UserStore.buildReactiveAvatar(radius: 20, fontSize: 12),
             ],
           ),
         ),
