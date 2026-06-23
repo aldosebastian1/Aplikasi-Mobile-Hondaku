@@ -347,8 +347,9 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFF1F1),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: const Color(0xFFE0E0E0), width: 1.0),
                     ),
                     child: const Icon(
                       Icons.account_balance,
