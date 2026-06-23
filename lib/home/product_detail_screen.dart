@@ -25,7 +25,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     _selectedBottomIndex = widget.parentIndex;
   }
 
-  static const _red = Color(0xFFC40000);
   static const _surface = Colors.white;
 
   @override
@@ -160,7 +159,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               borderRadius: BorderRadius.circular(18),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.06),
+                  color: Colors.black.withValues(alpha: 0.06),
                   blurRadius: 18,
                   offset: const Offset(0, 8),
                 ),
@@ -177,7 +176,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.24),
+                      color: Colors.black.withValues(alpha: 0.24),
                       blurRadius: 22,
                       offset: const Offset(0, 10),
                     ),
@@ -213,7 +212,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           borderRadius: BorderRadius.circular(999),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: Colors.black.withValues(alpha: 0.04),
               blurRadius: 12,
               offset: const Offset(0, 6),
             ),
@@ -244,7 +243,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
+              color: Colors.black.withValues(alpha: 0.08),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -298,7 +297,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               borderRadius: BorderRadius.circular(14),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.03),
+                  color: Colors.black.withValues(alpha: 0.03),
                   blurRadius: 12,
                   offset: const Offset(0, 6),
                 ),
@@ -427,10 +426,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             (feature) => Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: _featureItem(
-                feature.icon,
+                feature.icon ?? Icons.star_border,
                 feature.title,
                 feature.description,
               ),
+
             ),
           ),
         ],
