@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/motorcycle_data.dart';
+import '../domain/models/motorcycle.dart';
+import '../ui/features/home/view_models/home_view_model.dart';
 import 'product_detail_screen.dart';
 import '../booking/checkout_payment_method_page.dart';
 
-class HalamanKatalog extends StatefulWidget {
+
+class HalamanKatalog extends ConsumerStatefulWidget {
   const HalamanKatalog({super.key});
 
   @override
-  State<HalamanKatalog> createState() => _HalamanKatalogState();
+  ConsumerState<HalamanKatalog> createState() => _HalamanKatalogState();
 }
 
-class _HalamanKatalogState extends State<HalamanKatalog> {
+class _HalamanKatalogState extends ConsumerState<HalamanKatalog> {
   static const _red = Color(0xFFC40000);
   static const _surface = Colors.white;
 
@@ -24,7 +28,8 @@ class _HalamanKatalogState extends State<HalamanKatalog> {
   }
 
   List<Motorcycle> get _filteredMotors {
-    Iterable<Motorcycle> list = motorcycleDatabase;
+    final database = ref.watch(homeMotorcyclesProvider).value ?? motorcycleDatabase;
+    Iterable<Motorcycle> list = database;
 
     // 1. Filter by Category
     if (_activeCategory != 'Semua Kategori') {
@@ -114,7 +119,7 @@ class _HalamanKatalogState extends State<HalamanKatalog> {
                             ),
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? _red.withOpacity(0.05)
+                                  ? _red.withValues(alpha: 0.05)
                                   : Colors.transparent,
                               borderRadius: BorderRadius.circular(14),
                               border: Border.all(
