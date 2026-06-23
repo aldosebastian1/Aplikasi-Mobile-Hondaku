@@ -178,12 +178,16 @@ class BookingBerhasilPage extends StatelessWidget {
                       row['label'] as String,
                       style: const TextStyle(fontSize: 13, color: Colors.grey),
                     ),
-                    Text(
-                      row['value'] as String,
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: row['valueColor'] as Color,
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Text(
+                        row['value'] as String,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: row['valueColor'] as Color,
+                        ),
+                        textAlign: TextAlign.end,
                       ),
                     ),
                   ],
