@@ -47,8 +47,8 @@ class _HondakuToastState extends State<HondakuToast> with SingleTickerProviderSt
     ).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Curves.easeOutBack,
-        reverseCurve: Curves.easeInBack,
+        curve: Curves.easeOutCubic,
+        reverseCurve: Curves.easeInCubic,
       ),
     );
 
