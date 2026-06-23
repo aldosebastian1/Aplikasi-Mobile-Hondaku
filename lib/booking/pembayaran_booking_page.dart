@@ -7,6 +7,7 @@ import '../home/aktivitas_store.dart';
 import '../ui/features/home/view_models/aktivitas_view_model.dart';
 import 'booking_berhasil_page.dart';
 import '../data/bank_data.dart';
+import '../ui/core/toast/hondaku_toast.dart';
 
 
 class PembayaranBookingPage extends ConsumerStatefulWidget {
@@ -306,33 +307,7 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
                               Clipboard.setData(
                                 const ClipboardData(text: '88010812345678900'),
                               );
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Row(
-                                    children: const [
-                                      Icon(Icons.check_circle_outline, color: Color(0xFFD32F2F), size: 18),
-                                      SizedBox(width: 10),
-                                      Text(
-                                        'Nomor VA berhasil disalin',
-                                        style: TextStyle(
-                                          color: Color(0xFFD32F2F),
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 13,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  behavior: SnackBarBehavior.floating,
-                                  backgroundColor: Colors.white,
-                                  duration: const Duration(seconds: 2),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    side: const BorderSide(color: Color(0xFFEEEEEE), width: 1),
-                                  ),
-                                  margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                                  elevation: 4,
-                                ),
-                              );
+                              HondakuToastHelper.showSuccess(context, 'Nomor VA berhasil disalin');
                             },
                             child: const Icon(
                               Icons.copy_rounded,
