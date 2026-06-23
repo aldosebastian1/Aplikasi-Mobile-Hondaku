@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../data/motorcycle_data.dart';
 import 'pembayaran_booking_page.dart';
 import '../data/bank_data.dart';
@@ -111,7 +110,26 @@ class _RingkasanPembayaranPageState extends State<RingkasanPembayaranPage> {
       actions: [
         IconButton(
           icon: const Icon(Icons.info_outline, color: Colors.black, size: 22),
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Ringkasan Pembayaran'),
+                content: const Text(
+                  'Periksa kembali rincian pesanan Anda:\n\n'
+                  '• Unit Motor: Pastikan tipe dan warna sesuai keinginan.\n'
+                  '• Pembayaran: Anda dapat memilih transfer ke Virtual Account bank rekanan resmi kami.\n'
+                  '• Booking Fee: Bersifat aman dan dapat dikembalikan (refundable) sesuai syarat & ketentuan jika terjadi pembatalan.',
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Tutup', style: TextStyle(color: Color(0xFFD32F2F))),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ],
     );
@@ -168,7 +186,7 @@ class _RingkasanPembayaranPageState extends State<RingkasanPembayaranPage> {
               child: Image.asset(
                 widget.motor.imageAsset,
                 fit: BoxFit.contain,
-                errorBuilder: (_, __, ___) => const Icon(
+                errorBuilder: (_, _, _) => const Icon(
                   Icons.two_wheeler,
                   color: Color(0xFFD32F2F),
                   size: 36,
@@ -342,7 +360,7 @@ class _RingkasanPembayaranPageState extends State<RingkasanPembayaranPage> {
             SizedBox(
               width: 52,
               height: 36,
-              child: SvgPicture.asset(
+              child: Image.asset(
                 bank.logoPath,
                 fit: BoxFit.contain,
               ),
