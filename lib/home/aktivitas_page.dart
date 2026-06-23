@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../domain/models/aktivitas_item.dart';
 import '../ui/features/home/view_models/aktivitas_view_model.dart';
-import 'catalog_page.dart';
 import '../booking/status_pesanan_page.dart';
 import 'user_store.dart';
+import '../core/hondaku_app.dart';
 
 
 class AktivitasPage extends StatefulWidget {
-  const AktivitasPage({super.key});
+  final VoidCallback? onProfileClick;
+  final VoidCallback? onStartShopping;
+  const AktivitasPage({super.key, this.onProfileClick, this.onStartShopping});
 
   @override
   State<AktivitasPage> createState() => _AktivitasPageState();
@@ -92,75 +94,151 @@ class _AktivitasPageState extends State<AktivitasPage>
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.5,
-        title: const Text(
-          'Aktivitas Transaksi',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w600,
-            fontSize: 16,
-          ),
-        ),
-        centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: UserStore.buildReactiveAvatar(radius: 20, fontSize: 12),
-          ),
-        ],
-        bottom: TabBar(
-          controller: _tabController,
-          labelColor: _red,
-          unselectedLabelColor: Colors.grey,
-          indicatorColor: _red,
-          indicatorWeight: 2,
-          labelStyle: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-          ),
-          tabs: const [
-            Tab(text: 'Semua'),
-            Tab(text: 'Cash'),
-            Tab(text: 'Kredit'),
-          ],
-        ),
+  Widget _buildHeader() {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        border: Border(bottom: BorderSide(color: Color(0xFFE9E9E9))),
       ),
-      body: Consumer(
-        builder: (context, ref, _) {
-          final allItems = ref.watch(aktivitasViewModelProvider);
-          final cash = allItems
-              .where((e) => e.tipe == TipeTransaksi.cash)
-              .toList(growable: false);
-          final kredit = allItems
-              .where((e) => e.tipe == TipeTransaksi.kredit)
-              .toList(growable: false);
-
-          return TabBarView(
-            controller: _tabController,
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
+          child: Row(
             children: [
-              _buildList(allItems),
-              _buildList(cash),
-              _buildList(kredit),
+              const Text(
+                'Hondaku',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  color: _red,
+                  letterSpacing: -0.9,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Icon(Icons.location_on, size: 12, color: _red),
+                    SizedBox(width: 4),
+                    Text(
+                      'OTR MEDAN',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF222222),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Spacer(),
+              GestureDetector(
+                onTap: widget.onProfileClick,
+                child: UserStore.buildReactiveAvatar(radius: 20, fontSize: 12),
+              ),
             ],
-          );
-        },
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildList(List<AktivitasItem> list) {
-    if (list.isEmpty) return _buildEmptyState();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF5F5F5),
+      body: Column(
+        children: [
+          _buildHeader(),
+          Container(
+            color: Colors.white,
+            child: TabBar(
+              controller: _tabController,
+              labelColor: _red,
+              unselectedLabelColor: Colors.grey.shade500,
+              indicatorColor: _red,
+              indicatorWeight: 3,
+              dividerColor: Colors.transparent,
+              indicatorSize: TabBarIndicatorSize.label,
+              labelStyle: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 0.2,
+              ),
+              unselectedLabelStyle: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey.shade500,
+              ),
+              tabs: const [
+                Tab(text: 'Semua'),
+                Tab(text: 'Cash'),
+                Tab(text: 'Kredit'),
+              ],
+            ),
+          ),
+          const Divider(height: 1, thickness: 0.5, color: Color(0xFFE9E9E9)),
+          Expanded(
+            child: Consumer(
+              builder: (context, ref, _) {
+                final allItems = ref.watch(aktivitasViewModelProvider);
+                final cash = allItems
+                    .where((e) => e.tipe == TipeTransaksi.cash)
+                    .toList(growable: false);
+                final kredit = allItems
+                    .where((e) => e.tipe == TipeTransaksi.kredit)
+                    .toList(growable: false);
 
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: list.length,
-      itemBuilder: (_, i) => _buildCard(list[i]),
+                return TabBarView(
+                  controller: _tabController,
+                  children: [
+                    _buildList(ref, allItems),
+                    _buildList(ref, cash),
+                    _buildList(ref, kredit),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildList(WidgetRef ref, List<AktivitasItem> list) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Future.delayed(const Duration(milliseconds: 800));
+        final _ = ref.refresh(aktivitasViewModelProvider);
+      },
+      color: _red,
+      backgroundColor: Colors.white,
+      child: list.isEmpty
+          ? SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(
+                parent: BouncingScrollPhysics(),
+              ),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height - 250,
+                child: _buildEmptyState(),
+              ),
+            )
+          : ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(
+                parent: BouncingScrollPhysics(),
+              ),
+              padding: const EdgeInsets.all(16),
+              itemCount: list.length,
+              itemBuilder: (_, i) => _buildCard(list[i]),
+            ),
     );
   }
 
@@ -198,10 +276,15 @@ class _AktivitasPageState extends State<AktivitasPage>
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const HalamanKatalog()),
-                  (route) => route.isFirst,
-                );
+                if (widget.onStartShopping != null) {
+                  widget.onStartShopping!();
+                } else {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (_) => const HondakuApp(initialIndex: 1),
+                    ),
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: _red,
@@ -233,15 +316,15 @@ class _AktivitasPageState extends State<AktivitasPage>
     final isKredit = item.tipe == TipeTransaksi.kredit;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 14),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
