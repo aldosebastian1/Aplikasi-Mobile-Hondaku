@@ -9,7 +9,8 @@ import 'user_store.dart';
 
 
 class HalamanKatalog extends ConsumerStatefulWidget {
-  const HalamanKatalog({super.key});
+  final VoidCallback? onProfileClick;
+  const HalamanKatalog({super.key, this.onProfileClick});
 
   @override
   ConsumerState<HalamanKatalog> createState() => _HalamanKatalogState();
@@ -22,6 +23,10 @@ class _HalamanKatalogState extends ConsumerState<HalamanKatalog> {
   int _selectedFilter = 0;
   String _activeCategory = 'Semua Kategori';
   final List<String> _filters = ['Semua', 'Harga Termurah', 'Harga Tertinggi'];
+
+  Future<void> _handleRefresh() async {
+    final _ = await ref.refresh(homeMotorcyclesProvider.future);
+  }
 
   double _parsePrice(String priceString) {
     final cleanString = priceString.replaceAll(RegExp(r'[^0-9]'), '');
@@ -174,37 +179,45 @@ class _HalamanKatalogState extends ConsumerState<HalamanKatalog> {
           children: [
             _buildHeader(),
             Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
-                      child: _buildHeroHeader(),
-                    ),
+              child: RefreshIndicator(
+                onRefresh: _handleRefresh,
+                color: _red,
+                backgroundColor: Colors.white,
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(
+                    parent: BouncingScrollPhysics(),
                   ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
-                      child: _buildFilterChips(),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 28, 20, 12),
-                      child: _buildRecommendationsHeader(),
-                    ),
-                  ),
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (_, i) => _buildMotorCard(_filteredMotors[i]),
-                        childCount: _filteredMotors.length,
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+                        child: _buildHeroHeader(),
                       ),
                     ),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                ],
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+                        child: _buildFilterChips(),
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 28, 20, 12),
+                        child: _buildRecommendationsHeader(),
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      sliver: SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (_, i) => _buildMotorCard(_filteredMotors[i]),
+                          childCount: _filteredMotors.length,
+                        ),
+                      ),
+                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                  ],
+                ),
               ),
             ),
           ],
@@ -259,7 +272,10 @@ class _HalamanKatalogState extends ConsumerState<HalamanKatalog> {
                 ),
               ),
               const Spacer(),
-              UserStore.buildReactiveAvatar(radius: 20, fontSize: 12),
+              GestureDetector(
+                onTap: widget.onProfileClick,
+                child: UserStore.buildReactiveAvatar(radius: 20, fontSize: 12),
+              ),
             ],
           ),
         ),
