@@ -46,3 +46,21 @@ app.*.map.json
 
 # Local documentation reference
 /APP_FLOW.md
+
+panduan_setup_proyek_baru.md
+
+# AI Agent & Skills
+.agents/
+skills-lock.json
+
+# Editor & Tool Lokal
+.vscode/
+.sixth/
+
+# Auto-generated localization files (synthetic-package: false)
+lib/l10n/app_localizations*.dart
+
+# Keystores & credentials
+*.jks
+*.keystore
+/android/local.properties
