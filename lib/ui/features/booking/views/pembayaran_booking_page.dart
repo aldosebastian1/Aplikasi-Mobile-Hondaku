@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../data/motorcycle_data.dart';
+import '../../../../domain/models/motorcycle.dart';
+import '../../../../domain/models/bank_option.dart';
+import '../../../../data/providers.dart';
 import '../../aktivitas/view_models/aktivitas_view_model.dart';
-import '../../../../data/bank_data.dart';
 import '../../../core/toast/hondaku_toast.dart';
 
 
@@ -432,78 +433,94 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
 
   // ── Bank list (Pilih Bank Lain) ──────────────────────────
   Widget _buildBankList() {
-    final List<BankOption> banks = bankOptions;
+    final banksAsync = ref.watch(bankOptionsProvider);
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE8E8E8), width: 1),
-      ),
-      child: Column(
-        children: List.generate(banks.length, (i) {
-          final isLast = i == banks.length - 1;
-          final bank = banks[i];
-          final isSelected = _currentBank.name == bank.name;
+    return banksAsync.when(
+      data: (banks) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: const Color(0xFFE8E8E8), width: 1),
+          ),
+          child: Column(
+            children: List.generate(banks.length, (i) {
+              final isLast = i == banks.length - 1;
+              final bank = banks[i];
+              final isSelected = _currentBank.name == bank.name;
 
-          return Column(
-            children: [
-              InkWell(
-                onTap: () {
-                  if (_currentBank.name != bank.name) {
-                    _showChangeBankConfirmation(context, bank);
-                  }
-                },
-                borderRadius: BorderRadius.only(
-                  topLeft: i == 0 ? const Radius.circular(12) : Radius.zero,
-                  topRight: i == 0 ? const Radius.circular(12) : Radius.zero,
-                  bottomLeft: isLast ? const Radius.circular(12) : Radius.zero,
-                  bottomRight: isLast ? const Radius.circular(12) : Radius.zero,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 12,
-                  ),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 52,
-                        height: 36,
-                        child: Image.asset(
-                          bank.logoPath,
-                          fit: BoxFit.contain,
-                        ),
+              return Column(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      if (_currentBank.name != bank.name) {
+                        _showChangeBankConfirmation(context, bank);
+                      }
+                    },
+                    borderRadius: BorderRadius.only(
+                      topLeft: i == 0 ? const Radius.circular(12) : Radius.zero,
+                      topRight: i == 0 ? const Radius.circular(12) : Radius.zero,
+                      bottomLeft: isLast ? const Radius.circular(12) : Radius.zero,
+                      bottomRight: isLast ? const Radius.circular(12) : Radius.zero,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 12,
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          bank.name,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                            color: isSelected ? const Color(0xFFD32F2F) : Colors.black,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 52,
+                            height: 36,
+                            child: Image.asset(
+                              bank.logoPath,
+                              fit: BoxFit.contain,
+                            ),
                           ),
-                        ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              bank.name,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                                color: isSelected ? const Color(0xFFD32F2F) : Colors.black,
+                              ),
+                            ),
+                          ),
+                          if (isSelected)
+                            const Icon(Icons.check_circle,
+                                color: Color(0xFFD32F2F), size: 20),
+                        ],
                       ),
-                      if (isSelected)
-                        const Icon(Icons.check_circle,
-                            color: Color(0xFFD32F2F), size: 20),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-              if (!isLast)
-                const Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: Color(0xFFF0F0F0),
-                  indent: 16,
-                  endIndent: 16,
-                ),
-            ],
-          );
-        }),
+                  if (!isLast)
+                    const Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: Color(0xFFF0F0F0),
+                      indent: 16,
+                      endIndent: 16,
+                    ),
+                ],
+              );
+            }),
+          ),
+        );
+      },
+      loading: () => const Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 24),
+          child: CircularProgressIndicator(),
+        ),
+      ),
+      error: (err, stack) => Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24),
+          child: Text('Gagal memuat bank: $err'),
+        ),
       ),
     );
   }
