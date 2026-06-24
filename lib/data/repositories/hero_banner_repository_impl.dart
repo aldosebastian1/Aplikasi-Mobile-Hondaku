@@ -1,4 +1,3 @@
-import '../../domain/models/hero_banner.dart';
 import '../../domain/repositories/hero_banner_repository.dart';
 import '../hero_banner_data.dart';
 
