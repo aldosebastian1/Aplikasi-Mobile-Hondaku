@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../data/motorcycle_data.dart';
-import '../../../../data/bank_data.dart';
+import '../../../../domain/models/motorcycle.dart';
+import '../../../../domain/models/bank_option.dart';
+import '../../../../data/providers.dart';
 
 // ─────────────────────────────────────────────────────────────
 // PAGE
 // ─────────────────────────────────────────────────────────────
-class RingkasanPembayaranPage extends StatefulWidget {
+class RingkasanPembayaranPage extends ConsumerStatefulWidget {
   final Motorcycle motor;
   final bool isFullPayment;
 
@@ -17,19 +19,15 @@ class RingkasanPembayaranPage extends StatefulWidget {
   });
 
   @override
-  State<RingkasanPembayaranPage> createState() =>
+  ConsumerState<RingkasanPembayaranPage> createState() =>
       _RingkasanPembayaranPageState();
 }
 
-class _RingkasanPembayaranPageState extends State<RingkasanPembayaranPage> {
+class _RingkasanPembayaranPageState extends ConsumerState<RingkasanPembayaranPage> {
   int _selectedBank = 0; // BCA selected by default
 
-  late final List<BankOption> _banks;
-
-  @override
-  void initState() {
-    super.initState();
-    _banks = bankOptions;
+  List<BankOption> get _banks {
+    return ref.watch(bankOptionsProvider).value ?? const [];
   }
 
   // ───── BUILD ─────────────────────────────────────────────
