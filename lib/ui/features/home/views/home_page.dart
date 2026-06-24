@@ -2,10 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../data/motorcycle_data.dart';
+import '../../../../domain/models/motorcycle.dart';
 import '../view_models/home_view_model.dart';
-import '../../../../data/hero_banner_data.dart';
-import '../../profile/stores/user_store.dart';
+import '../../../core/widgets/hondaku_avatar.dart';
 import '../../../core/theme.dart';
 import '../../../core/widgets/motorcycle_card_widget.dart';
 import '../widgets/hero_banner_widget.dart';
@@ -43,7 +42,8 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
       if (_bannerController.hasClients) {
         int nextPage = _currentBanner + 1;
         final banners =
-            ref.read(homeBannersProvider).value ?? heroBannersDatabase;
+            ref.read(homeBannersProvider).value ?? const [];
+        if (banners.isEmpty) return;
         if (nextPage >= banners.length) {
           nextPage = 0;
         }
@@ -73,7 +73,7 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
 
   List<Motorcycle> get _filteredMotors {
     final database =
-        ref.watch(homeMotorcyclesProvider).value ?? motorcycleDatabase;
+        ref.watch(homeMotorcyclesProvider).value ?? const [];
     List<Motorcycle> motors = database;
 
     // Filter by category (if selected)
@@ -267,7 +267,13 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
 
 
   Widget _buildBanner() {
-    final banners = ref.watch(homeBannersProvider).value ?? heroBannersDatabase;
+    final banners = ref.watch(homeBannersProvider).value ?? const [];
+    if (banners.isEmpty) {
+      return const SizedBox(
+        height: 320,
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
     return Column(
       children: [
         SizedBox(
