@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -149,12 +148,12 @@ class _HondakuToastState extends State<HondakuToast> with SingleTickerProviderSt
         color: cardBgColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: accentColor.withOpacity(0.32), // More visible border
+          color: accentColor.withValues(alpha: 0.32), // More visible border
           width: 1.0,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 18,
             offset: const Offset(0, 8),
           ),
@@ -195,7 +194,7 @@ class _HondakuToastState extends State<HondakuToast> with SingleTickerProviderSt
           Container(
             width: 1.0,
             height: 18,
-            color: accentColor.withOpacity(0.2),
+            color: accentColor.withValues(alpha: 0.2),
           ),
           const SizedBox(width: 12),
           // Close button
@@ -203,7 +202,7 @@ class _HondakuToastState extends State<HondakuToast> with SingleTickerProviderSt
             onTap: _dismiss,
             child: Icon(
               Icons.close_rounded,
-              color: accentColor.withOpacity(0.6),
+              color: accentColor.withValues(alpha: 0.6),
               size: 20,
             ),
           ),
