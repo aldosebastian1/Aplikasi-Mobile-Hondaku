@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../data/motorcycle_data.dart';
+import '../../../../domain/models/motorcycle.dart';
 import '../../home/view_models/home_view_model.dart';
-import '../../profile/stores/user_store.dart';
+import '../../../core/widgets/hondaku_avatar.dart';
 import '../../../core/theme.dart';
 import '../../../core/widgets/motorcycle_card_widget.dart';
 import 'package:hondaku/l10n/app_localizations.dart';
 
-class HalamanKatalog extends ConsumerStatefulWidget {
+class CatalogPage extends ConsumerStatefulWidget {
   final VoidCallback? onProfileClick;
-  const HalamanKatalog({super.key, this.onProfileClick});
+  const CatalogPage({super.key, this.onProfileClick});
 
   @override
-  ConsumerState<HalamanKatalog> createState() => _HalamanKatalogState();
+  ConsumerState<CatalogPage> createState() => _CatalogPageState();
 }
 
-class _HalamanKatalogState extends ConsumerState<HalamanKatalog> {
+class _CatalogPageState extends ConsumerState<CatalogPage> {
   static const _red = HondakuTheme.red;
   static const _surface = Colors.white;
 
@@ -32,7 +32,7 @@ class _HalamanKatalogState extends ConsumerState<HalamanKatalog> {
   }
 
   List<Motorcycle> get _filteredMotors {
-    final database = ref.watch(homeMotorcyclesProvider).value ?? motorcycleDatabase;
+    final database = ref.watch(homeMotorcyclesProvider).value ?? const [];
     Iterable<Motorcycle> list = database;
 
     // 1. Filter by Category
