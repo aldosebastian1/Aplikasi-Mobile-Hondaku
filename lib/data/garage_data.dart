@@ -5,7 +5,7 @@ export '../domain/models/garage_item.dart';
 
 class GarageStore {
   // Simulasi data kendaraan yang sudah dimiliki (terpisah dari data transaksi/aktivitas)
-  static final GarageItem myVehicle = GarageItem(
+  static const GarageItem myVehicle = GarageItem(
     id: 'GRG-001',
     name: 'Beat Deluxe',
     type: 'Matte Blue',
