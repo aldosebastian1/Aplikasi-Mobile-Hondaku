@@ -67,6 +67,60 @@ class _Edge {
   String get key => '$from|$to|$via|$filePath|$line';
 }
 
+Map<String, String> _buildPathToWidgetMap() {
+  final map = <String, String>{
+    '/': 'SplashScreen',
+    '/onboarding': 'OnboardingScreen',
+    '/login': 'LoginScreen',
+    '/register': 'RegisterScreen',
+    '/home': 'HalamanHome',
+    '/catalog': 'CatalogPage',
+    '/aktivitas': 'AktivitasPage',
+    '/profile': 'ProfilePage',
+    '/profile/personal-info': 'InformasiPribadiPage',
+    '/profile/payment-methods': 'MetodePembayaranPage',
+    '/profile/help': 'BantuanDukunganPage',
+    '/profile/settings': 'PengaturanPage',
+    '/product-detail': 'ProductDetailScreen',
+    '/booking-form': 'BookingFormPage',
+    '/checkout-payment': 'CheckoutPaymentMethodPage',
+    '/ringkasan-pembayaran': 'RingkasanPembayaranPage',
+    '/pembayaran-booking': 'PembayaranBookingPage',
+    '/booking-berhasil': 'BookingBerhasilPage',
+    '/status-pesanan': 'StatusPesananPage',
+    '/konfirmasi-pesanan': 'KonfirmasiPesananPage',
+    '/simulasi-kredit': 'SimulasiKreditPage',
+    '/upload-dokumen-kredit': 'UploadDokumenKreditPage',
+    '/konfirmasi-pengajuan': 'KonfirmasiPengajuanPage',
+  };
+
+  try {
+    final routerFile = File('lib/ui/core/router.dart');
+    if (routerFile.existsSync()) {
+      final content = routerFile.readAsStringSync();
+      final routeRegExp = RegExp(
+        r"GoRoute\s*\(\s*path\s*:\s*'([^']+)'[\s\S]*?builder\s*:\s*\([^)]*\)\s*=>\s*(?:const\s+)?([A-Za-z_][A-Za-z0-9_]*)",
+        multiLine: true,
+      );
+      for (final match in routeRegExp.allMatches(content)) {
+        final path = match.group(1)!;
+        final widget = match.group(2)!;
+        
+        if (path.startsWith('/')) {
+          map[path] = widget;
+        } else {
+          map[path] = widget;
+          map['/profile/$path'] = widget;
+        }
+      }
+    }
+  } catch (_) {
+    // Fall back to pre-defined map
+  }
+
+  return map;
+}
+
 List<_Edge> _collectEdges() {
   final files =
       Directory('lib')
@@ -76,10 +130,13 @@ List<_Edge> _collectEdges() {
           .toList()
         ..sort((a, b) => a.path.compareTo(b.path));
 
+  final pathToWidgetMap = _buildPathToWidgetMap();
   final edges = <_Edge>[];
 
   for (final file in files) {
     final normalized = file.path.replaceAll('\\', '/');
+    if (normalized.contains('/tool/')) continue; // Skip tool files
+    
     final sourceText = file.readAsStringSync();
 
     final sourceWidget =
@@ -91,6 +148,7 @@ List<_Edge> _collectEdges() {
         sourceText: sourceText,
         sourceWidget: sourceWidget,
         filePath: normalized,
+        pathToWidgetMap: pathToWidgetMap,
       ),
     );
 
@@ -133,19 +191,38 @@ List<_Edge> _extractNavigatorEdges({
   required String sourceText,
   required String sourceWidget,
   required String filePath,
+  required Map<String, String> pathToWidgetMap,
 }) {
   final edges = <_Edge>[];
 
-  final pattern = RegExp(
+  // Standard Navigator pushes
+  final navigatorPattern = RegExp(
     r'Navigator(?:\.of\([^)]*\))?\.(push|pushReplacement|pushAndRemoveUntil)\s*\([\s\S]{0,500}?\b(?:builder|pageBuilder)\s*:\s*\([^)]*\)\s*=>\s*(?:const\s+)?([A-Za-z_][A-Za-z0-9_]*)',
     multiLine: true,
   );
 
-  for (final match in pattern.allMatches(sourceText)) {
+  for (final match in navigatorPattern.allMatches(sourceText)) {
     final method = match.group(1)!;
     final target = match.group(2)!;
     final line = _lineNumberFor(sourceText, match.start);
     edges.add(_Edge(sourceWidget, target, method, filePath, line));
+  }
+
+  // GoRouter pushes and goes
+  final goRouterPattern = RegExp(
+    r"context\.(go|push|pushReplacement)\s*\(\s*'([^']+)'",
+    multiLine: true,
+  );
+
+  for (final match in goRouterPattern.allMatches(sourceText)) {
+    final method = match.group(1)!;
+    final path = match.group(2)!;
+    final line = _lineNumberFor(sourceText, match.start);
+    
+    final targetWidget = pathToWidgetMap[path];
+    if (targetWidget != null && targetWidget != sourceWidget) {
+      edges.add(_Edge(sourceWidget, targetWidget, 'context.$method', filePath, line));
+    }
   }
 
   return edges;
@@ -153,7 +230,7 @@ List<_Edge> _extractNavigatorEdges({
 
 String? _findPrimaryWidgetName(String sourceText) {
   final classPattern = RegExp(
-    r'class\s+([A-Za-z_][A-Za-z0-9_]*)\s+extends\s+(StatelessWidget|StatefulWidget)',
+    r'class\s+([A-Za-z_][A-Za-z0-9_]*)\s+extends\s+(StatelessWidget|StatefulWidget|ConsumerWidget|ConsumerStatefulWidget)',
   );
 
   for (final match in classPattern.allMatches(sourceText)) {
@@ -234,8 +311,8 @@ void _writeSection(String renderedSection) {
     throw StateError('flow.md tidak ditemukan di root project.');
   }
 
-  final startMarker = '<!-- AUTO_FLOW_START -->';
-  final endMarker = '<!-- AUTO_FLOW_END -->';
+  const startMarker = '<!-- AUTO_FLOW_START -->';
+  const endMarker = '<!-- AUTO_FLOW_END -->';
 
   final content = appFlow.readAsStringSync();
   final block = '$startMarker\n$renderedSection\n$endMarker';
