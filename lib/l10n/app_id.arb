@@ -1,0 +1,50 @@
+{
+  "otrMedan": "OTR MEDAN",
+  "searchHint": "Cari motor idaman...",
+  "categories": "Kategori",
+  "bestChoice": "PILIHAN TERBAIK",
+  "recommendations": "Rekomendasi",
+  "seeAll": "LIHAT SEMUA",
+  "motorNotFound": "Motor \"{query}\" tidak ditemukan",
+  "@motorNotFound": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "engineeredForPerformance": "ENGINEERED FOR PERFORMANCE",
+  "precisionMachine": "Precision\nMachine.",
+  "exploreDesc": "Explore the complete range of Honda motorcycles, from aggressive super sports to versatile urban commuters.",
+  "filterAll": "Semua",
+  "filterLowestPrice": "Harga Termurah",
+  "filterHighestPrice": "Harga Tertinggi",
+  "filterCategory": "Filter Kategori",
+  "reset": "Reset",
+  "allCategories": "Semua Kategori",
+  
+  "specialPromo": "SPECIAL PROMO",
+  "otrJakarta": "HARGA OTR JAKARTA",
+  "startingFrom": "Mulai dari ",
+  "keySpecs": "SPESIFIKASI UTAMA",
+  "detailedSpecs": "SPESIFIKASI DETAIL",
+  "engine": "ENGINE",
+  "power": "POWER",
+  "fuel": "FUEL",
+  "techFeatures": "FITUR TEKNOLOGI",
+  "specMesin": "Mesin",
+  "specRangka": "Rangka & Kaki-Kaki",
+  "specDimensi": "Dimensi & Kapasitas",
+  "askSales": "TANYA SALES",
+  "buyNow": "BELI SEKARANG",
+  "detail": "Detail",
+  "buy": "Beli",
+  "forgotPassword": "Lupa Kata Sandi",
+  "loginFailed": "Login Gagal",
+  "ok": "OK",
+  "close": "Tutup",
+  "bookingInfo": "Informasi Booking",
+  "kreditGuide": "Panduan Simulasi Kredit",
+  "uploadDocGuide": "Bantuan Unggah Dokumen"
+}
