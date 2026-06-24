@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'l10n/app_localizations.dart';
+import 'ui/core/theme.dart';
 import 'ui/core/router.dart';
 
 void main() {
@@ -15,34 +18,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Hondaku',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFC40000),
-          primary: const Color(0xFFC40000),
-          surface: Colors.white,
-          surfaceTint: Colors.transparent,
-        ),
-        scaffoldBackgroundColor: Colors.white,
-        cardColor: Colors.white,
-        canvasColor: Colors.white,
-        dialogTheme: const DialogThemeData(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.transparent,
-        ),
-        cardTheme: const CardThemeData(
-          color: Colors.white,
-          surfaceTintColor: Colors.transparent,
-        ),
-        bottomSheetTheme: const BottomSheetThemeData(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.transparent,
-        ),
-        inputDecorationTheme: const InputDecorationTheme(
-          fillColor: Colors.white,
-          filled: true,
-        ),
-      ),
+      theme: HondakuTheme.lightTheme,
+      darkTheme: HondakuTheme.darkTheme,
+      themeMode: ThemeMode.light,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('id'),
+      ],
       routerConfig: goRouter,
     );
   }
