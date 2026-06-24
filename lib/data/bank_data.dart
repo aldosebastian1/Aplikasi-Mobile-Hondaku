@@ -5,15 +5,15 @@ export '../domain/models/bank_option.dart';
 
 // Simulasi database bank agar tidak redundan di setiap halaman
 final List<BankOption> bankOptions = [
-  BankOption(
+  const BankOption(
     name: 'BCA Virtual Account',
     logoPath: 'assets/payments/bca.png',
   ),
-  BankOption(
+  const BankOption(
     name: 'Mandiri Virtual Account',
     logoPath: 'assets/payments/mandiri.png',
   ),
-  BankOption(
+  const BankOption(
     name: 'BSI Virtual Account',
     logoPath: 'assets/payments/bsi.png',
   ),
