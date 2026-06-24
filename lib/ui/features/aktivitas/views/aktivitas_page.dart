@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../domain/models/aktivitas_item.dart';
+import '../../../core/widgets/hondaku_avatar.dart';
 import '../view_models/aktivitas_view_model.dart';
-import '../../profile/stores/user_store.dart';
 
 
 class AktivitasPage extends StatefulWidget {
