@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../domain/models/aktivitas_item.dart';
-import '../../aktivitas/stores/aktivitas_store.dart';
 import '../../aktivitas/view_models/aktivitas_view_model.dart';
 
 
