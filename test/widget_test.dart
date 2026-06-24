@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hondaku/main.dart';
-import 'package:hondaku/auth/splash_screen.dart';
+import 'package:hondaku/ui/features/auth/views/splash_screen.dart';
 
 void main() {
   testWidgets('Splash screen render smoke test', (WidgetTester tester) async {
