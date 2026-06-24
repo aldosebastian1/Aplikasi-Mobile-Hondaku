@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../data/providers.dart';
 import '../../../../domain/models/aktivitas_item.dart';
@@ -15,8 +16,8 @@ class AktivitasViewModel extends Notifier<List<AktivitasItem>> {
       (data) {
         state = data;
       },
-      onError: (err) {
-        // Stream error handling (safe-guarding state)
+      onError: (err, stackTrace) {
+        developer.log('Error in aktivitas list stream', error: err, stackTrace: stackTrace);
       },
     );
 
@@ -25,8 +26,8 @@ class AktivitasViewModel extends Notifier<List<AktivitasItem>> {
       if (state.isEmpty && data.isNotEmpty) {
         state = data;
       }
-    }).catchError((_) {
-      // Gagal memuat data inisial
+    }).catchError((err, stackTrace) {
+      developer.log('Error loading initial aktivitas list', error: err, stackTrace: stackTrace);
     });
 
     ref.onDispose(() {
@@ -36,7 +37,7 @@ class AktivitasViewModel extends Notifier<List<AktivitasItem>> {
     return [];
   }
 
-  Future<void> submitCashTransaction({
+  Future<bool> submitCashTransaction({
     required String id,
     required String namaMotor,
     required String tipeUnit,
@@ -55,12 +56,14 @@ class AktivitasViewModel extends Notifier<List<AktivitasItem>> {
         status: StatusAktivitas.bookingBerhasil,
       );
       await ref.read(aktivitasRepositoryProvider).upsertAktivitas(item);
-    } catch (e) {
-      // Safe guard logging or error handling in production
+      return true;
+    } catch (e, stackTrace) {
+      developer.log('Failed to submit cash transaction', error: e, stackTrace: stackTrace);
+      return false;
     }
   }
 
-  Future<void> submitKreditTransaction({
+  Future<bool> submitKreditTransaction({
     required String id,
     required String namaMotor,
     required String tipeUnit,
@@ -79,8 +82,10 @@ class AktivitasViewModel extends Notifier<List<AktivitasItem>> {
         status: StatusAktivitas.bookingBerhasil,
       );
       await ref.read(aktivitasRepositoryProvider).upsertAktivitas(item);
-    } catch (e) {
-      // Safe guard logging or error handling in production
+      return true;
+    } catch (e, stackTrace) {
+      developer.log('Failed to submit kredit transaction', error: e, stackTrace: stackTrace);
+      return false;
     }
   }
 }
