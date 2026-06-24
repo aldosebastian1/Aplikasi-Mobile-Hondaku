@@ -1,0 +1,50 @@
+{
+  "otrMedan": "OTR MEDAN",
+  "searchHint": "Search for your dream motorcycle...",
+  "categories": "Categories",
+  "bestChoice": "BEST CHOICE",
+  "recommendations": "Recommendations",
+  "seeAll": "SEE ALL",
+  "motorNotFound": "Motorcycle \"{query}\" not found",
+  "@motorNotFound": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "engineeredForPerformance": "ENGINEERED FOR PERFORMANCE",
+  "precisionMachine": "Precision\nMachine.",
+  "exploreDesc": "Explore the complete range of Honda motorcycles, from aggressive super sports to versatile urban commuters.",
+  "filterAll": "All",
+  "filterLowestPrice": "Lowest Price",
+  "filterHighestPrice": "Highest Price",
+  "filterCategory": "Filter Category",
+  "reset": "Reset",
+  "allCategories": "All Categories",
+  
+  "specialPromo": "SPECIAL PROMO",
+  "otrJakarta": "OTR JAKARTA PRICE",
+  "startingFrom": "Starting from ",
+  "keySpecs": "KEY SPECIFICATIONS",
+  "detailedSpecs": "DETAILED SPECIFICATIONS",
+  "engine": "ENGINE",
+  "power": "POWER",
+  "fuel": "FUEL",
+  "techFeatures": "TECHNOLOGY FEATURES",
+  "specMesin": "Engine Specs",
+  "specRangka": "Frame & Suspension",
+  "specDimensi": "Dimensions & Capacity",
+  "askSales": "ASK SALES",
+  "buyNow": "BUY NOW",
+  "detail": "Detail",
+  "buy": "Buy",
+  "forgotPassword": "Forgot Password",
+  "loginFailed": "Login Failed",
+  "ok": "OK",
+  "close": "Close",
+  "bookingInfo": "Booking Information",
+  "kreditGuide": "Credit Simulation Guide",
+  "uploadDocGuide": "Document Upload Help"
+}
