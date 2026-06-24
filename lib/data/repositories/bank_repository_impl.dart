@@ -1,4 +1,3 @@
-import '../../domain/models/bank_option.dart';
 import '../../domain/repositories/bank_repository.dart';
 import '../bank_data.dart';
 
