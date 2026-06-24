@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../aktivitas/stores/aktivitas_store.dart';
+import '../../../../domain/models/aktivitas_item.dart';
 import '../../../core/toast/hondaku_toast.dart';
 
 class KonfirmasiPesananPage extends StatefulWidget {
