@@ -54,5 +54,6 @@ void main() {
     file.writeAsStringSync(content);
   }
   
+  // ignore: avoid_print
   print('Imports fixed successfully!');
 }
