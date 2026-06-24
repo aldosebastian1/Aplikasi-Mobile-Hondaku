@@ -20,9 +20,10 @@ Hondaku adalah aplikasi mobile modern yang dirancang khusus untuk mempermudah ko
 ## 🚀 Teknologi yang Digunakan
 
 - **Framework**: [Flutter](https://flutter.dev) (Dart)
-- **State Management**: ValueNotifier & Custom Store Architecture
-- **Navigation**: Navigator 1.0 (Imperative)
-- **UI Design**: Modern Material Design dengan sentuhan Honda Red Branding
+- **State Management**: [Riverpod](https://riverpod.dev) (Notifier, FutureProvider, & Consumer Widgets)
+- **Navigation**: [GoRouter](https://pub.dev/packages/go_router) (Declarative Routing dengan Stateful Shell Route & Nested Routing)
+- **Localization**: [intl](https://pub.dev/packages/intl) (Non-synthetic Localization menggunakan berkas `.arb` di `lib/l10n/`)
+- **UI Design**: Modern Material Design dengan sentuhan Honda Red Branding, mendukung Mode Gelap (Dark Mode)
 - **Asset Handling**: SVG Support, dynamic image rendering, dan PDF validation
 
 ## 🛠️ Cara Instalasi
@@ -43,7 +44,7 @@ Ikuti langkah-langkah di bawah ini untuk menjalankan project ini di lingkungan l
    cd Aplikasi-Mobile-Hondaku
    ```
 3. **Instal Dependensi**
-   Jalankan perintah ini untuk mengunduh library yang dibutuhkan (termasuk `file_picker`, `flutter_svg`, dll):
+   Jalankan perintah ini untuk mengunduh library yang dibutuhkan (termasuk `flutter_riverpod`, `go_router`, `file_picker`, dll):
    ```bash
    flutter pub get
    ```
@@ -53,20 +54,39 @@ Ikuti langkah-langkah di bawah ini untuk menjalankan project ini di lingkungan l
    flutter run
    ```
 
-## 📂 Struktur Project
+## 📂 Struktur Project (Clean Architecture & Feature Folder Split)
+
+Proyek Hondaku telah dimodifikasi menggunakan struktur berlapis (*layered Clean Architecture*) untuk kemudahan pemeliharaan:
 
 ```text
 lib/
-├── auth/          # Splash, Onboarding, Login, & Register screens
-├── booking/       # Checkout, Form Data, & Payment flow
-├── core/          # Root App (Bottom Nav Wrapper) & Config
-├── data/          # Mock database (Motor, Banner, Bank, Garage)
-├── home/          # Home dashboard, Catalog, Activity, & Profile
-└── kredit/        # Credit Simulation & Document Upload module
+├── data/              # Mock database & Riverpod Providers (Data Layer)
+├── domain/            # Model Data & Entitas Bisnis Bersih (Domain Layer)
+│   └── models/        # user_profile, app_settings, motorcycle, dll.
+├── l10n/              # Berkas sumber lokalisasi (.arb) hasil auto-generate
+└── ui/                # Antarmuka Pengguna & Presentasi (Presentation Layer)
+    ├── core/          # Tema global, rute utama (router.dart), & widget bersama
+    └── features/      # Pembagian fitur (Feature-Sliced Directory)
+        ├── aktivitas/ # Pelacakan aktivitas order dan garasi
+        ├── auth/      # Splash, Onboarding, Login, & Register screens
+        ├── booking/   # Alur Checkout, Pembayaran, dan Form Pemesanan
+        ├── catalog/   # Halaman katalog unit & spesifikasi detail produk
+        ├── home/      # Dasbor beranda utama aplikasi
+        ├── kredit/    # Simulasi kredit kalkulator & unggah dokumen legalitas
+        └── profile/   # Halaman profil terintegrasi dengan sub-fitur modular
 ```
 
 ## 📸 Aset
 Aplikasi ini menggunakan berbagai aset gambar dan ikon yang terletak di folder `assets/`. Pastikan folder tersebut tetap ada agar aplikasi dapat merender UI dengan benar.
+
+## 🗺️ Alur Navigasi & Peta Aplikasi (App Flow Map)
+
+Untuk penjelasan lengkap mengenai logika navigasi, diagram alur (*flowchart*), dan bagaimana halaman-halaman saling terhubung menggunakan **GoRouter**, silakan merujuk ke dokumen **[flow.md](flow.md)**.
+
+Peta alur ini disinkronkan secara otomatis dari kode sumber Flutter menggunakan utilitas sinkronisasi:
+```bash
+dart run tool/sync_app_flow.dart
+```
 
 ---
 **Hondaku** - *The Power of Dreams.*
