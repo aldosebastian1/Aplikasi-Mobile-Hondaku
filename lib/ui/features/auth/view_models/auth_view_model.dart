@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthState {
@@ -48,7 +49,8 @@ class AuthViewModel extends Notifier<AuthState> {
         );
         return false;
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      developer.log('Login failed with error', error: e, stackTrace: stackTrace);
       state = state.copyWith(
         isLoading: false,
         errorMessage: 'Terjadi kesalahan jaringan atau sistem. Silakan coba beberapa saat lagi.',
