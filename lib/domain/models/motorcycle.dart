@@ -18,6 +18,8 @@ abstract class MotorcycleFeature with _$MotorcycleFeature {
 
 @freezed
 abstract class Motorcycle with _$Motorcycle {
+  // ignore: invalid_annotation_target
+  @JsonSerializable(explicitToJson: true)
   const factory Motorcycle({
     required String id,
     required String name,
