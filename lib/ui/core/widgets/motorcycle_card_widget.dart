@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hondaku/domain/models/motorcycle.dart';
 import 'package:hondaku/ui/core/theme.dart';
 import 'package:hondaku/l10n/app_localizations.dart';
+import 'package:hondaku/ui/features/favorites/providers/favorite_provider.dart';
 
-class MotorcycleCardWidget extends StatelessWidget {
+class MotorcycleCardWidget extends ConsumerWidget {
   final Motorcycle motor;
   final bool isCompact;
   final int parentIndex;
@@ -17,8 +19,10 @@ class MotorcycleCardWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final favoriteIds = ref.watch(favoriteProvider);
+    final isFav = favoriteIds.contains(motor.id);
     const themeRed = HondakuTheme.red;
 
     return Container(
@@ -28,18 +32,45 @@ class MotorcycleCardWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Gambar motor
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: Container(
-              width: double.infinity,
-              height: isCompact ? 180 : 220,
-              color: isDark ? HondakuTheme.darkBg : Colors.white,
-              child: Image.asset(
-                motor.imageAsset,
-                fit: BoxFit.contain,
-                height: isCompact ? 180 : 220,
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                child: Container(
+                  width: double.infinity,
+                  height: isCompact ? 180 : 220,
+                  color: isDark ? HondakuTheme.darkBg : Colors.white,
+                  child: Image.asset(
+                    motor.imageAsset,
+                    fit: BoxFit.contain,
+                    height: isCompact ? 180 : 220,
+                  ),
+                ),
               ),
-            ),
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Material(
+                  color: Colors.white.withValues(alpha: 0.85),
+                  shape: const CircleBorder(),
+                  child: IconButton(
+                    icon: Icon(
+                      isFav ? Icons.favorite : Icons.favorite_border,
+                      color: isFav ? const Color(0xFFC40000) : Colors.grey[600],
+                      size: 22,
+                    ),
+                    onPressed: () {
+                      ref.read(favoriteProvider.notifier).toggleFavorite(motor);
+                    },
+                    constraints: const BoxConstraints(
+                      minWidth: 36,
+                      minHeight: 36,
+                    ),
+                    padding: EdgeInsets.zero,
+                  ),
+                ),
+              ),
+            ],
           ),
           Padding(
             padding: EdgeInsets.fromLTRB(16, isCompact ? 12 : 14, 16, 16),
