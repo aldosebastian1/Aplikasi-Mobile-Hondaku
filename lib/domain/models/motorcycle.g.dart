@@ -53,7 +53,7 @@ Map<String, dynamic> _$MotorcycleToJson(_Motorcycle instance) =>
       'engine': instance.engine,
       'maxPower': instance.maxPower,
       'fuelCapacity': instance.fuelCapacity,
-      'features': instance.features,
+      'features': instance.features.map((e) => e.toJson()).toList(),
       'specsMesin': instance.specsMesin,
       'specsRangka': instance.specsRangka,
       'specsDimensi': instance.specsDimensi,
