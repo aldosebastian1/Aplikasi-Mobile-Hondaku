@@ -20,6 +20,14 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
   final TextEditingController _alamatController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
+  final FocusNode _namaFocusNode = FocusNode();
+  final FocusNode _nikFocusNode = FocusNode();
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _phoneFocusNode = FocusNode();
+  final FocusNode _alamatFocusNode = FocusNode();
+
+  bool _isNavigating = false;
+
   static const List<String> _kecamatanList = [
     'Medan Kota',
     'Medan Baru',
@@ -68,6 +76,11 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
     _phoneController.dispose();
     _alamatController.dispose();
     _emailController.dispose();
+    _namaFocusNode.dispose();
+    _nikFocusNode.dispose();
+    _emailFocusNode.dispose();
+    _phoneFocusNode.dispose();
+    _alamatFocusNode.dispose();
     super.dispose();
   }
 
@@ -82,6 +95,17 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
   // ─────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
+    final bookingState = ref.watch(bookingViewModelProvider);
+    final errorMessage = bookingState.errorMessage;
+    
+    final nameError = errorMessage == "Nama belum diisi" ? errorMessage : null;
+    final nikError = errorMessage == "NIK harus minimal 15-16 digit" ? errorMessage : null;
+    final emailError = (errorMessage == "Email belum diisi" || errorMessage == "Format email tidak valid (butuh @)") ? errorMessage : null;
+    final kecamatanError = errorMessage == "Kecamatan belum dipilih" ? errorMessage : null;
+    final kelurahanError = errorMessage == "Kelurahan belum dipilih" ? errorMessage : null;
+    final phoneError = errorMessage == "Nomor HP belum diisi" ? errorMessage : null;
+    final alamatError = errorMessage == "Alamat belum diisi" ? errorMessage : null;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: _buildAppBar(),
@@ -116,7 +140,12 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                     _buildInputField(
                       controller: _namaController,
                       hint: 'Contoh: Budi Setiawan',
+                      semanticsLabel: 'Nama Lengkap (Sesuai KTP)',
                       keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
+                      focusNode: _namaFocusNode,
+                      onSubmitted: (_) => FocusScope.of(context).requestFocus(_nikFocusNode),
+                      errorText: nameError,
                     ),
                     const SizedBox(height: 14),
                     _buildLabel('Nomor NIK'),
@@ -124,11 +153,16 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                     _buildInputField(
                       controller: _nikController,
                       hint: '16 digit angka KTP',
+                      semanticsLabel: 'Nomor NIK',
                       keyboardType: TextInputType.number,
                       formatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(16),
                       ],
+                      textInputAction: TextInputAction.next,
+                      focusNode: _nikFocusNode,
+                      onSubmitted: (_) => FocusScope.of(context).requestFocus(_emailFocusNode),
+                      errorText: nikError,
                     ),
                     const SizedBox(height: 14),
                     _buildLabel('Email Address'),
@@ -136,7 +170,12 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                     _buildInputField(
                       controller: _emailController,
                       hint: 'contoh@email.com',
+                      semanticsLabel: 'Email Address',
                       keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      focusNode: _emailFocusNode,
+                      onSubmitted: (_) => FocusScope.of(context).requestFocus(_phoneFocusNode),
+                      errorText: emailError,
                     ),
                     const SizedBox(height: 22),
 
@@ -155,8 +194,10 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                     _buildDropdown(
                       value: _selectedKecamatan,
                       hint: 'Pilih Kecamatan',
+                      semanticsLabel: 'Kecamatan',
                       items: _kecamatanList,
                       onChanged: (v) => ref.read(bookingViewModelProvider.notifier).updateKecamatan(v),
+                      errorText: kecamatanError,
                     ),
                     const SizedBox(height: 14),
                     _buildLabel('Kelurahan'),
@@ -164,20 +205,32 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                     _buildDropdown(
                       value: _selectedKelurahan,
                       hint: 'Pilih Kelurahan',
+                      semanticsLabel: 'Kelurahan',
                       items: _kelurahanList,
                       onChanged: (v) => ref.read(bookingViewModelProvider.notifier).updateKelurahan(v),
+                      errorText: kelurahanError,
                     ),
                     const SizedBox(height: 14),
                     _buildLabel('No. HP (WhatsApp Aktif)'),
                     const SizedBox(height: 6),
-                    _buildPhoneField(),
+                    _buildPhoneField(
+                      focusNode: _phoneFocusNode,
+                      textInputAction: TextInputAction.next,
+                      onSubmitted: (_) => FocusScope.of(context).requestFocus(_alamatFocusNode),
+                      errorText: phoneError,
+                    ),
                     const SizedBox(height: 14),
                     _buildLabel('Alamat Pengiriman (Medan)'),
                     const SizedBox(height: 6),
                     _buildInputField(
                       controller: _alamatController,
                       hint: 'Jl. Ahmad Yani No. 123, Medan',
+                      semanticsLabel: 'Alamat Pengiriman (Medan)',
                       keyboardType: TextInputType.streetAddress,
+                      textInputAction: TextInputAction.done,
+                      focusNode: _alamatFocusNode,
+                      onSubmitted: (_) => FocusScope.of(context).unfocus(),
+                      errorText: alamatError,
                     ),
                     const SizedBox(height: 24),
                   ],
@@ -215,14 +268,17 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
   // ─────────────────────────────────────────────────────────
   // APPBAR
   // ─────────────────────────────────────────────────────────
-    PreferredSizeWidget _buildAppBar() {
+  PreferredSizeWidget _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
       centerTitle: true,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.black, size: 22),
+        icon: const ExcludeSemantics(
+          child: Icon(Icons.arrow_back, color: Colors.black, size: 22),
+        ),
         onPressed: () => Navigator.maybePop(context),
+        tooltip: 'Kembali',
       ),
       title: const Text(
         'Metode Pembayaran',
@@ -234,7 +290,10 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
       ),
       actions: [
         IconButton(
-          icon: const Icon(Icons.info_outline, color: Colors.black, size: 22),
+          icon: const ExcludeSemantics(
+            child: Icon(Icons.info_outline, color: Colors.black, size: 22),
+          ),
+          tooltip: 'Panduan Pengisian Form',
           onPressed: () {
             showDialog(
               context: context,
@@ -294,6 +353,7 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
             ),
             child: Image.asset(
               widget.motor.imageAsset,
+              semanticLabel: 'Foto Motor ${widget.motor.name}',
               fit: BoxFit.contain,
               errorBuilder: (_, _, _) => const Icon(
                 Icons.two_wheeler,
@@ -336,7 +396,9 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                   children: [
                     const Row(
                       children: [
-                        Icon(Icons.location_on, size: 12, color: Color(0xFFD32F2F)),
+                        ExcludeSemantics(
+                          child: Icon(Icons.location_on, size: 12, color: Color(0xFFD32F2F)),
+                        ),
                         SizedBox(width: 3),
                         Text(
                           'Medan',
@@ -427,26 +489,30 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
 
   Widget _buildTypeChip(String label, bool isSelected) {
     return Expanded(
-      child: GestureDetector(
-        onTap: () => ref.read(bookingViewModelProvider.notifier).updatePaymentType(
-              isFullPayment: label == 'Pelunasan Full',
-            ),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFFD32F2F) : Colors.white,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: isSelected ? const Color(0xFFD32F2F) : const Color(0xFFE0E0E0),
-            ),
+      child: Material(
+        color: isSelected ? const Color(0xFFD32F2F) : Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: BorderSide(
+            color: isSelected ? const Color(0xFFD32F2F) : const Color(0xFFE0E0E0),
           ),
-          alignment: Alignment.center,
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-              color: isSelected ? Colors.white : const Color(0xFF757575),
+        ),
+        child: InkWell(
+          onTap: () => ref.read(bookingViewModelProvider.notifier).updatePaymentType(
+                isFullPayment: label == 'Pelunasan Full',
+              ),
+          borderRadius: BorderRadius.circular(8),
+          child: Container(
+            height: 48,
+            alignment: Alignment.center,
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: isSelected ? Colors.white : const Color(0xFF707070),
+              ),
             ),
           ),
         ),
@@ -475,7 +541,7 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                   style: const TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF9E9E9E),
+                    color: Color(0xFF555555),
                     letterSpacing: 0.8,
                   ),
                 ),
@@ -510,7 +576,7 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                       : 'Biaya untuk mengamankan antrian unit. Akan memotong harga OTR saat pelunasan nanti.',
                   style: const TextStyle(
                     fontSize: 12,
-                    color: Color(0xFF757575),
+                    color: Color(0xFF555555),
                     height: 1.45,
                   ),
                 ),
@@ -518,15 +584,17 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
             ),
           ),
           const SizedBox(width: 12),
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: const Color(0xFFEEEEEE)),
+          ExcludeSemantics(
+            child: Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: const Color(0xFFEEEEEE)),
+              ),
+              child: const Icon(Icons.payments_outlined, color: Color(0xFFD32F2F), size: 24),
             ),
-            child: const Icon(Icons.payments_outlined, color: Color(0xFFD32F2F), size: 24),
           ),
         ],
       ),
@@ -542,7 +610,7 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
   }) {
     return Row(
       children: [
-        iconWidget,
+        ExcludeSemantics(child: iconWidget),
         const SizedBox(width: 7),
         Text(
           title,
@@ -558,55 +626,57 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
 
   // KTP card icon (red outline rectangle with face & lines)
   Widget _buildIdCardIcon() {
-    return SizedBox(
-      width: 20,
-      height: 20,
-      child: Stack(
-        children: [
-          // Card border
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(2),
-                border: Border.all(color: const Color(0xFFD32F2F), width: 1.8),
+    return ExcludeSemantics(
+      child: SizedBox(
+        width: 20,
+        height: 20,
+        child: Stack(
+          children: [
+            // Card border
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(2),
+                  border: Border.all(color: const Color(0xFFD32F2F), width: 1.8),
+                ),
               ),
             ),
-          ),
-          // Face circle
-          Positioned(
-            left: 2,
-            top: 3,
-            child: Container(
-              width: 6,
-              height: 6,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFD32F2F), width: 1.5),
+            // Face circle
+            Positioned(
+              left: 2,
+              top: 3,
+              child: Container(
+                width: 6,
+                height: 6,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: const Color(0xFFD32F2F), width: 1.5),
+                ),
               ),
             ),
-          ),
-          // Text lines
-          Positioned(
-            right: 2,
-            top: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 7,
-                  height: 1.5,
-                  color: const Color(0xFFD32F2F),
-                ),
-                const SizedBox(height: 2.5),
-                Container(
-                  width: 5,
-                  height: 1.5,
-                  color: const Color(0xFFD32F2F),
-                ),
-              ],
+            // Text lines
+            Positioned(
+              right: 2,
+              top: 4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 7,
+                    height: 1.5,
+                    color: const Color(0xFFD32F2F),
+                  ),
+                  const SizedBox(height: 2.5),
+                  Container(
+                    width: 5,
+                    height: 1.5,
+                    color: const Color(0xFFD32F2F),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -615,12 +685,14 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
   // FORM HELPERS
   // ─────────────────────────────────────────────────────────
   Widget _buildLabel(String text) {
-    return Text(
-      text,
-      style: const TextStyle(
-        fontSize: 13,
-        fontWeight: FontWeight.w500,
-        color: Colors.black,
+    return ExcludeSemantics(
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+          color: Colors.black,
+        ),
       ),
     );
   }
@@ -628,30 +700,47 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
   Widget _buildInputField({
     required TextEditingController controller,
     required String hint,
+    required String semanticsLabel,
     TextInputType keyboardType = TextInputType.text,
     List<TextInputFormatter>? formatters,
+    TextInputAction? textInputAction,
+    FocusNode? focusNode,
+    ValueChanged<String>? onSubmitted,
+    String? errorText,
   }) {
-    return Container(
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xFFE0E0E0), width: 1.2),
-      ),
-      alignment: Alignment.centerLeft,
+    return Semantics(
+      label: semanticsLabel,
       child: TextField(
         controller: controller,
+        focusNode: focusNode,
         keyboardType: keyboardType,
         inputFormatters: formatters,
+        textInputAction: textInputAction,
+        onSubmitted: onSubmitted,
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: const TextStyle(fontSize: 14, color: Color(0xFFBDBDBD)),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 14,
-            vertical: 0,
+          hintStyle: const TextStyle(fontSize: 14, color: Color(0xFF707070)),
+          errorText: errorText,
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Color(0xFFE0E0E0), width: 1.2),
           ),
-          border: InputBorder.none,
-          isDense: true,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
+          ),
+          errorStyle: const TextStyle(fontSize: 12, color: Color(0xFFD32F2F)),
         ),
       ),
     );
@@ -660,54 +749,85 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
   Widget _buildDropdown({
     required String? value,
     required String hint,
+    required String semanticsLabel,
     required List<String> items,
     required ValueChanged<String?> onChanged,
+    String? errorText,
   }) {
-    return Container(
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xFFE0E0E0), width: 1.2),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 14),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: value,
-          isExpanded: true,
-          hint: Text(
-            hint,
-            style: const TextStyle(fontSize: 14, color: Color(0xFFBDBDBD)),
-          ),
-          icon: const Icon(
+    return Semantics(
+      label: semanticsLabel,
+      child: DropdownButtonFormField<String>(
+        value: value,
+        isExpanded: true,
+        hint: Text(
+          hint,
+          style: const TextStyle(fontSize: 14, color: Color(0xFF707070)),
+        ),
+        icon: const ExcludeSemantics(
+          child: Icon(
             Icons.keyboard_arrow_down,
-            color: Color(0xFF9E9E9E),
+            color: Color(0xFF707070),
             size: 22,
           ),
-          style: const TextStyle(fontSize: 14, color: Colors.black),
-          items: items
-              .map((e) => DropdownMenuItem<String>(value: e, child: Text(e)))
-              .toList(),
-          onChanged: onChanged,
+        ),
+        style: const TextStyle(fontSize: 14, color: Colors.black),
+        items: items
+            .map((e) => DropdownMenuItem<String>(value: e, child: Text(e)))
+            .toList(),
+        onChanged: onChanged,
+        decoration: InputDecoration(
+          errorText: errorText,
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Color(0xFFE0E0E0), width: 1.2),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
+          ),
+          errorStyle: const TextStyle(fontSize: 12, color: Color(0xFFD32F2F)),
         ),
       ),
     );
   }
 
-  Widget _buildPhoneField() {
-    return Container(
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xFFE0E0E0), width: 1.2),
-      ),
-      child: Row(
-        children: [
-          // +62 prefix box
-          Container(
-            width: 58,
-            alignment: Alignment.center,
+  Widget _buildPhoneField({
+    required FocusNode focusNode,
+    required TextInputAction textInputAction,
+    required ValueChanged<String>? onSubmitted,
+    String? errorText,
+  }) {
+    return Semantics(
+      label: 'No. HP (WhatsApp Aktif)',
+      child: TextField(
+        controller: _phoneController,
+        focusNode: focusNode,
+        keyboardType: TextInputType.phone,
+        textInputAction: textInputAction,
+        onSubmitted: onSubmitted,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        style: const TextStyle(fontSize: 14, color: Colors.black),
+        decoration: InputDecoration(
+          hintText: '812xxxx',
+          hintStyle: const TextStyle(fontSize: 14, color: Color(0xFF707070)),
+          errorText: errorText,
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+          prefixIcon: Container(
+            margin: const EdgeInsets.only(right: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: const BoxDecoration(
               border: Border(
                 right: BorderSide(color: Color(0xFFE0E0E0), width: 1.2),
@@ -722,26 +842,28 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
               ),
             ),
           ),
-          // Number input
-          Expanded(
-            child: TextField(
-              controller: _phoneController,
-              keyboardType: TextInputType.phone,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              style: const TextStyle(fontSize: 14, color: Colors.black),
-              decoration: const InputDecoration(
-                hintText: '812xxxx',
-                hintStyle: TextStyle(fontSize: 14, color: Color(0xFFBDBDBD)),
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 0,
-                ),
-                border: InputBorder.none,
-                isDense: true,
-              ),
-            ),
+          prefixIconConstraints: const BoxConstraints(
+            minWidth: 58,
+            minHeight: 48,
           ),
-        ],
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Color(0xFFE0E0E0), width: 1.2),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
+          ),
+          errorStyle: const TextStyle(fontSize: 12, color: Color(0xFFD32F2F)),
+        ),
       ),
     );
   }
@@ -754,9 +876,15 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
       width: double.infinity,
       height: 50,
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: _isNavigating ? null : () async {
+          setState(() {
+            _isNavigating = true;
+          });
           final success = ref.read(bookingViewModelProvider.notifier).submitForm();
           if (!success) {
+            setState(() {
+              _isNavigating = false;
+            });
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(_getValidationMessage()),
@@ -766,13 +894,18 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
             return;
           }
 
-          context.push(
+          await context.push(
             '/ringkasan-pembayaran',
             extra: {
               'motor': widget.motor,
               'isFullPayment': _isFullPayment,
             },
           );
+          if (mounted) {
+            setState(() {
+              _isNavigating = false;
+            });
+          }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFFD32F2F),
@@ -809,7 +942,7 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
           children: [
             const Text(
               'Harga OTR Unit',
-              style: TextStyle(fontSize: 13, color: Color(0xFF757575)),
+              style: TextStyle(fontSize: 13, color: Color(0xFF707070)),
             ),
             Text(
               widget.motor.price,
