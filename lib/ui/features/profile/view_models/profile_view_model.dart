@@ -9,17 +9,84 @@ export '../../../../domain/models/user_profile.dart';
 export '../../../../domain/models/payment_method_item.dart';
 export '../../../../domain/models/app_settings.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../auth/providers/auth_provider.dart';
+import '../../../../data/providers.dart';
+
 class UserProfileNotifier extends Notifier<UserProfile> {
+  bool _isFetching = false;
+
   @override
   UserProfile build() {
-    return const UserProfile(
-      nama: 'Alex Rider',
-      username: 'alex.rider',
-      email: 'alex.rider@hondaku.com',
-      phone: '81234567890',
-      nik: '1234567890123456',
-      avatarPath: 'assets/images/profile.png',
-      isCustomAvatar: false,
+    // Watch the auth state so this provider rebuilds when user logs in/out
+    final userAsync = ref.watch(authStateProvider);
+    
+    return userAsync.when(
+      data: (User? user) {
+        if (user == null) {
+          return const UserProfile(
+            nama: 'Guest',
+            username: 'guest',
+            email: '-',
+            phone: '-',
+            nik: '-',
+            avatarPath: 'assets/images/profile.png',
+            isCustomAvatar: false,
+          );
+        }
+        
+        final name = user.displayName ?? 'Pengguna Hondaku';
+        final email = user.email ?? '-';
+        final phone = user.phoneNumber ?? '-';
+        
+        String initials = '';
+        final names = name.trim().split(' ');
+        if (names.isNotEmpty && names[0].isNotEmpty) {
+          initials += names[0][0].toUpperCase();
+          if (names.length > 1 && names[1].isNotEmpty) {
+            initials += names[1][0].toUpperCase();
+          }
+        } else {
+          initials = 'PH';
+        }
+        
+        final basicProfile = UserProfile(
+          nama: name,
+          username: email.split('@').first,
+          email: email,
+          phone: phone,
+          nik: '-',
+          avatarPath: user.photoURL ?? 'assets/images/profile.png',
+          isCustomAvatar: user.photoURL != null,
+          initials: initials,
+        );
+
+        // Fetch complete profile from Firestore asynchronously
+        if (!_isFetching) {
+          _isFetching = true;
+          Future.microtask(() => _fetchFromFirestore(user.uid, basicProfile));
+        }
+
+        return basicProfile;
+      },
+      loading: () => const UserProfile(
+        nama: 'Memuat...',
+        username: 'loading',
+        email: '...',
+        phone: '...',
+        nik: '...',
+        avatarPath: 'assets/images/profile.png',
+        isCustomAvatar: false,
+      ),
+      error: (error, stackTrace) => const UserProfile(
+        nama: 'Error',
+        username: 'error',
+        email: 'error',
+        phone: 'error',
+        nik: 'error',
+        avatarPath: 'assets/images/profile.png',
+        isCustomAvatar: false,
+      ),
     );
   }
 
@@ -41,10 +108,10 @@ class UserProfileNotifier extends Notifier<UserProfile> {
         initials += names[1][0].toUpperCase();
       }
     } else {
-      initials = 'AR';
+      initials = 'PH';
     }
 
-    state = state.copyWith(
+    final newProfile = state.copyWith(
       nama: nama,
       username: username,
       email: email,
@@ -55,6 +122,33 @@ class UserProfileNotifier extends Notifier<UserProfile> {
       avatarBgColor: avatarBgColor,
       initials: initials,
     );
+
+    state = newProfile;
+
+    // Save to Firestore
+    final user = ref.read(authStateProvider).value;
+    if (user != null) {
+      ref.read(userRepositoryProvider).saveUserProfile(user.uid, newProfile);
+    }
+  }
+
+  Future<void> _fetchFromFirestore(String uid, UserProfile basicProfile) async {
+    try {
+      final repo = ref.read(userRepositoryProvider);
+      final profile = await repo.getUserProfile(uid);
+      if (profile != null) {
+        // Merge avatar from Auth if customAvatar is false
+        final mergedProfile = profile.copyWith(
+          avatarPath: profile.isCustomAvatar ? profile.avatarPath : basicProfile.avatarPath,
+          email: basicProfile.email.isNotEmpty ? basicProfile.email : profile.email,
+        );
+        state = mergedProfile;
+      }
+    } catch (e) {
+      // ignore
+    } finally {
+      _isFetching = false;
+    }
   }
 }
 
