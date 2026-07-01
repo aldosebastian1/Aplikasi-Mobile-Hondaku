@@ -7,10 +7,11 @@ import '../view_models/home_view_model.dart';
 import '../../../core/widgets/hondaku_avatar.dart';
 import '../../../core/theme.dart';
 import '../../../core/widgets/motorcycle_card_widget.dart';
-import '../widgets/hero_banner_widget.dart';
 import '../widgets/home_search_bar.dart';
 import '../widgets/home_category_selector.dart';
 import 'package:hondaku/l10n/app_localizations.dart';
+import '../../news/views/news_section.dart';
+import '../widgets/auto_slider_banner.dart';
 
 class HalamanHome extends ConsumerStatefulWidget {
   final VoidCallback? onSeeAll;
@@ -24,42 +25,12 @@ class HalamanHome extends ConsumerStatefulWidget {
 class _HalamanHomeState extends ConsumerState<HalamanHome> {
   static const _red = HondakuTheme.red;
   static const _surface = Colors.white;
-  int _currentBanner = 0;
-  final PageController _bannerController = PageController();
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   String _selectedCategory = '';
-  Timer? _bannerTimer;
-
-  @override
-  void initState() {
-    super.initState();
-    _startBannerTimer();
-  }
-
-  void _startBannerTimer() {
-    _bannerTimer = Timer.periodic(const Duration(seconds: 4), (timer) {
-      if (_bannerController.hasClients) {
-        int nextPage = _currentBanner + 1;
-        final banners =
-            ref.read(homeBannersProvider).value ?? const [];
-        if (banners.isEmpty) return;
-        if (nextPage >= banners.length) {
-          nextPage = 0;
-        }
-        _bannerController.animateToPage(
-          nextPage,
-          duration: const Duration(milliseconds: 800),
-          curve: Curves.easeInOut,
-        );
-      }
-    });
-  }
 
   @override
   void dispose() {
-    _bannerTimer?.cancel();
-    _bannerController.dispose();
     _searchController.dispose();
     super.dispose();
   }
@@ -131,10 +102,16 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
                         ),
                       ),
                     ),
-                    SliverToBoxAdapter(
+                    const SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
-                        child: _buildBanner(),
+                        padding: EdgeInsets.fromLTRB(16, 24, 16, 0),
+                        child: AutoSliderBanner(),
+                      ),
+                    ),
+                    const SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 24),
+                        child: NewsSection(),
                       ),
                     ),
                     SliverToBoxAdapter(
@@ -265,47 +242,6 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
     );
   }
 
-
-  Widget _buildBanner() {
-    final banners = ref.watch(homeBannersProvider).value ?? const [];
-    if (banners.isEmpty) {
-      return const SizedBox(
-        height: 320,
-        child: Center(child: CircularProgressIndicator()),
-      );
-    }
-    return Column(
-      children: [
-        SizedBox(
-          height:
-              320, // Reverted to original height while maintaining new style
-          child: PageView.builder(
-            controller: _bannerController,
-            onPageChanged: (i) => setState(() => _currentBanner = i),
-            itemCount: banners.length,
-            itemBuilder: (_, i) => HeroBannerWidget(data: banners[i]),
-          ),
-        ),
-        const SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(banners.length, (i) {
-            final isActive = i == _currentBanner;
-            return AnimatedContainer(
-              duration: const Duration(milliseconds: 250),
-              margin: const EdgeInsets.symmetric(horizontal: 3),
-              width: isActive ? 20 : 6,
-              height: 6,
-              decoration: BoxDecoration(
-                color: isActive ? _red : Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(3),
-              ),
-            );
-          }),
-        ),
-      ],
-    );
-  }
 
 
   Widget _buildRekomendasiHeader() {
