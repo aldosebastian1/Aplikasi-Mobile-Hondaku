@@ -3,6 +3,8 @@ import '../features/auth/views/splash_screen.dart';
 import '../features/auth/views/onboarding_screen.dart';
 import '../features/auth/views/login_screen.dart';
 import '../features/auth/views/register_screen.dart';
+import '../features/auth/views/phone_login_screen.dart';
+import '../features/auth/views/otp_screen.dart';
 import 'hondaku_app.dart';
 import '../features/home/views/home_page.dart';
 import '../features/catalog/views/catalog_page.dart';
@@ -12,6 +14,7 @@ import '../features/profile/views/informasi_pribadi_page.dart';
 import '../features/profile/views/metode_pembayaran_page.dart';
 import '../features/profile/views/bantuan_dukungan_page.dart';
 import '../features/profile/views/pengaturan_page.dart';
+import '../features/favorites/views/favorite_page.dart';
 import '../features/catalog/views/product_detail_screen.dart';
 import '../features/booking/views/booking_form_page.dart';
 import '../features/booking/views/checkout_payment_method_page.dart';
@@ -45,6 +48,22 @@ final goRouter = GoRouter(
     GoRoute(
       path: '/register',
       builder: (context, state) => const RegisterScreen(),
+    ),
+    GoRoute(
+      path: '/phone-login',
+      builder: (context, state) {
+        final isLoginMode = (state.extra as bool?) ?? true;
+        return PhoneLoginScreen(isLoginMode: isLoginMode);
+      },
+    ),
+    GoRoute(
+      path: '/otp',
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>;
+        final verificationId = extra['verificationId'] as String;
+        final isLoginMode = extra['isLoginMode'] as bool? ?? true;
+        return OtpScreen(verificationId: verificationId, isLoginMode: isLoginMode);
+      },
     ),
     
     // Stateful Shell Route for tabs (main navigation stack preservation)
@@ -106,6 +125,10 @@ final goRouter = GoRouter(
                 GoRoute(
                   path: 'settings',
                   builder: (context, state) => const PengaturanPage(),
+                ),
+                GoRoute(
+                  path: 'favorites',
+                  builder: (context, state) => const FavoritePage(),
                 ),
               ],
             ),
