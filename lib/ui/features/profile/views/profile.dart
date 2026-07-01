@@ -9,6 +9,7 @@ import '../../../core/widgets/hondaku_avatar.dart';
 import '../../../core/toast/hondaku_toast.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/profile_theme.dart';
+import '../../auth/providers/auth_provider.dart';
 
 // ─────────────────────────────────────────────────────────────
 // PROFILE MAIN SCREEN
@@ -66,7 +67,7 @@ class ProfilePage extends ConsumerWidget {
                     ],
                     _buildMenuSection(theme, loc),
                     const SizedBox(height: 14),
-                    _buildLogoutButton(context, theme, loc),
+                    _buildLogoutButton(context, theme, loc, ref),
                     const SizedBox(height: 14),
                     Text(
                       'MEDAN V1.1.1 (BUILD 1082)',
@@ -926,6 +927,12 @@ class ProfilePage extends ConsumerWidget {
             theme: theme,
           ),
           _MenuTile(
+            icon: Icons.favorite_border_rounded,
+            title: 'Wishlist Motor',
+            path: '/profile/favorites',
+            theme: theme,
+          ),
+          _MenuTile(
             icon: Icons.payments_outlined,
             title: loc.paymentMethods,
             path: '/profile/payment-methods',
@@ -948,15 +955,18 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildLogoutButton(BuildContext context, ProfileThemeColors theme, ProfileLocalizations loc) {
+  Widget _buildLogoutButton(BuildContext context, ProfileThemeColors theme, ProfileLocalizations loc, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: SizedBox(
         width: double.infinity,
         height: 54,
         child: ElevatedButton.icon(
-          onPressed: () {
-            context.go('/login');
+          onPressed: () async {
+            await ref.read(authNotifierProvider.notifier).signOut();
+            if (context.mounted) {
+              context.go('/login');
+            }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: theme.isDark ? const Color(0xFF3A1C1C) : const Color(0xFFF8ECEC),
