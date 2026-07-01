@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -37,8 +39,22 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-  void _startExitTransition() {
-    context.go('/onboarding');
+  void _startExitTransition() async {
+    final prefs = await SharedPreferences.getInstance();
+    final hasCompletedOnboarding = prefs.getBool('hasCompletedOnboarding') ?? false;
+
+    if (!mounted) return;
+
+    if (hasCompletedOnboarding) {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        context.go('/home');
+      } else {
+        context.go('/login');
+      }
+    } else {
+      context.go('/onboarding');
+    }
   }
 
   @override
