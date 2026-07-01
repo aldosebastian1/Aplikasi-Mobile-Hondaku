@@ -6,6 +6,8 @@ import 'package:hondaku/ui/features/auth/views/splash_screen.dart';
 import 'package:hondaku/ui/features/auth/views/onboarding_screen.dart';
 import 'package:hondaku/ui/features/auth/views/login_screen.dart';
 import 'package:hondaku/ui/features/auth/views/register_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hondaku/l10n/app_localizations.dart';
 
 void main() {
   final List<Map<String, dynamic>> targetSizes = [
@@ -61,6 +63,13 @@ void main() {
         await tester.pumpWidget(
           MaterialApp.router(
             routerConfig: testRouter,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [Locale('en'), Locale('id')],
           ),
         );
         await tester.pump();
@@ -83,6 +92,13 @@ void main() {
         await tester.pumpWidget(
           const MaterialApp(
             home: OnboardingScreen(),
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [Locale('en'), Locale('id')],
           ),
         );
         await tester.pump();
@@ -110,6 +126,13 @@ void main() {
           const ProviderScope(
             child: MaterialApp(
               home: LoginScreen(),
+              localizationsDelegates: [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: [Locale('en'), Locale('id')],
             ),
           ),
         );
@@ -134,6 +157,13 @@ void main() {
           const ProviderScope(
             child: MaterialApp(
               home: RegisterScreen(),
+              localizationsDelegates: [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: [Locale('en'), Locale('id')],
             ),
           ),
         );
