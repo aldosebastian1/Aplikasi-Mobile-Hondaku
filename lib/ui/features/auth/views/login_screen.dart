@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../view_models/auth_view_model.dart';
+import '../providers/auth_provider.dart';
 import 'package:hondaku/l10n/app_localizations.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -28,7 +28,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authViewModelProvider);
+    final authState = ref.watch(authNotifierProvider);
     final double screenHeight = MediaQuery.sizeOf(context).height;
     final bool isSmallScreen = screenHeight < 680;
 
@@ -60,25 +60,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      // Make the back icon optically align perfectly with left margin
-                      child: Transform.translate(
-                        offset: const Offset(-12, 0),
-                        child: IconButton(
-                          iconSize: 22,
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.black87,
-                          ),
-                          onPressed: () {
-                            if (Navigator.canPop(context)) {
-                              Navigator.pop(context);
-                            }
-                          },
-                        ),
-                      ),
-                    ),
                     const SizedBox(height: 16.0),
                     // Title
                     const Text(
@@ -265,15 +246,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         onPressed: authState.isLoading
                             ? null
                             : () async {
-                                final success = await ref.read(authViewModelProvider.notifier).login(
+                                await ref.read(authNotifierProvider.notifier).login(
                                       _emailController.text.trim(),
                                       _passwordController.text,
                                     );
                                 if (context.mounted) {
-                                  if (success) {
+                                  final authStateAfter = ref.read(authNotifierProvider);
+                                  if (!authStateAfter.hasError) {
                                     context.go('/home');
                                   } else {
-                                    final errorMsg = ref.read(authViewModelProvider).errorMessage ??
+                                    final errorMsg = authStateAfter.error?.toString() ??
                                         'Email atau kata sandi yang Anda masukkan salah. Silakan coba lagi.';
                                     await showCupertinoDialog(
                                       context: context,
@@ -365,12 +347,62 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _buildAssetSocialButton('assets/icons/apple-logo.svg'),
-                        const SizedBox(width: 16.0),
-                        _buildAssetSocialButton('assets/icons/goggle-logo.svg'),
-                        const SizedBox(width: 16.0),
                         _buildAssetSocialButton(
                           'assets/icons/facebook-logo.svg',
+                          onTap: () async {
+                            try {
+                              await ref.read(authNotifierProvider.notifier).loginWithFacebook(isLoginMode: true);
+                              if (context.mounted) {
+                                final stateAfter = ref.read(authNotifierProvider);
+                                if (!stateAfter.hasError) {
+                                  context.go('/home');
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(stateAfter.error.toString())),
+                                  );
+                                }
+                              }
+                            } catch (e) {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(e.toString())),
+                                );
+                              }
+                            }
+                          },
+                        ),
+                        const SizedBox(width: 16.0),
+                        _buildAssetSocialButton(
+                          'assets/icons/goggle-logo.svg',
+                          onTap: () async {
+                            try {
+                              await ref.read(authNotifierProvider.notifier).loginWithGoogle(isLoginMode: true);
+                              if (context.mounted) {
+                                final stateAfter = ref.read(authNotifierProvider);
+                                if (!stateAfter.hasError) {
+                                  context.go('/home');
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(stateAfter.error.toString())),
+                                  );
+                                }
+                              }
+                            } catch (e) {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(e.toString())),
+                                );
+                              }
+                            }
+                          },
+                        ),
+                        const SizedBox(width: 16.0),
+                        _buildIconSocialButton(
+                          Icons.phone_outlined,
+                          color: const Color(0xFFC40000), // Honda Red
+                          onTap: () {
+                            context.push('/phone-login', extra: true);
+                          },
                         ),
                       ],
                     ),
@@ -415,32 +447,64 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   // Builder method for Asset Social Button
-  Widget _buildAssetSocialButton(String assetPath) {
-    return Container(
-      width: 48,
-      height: 48,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-        border: Border.all(color: const Color(0xFFF0F0F0)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+  Widget _buildAssetSocialButton(String assetPath, {VoidCallback? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 48,
+        height: 48,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+          border: Border.all(color: const Color(0xFFF0F0F0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(11.0),
+            child: SvgPicture.asset(
+              assetPath,
+              height: 26,
+              width: 26,
+              fit: BoxFit.contain,
+              placeholderBuilder: (BuildContext context) =>
+                  const Icon(Icons.broken_image, color: Colors.grey, size: 18),
+            ),
           ),
-        ],
+        ),
       ),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(11.0),
-          child: SvgPicture.asset(
-            assetPath,
-            height: 26,
-            width: 26,
-            fit: BoxFit.contain,
-            placeholderBuilder: (BuildContext context) =>
-                const Icon(Icons.broken_image, color: Colors.grey, size: 18),
+    );
+  }
+
+  Widget _buildIconSocialButton(IconData icon, {Color? color, VoidCallback? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 48,
+        height: 48,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+          border: Border.all(color: const Color(0xFFF0F0F0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Icon(
+            icon,
+            color: color ?? Colors.black87,
+            size: 24,
           ),
         ),
       ),
