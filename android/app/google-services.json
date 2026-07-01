@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "675175751660",
+    "project_id": "hondaku-app",
+    "storage_bucket": "hondaku-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675175751660:android:64e988d81668171f046ac9",
+        "android_client_info": {
+          "package_name": "com.example.hondaku"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "675175751660-rvb15hv20efov516nunfd4l4rgckemp0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBr0xdIihN-uuHyJr_4nHFA-filDha0yYs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "675175751660-rvb15hv20efov516nunfd4l4rgckemp0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
