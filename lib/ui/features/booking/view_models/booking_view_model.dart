@@ -85,39 +85,39 @@ class BookingViewModel extends Notifier<BookingFormState> {
   }
 
   void updateNama(String nama) {
-    state = state.copyWith(nama: nama);
+    state = state.copyWith(nama: nama, errorMessage: null);
   }
 
   void updateNik(String nik) {
-    state = state.copyWith(nik: nik);
+    state = state.copyWith(nik: nik, errorMessage: null);
   }
 
   void updatePhone(String phone) {
-    state = state.copyWith(phone: phone);
+    state = state.copyWith(phone: phone, errorMessage: null);
   }
 
   void updateEmail(String email) {
-    state = state.copyWith(email: email);
+    state = state.copyWith(email: email, errorMessage: null);
   }
 
   void updateAlamat(String alamat) {
-    state = state.copyWith(alamat: alamat);
+    state = state.copyWith(alamat: alamat, errorMessage: null);
   }
 
   void updateKecamatan(String? kecamatan) {
-    state = state.copyWith(selectedKecamatan: kecamatan);
+    state = state.copyWith(selectedKecamatan: kecamatan, errorMessage: null);
   }
 
   void updateKelurahan(String? kelurahan) {
-    state = state.copyWith(selectedKelurahan: kelurahan);
+    state = state.copyWith(selectedKelurahan: kelurahan, errorMessage: null);
   }
 
   void updatePaymentType({required bool isFullPayment}) {
-    state = state.copyWith(isFullPayment: isFullPayment);
+    state = state.copyWith(isFullPayment: isFullPayment, errorMessage: null);
   }
 
   void updateSelectedPaymentMethodIndex(int index) {
-    state = state.copyWith(selectedPaymentMethodIndex: index);
+    state = state.copyWith(selectedPaymentMethodIndex: index, errorMessage: null);
   }
 
   bool submitForm() {
