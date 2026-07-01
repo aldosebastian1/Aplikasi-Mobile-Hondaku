@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../domain/models/motorcycle.dart';
 import '../../home/view_models/home_view_model.dart';
+import '../view_models/catalog_view_model.dart';
 import '../../../core/widgets/hondaku_avatar.dart';
 import '../../../core/theme.dart';
 import '../../../core/widgets/motorcycle_card_widget.dart';
@@ -19,36 +19,8 @@ class _CatalogPageState extends ConsumerState<CatalogPage> {
   static const _red = HondakuTheme.red;
   static const _surface = Colors.white;
 
-  int _selectedFilter = 0;
-  String _activeCategory = '';
-
   Future<void> _handleRefresh() async {
     final _ = await ref.refresh(homeMotorcyclesProvider.future);
-  }
-
-  double _parsePrice(String priceString) {
-    final cleanString = priceString.replaceAll(RegExp(r'[^0-9]'), '');
-    return double.tryParse(cleanString) ?? 0.0;
-  }
-
-  List<Motorcycle> get _filteredMotors {
-    final database = ref.watch(homeMotorcyclesProvider).value ?? const [];
-    Iterable<Motorcycle> list = database;
-
-    // 1. Filter by Category
-    if (_activeCategory.isNotEmpty) {
-      list = list.where((m) =>
-          m.categoryBadge.toUpperCase() == _activeCategory.toUpperCase());
-    }
-
-    // 2. Sort by Selected Filter (Price)
-    final result = list.toList();
-    if (_selectedFilter == 1) {
-      result.sort((a, b) => _parsePrice(a.price).compareTo(_parsePrice(b.price)));
-    } else if (_selectedFilter == 2) {
-      result.sort((a, b) => _parsePrice(b.price).compareTo(_parsePrice(a.price)));
-    }
-    return result;
   }
 
   void _showFilterSheet() {
@@ -91,7 +63,7 @@ class _CatalogPageState extends ConsumerState<CatalogPage> {
                       ),
                       TextButton(
                         onPressed: () {
-                          setState(() => _activeCategory = '');
+                          ref.read(catalogFilterProvider.notifier).setCategory('');
                           Navigator.pop(context);
                         },
                         child: Text(
@@ -107,7 +79,8 @@ class _CatalogPageState extends ConsumerState<CatalogPage> {
                   const SizedBox(height: 16),
                   ...['', 'MATIC', 'SPORT', 'ADVENTURE'].map(
                     (category) {
-                      final isSelected = _activeCategory == category;
+                      final filterState = ref.watch(catalogFilterProvider);
+                      final isSelected = filterState.activeCategory == category;
                       final displayLabel = category.isEmpty
                           ? AppLocalizations.of(context)!.allCategories
                           : category;
@@ -115,7 +88,7 @@ class _CatalogPageState extends ConsumerState<CatalogPage> {
                         padding: const EdgeInsets.only(bottom: 8),
                         child: InkWell(
                           onTap: () {
-                            setState(() => _activeCategory = category);
+                            ref.read(catalogFilterProvider.notifier).setCategory(category);
                             Navigator.pop(context);
                           },
                           borderRadius: BorderRadius.circular(14),
@@ -172,6 +145,7 @@ class _CatalogPageState extends ConsumerState<CatalogPage> {
 
   @override
   Widget build(BuildContext context) {
+    final filteredMotors = ref.watch(filteredCatalogMotorsProvider);
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       body: SafeArea(
@@ -212,10 +186,10 @@ class _CatalogPageState extends ConsumerState<CatalogPage> {
                       sliver: SliverList(
                         delegate: SliverChildBuilderDelegate(
                           (_, i) => MotorcycleCardWidget(
-                            motor: _filteredMotors[i],
+                            motor: filteredMotors[i],
                             isCompact: false,
                           ),
-                          childCount: _filteredMotors.length,
+                          childCount: filteredMotors.length,
                         ),
                       ),
                     ),
@@ -348,14 +322,15 @@ class _CatalogPageState extends ConsumerState<CatalogPage> {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: filters.asMap().entries.map((entry) {
+          final filterState = ref.watch(catalogFilterProvider);
           final i = entry.key;
           final label = entry.value;
-          final isSelected = i == _selectedFilter;
+          final isSelected = i == filterState.selectedFilter;
 
           return Padding(
             padding: EdgeInsets.only(right: i < filters.length - 1 ? 8 : 0),
             child: GestureDetector(
-              onTap: () => setState(() => _selectedFilter = i),
+              onTap: () => ref.read(catalogFilterProvider.notifier).setFilter(i),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(
