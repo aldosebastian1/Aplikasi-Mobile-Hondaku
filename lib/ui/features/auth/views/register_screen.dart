@@ -1,21 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/auth_provider.dart';
+import 'package:flutter/cupertino.dart';
 
-class RegisterScreen extends StatefulWidget {
+class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
-  bool _isLoading = false; // State for loading animation
+  
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authNotifierProvider);
     final double screenHeight = MediaQuery.sizeOf(context).height;
     final bool isSmallScreen = screenHeight < 680;
 
@@ -90,10 +107,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   const SizedBox(height: 8.0),
-                  _buildTextField('Masukkan nama lengkap', icon: Icons.person_outline),
+                  _buildTextField('Masukkan nama lengkap', controller: _nameController, icon: Icons.person_outline),
                   const SizedBox(height: 16.0),
 
-                  // Email Label
                   const Text(
                     'EMAIL',
                     style: TextStyle(
@@ -106,12 +122,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 8.0),
                   _buildTextField(
                     'Masukkan alamat email',
+                    controller: _emailController,
                     icon: Icons.email_outlined,
                     keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 16.0),
 
-                  // Password Label
                   const Text(
                     'KATA SANDI',
                     style: TextStyle(
@@ -124,6 +140,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 8.0),
                   _buildPasswordField(
                     hint: 'Masukkan kata sandi (Min. 8 karakter)',
+                    controller: _passwordController,
                     icon: Icons.lock_outline,
                     isVisible: _isPasswordVisible,
                     onToggle: () {
@@ -147,6 +164,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 8.0),
                   _buildPasswordField(
                     hint: 'Konfirmasi kata sandi Anda',
+                    controller: _confirmPasswordController,
                     icon: Icons.lock_reset_outlined,
                     isVisible: _isConfirmPasswordVisible,
                     onToggle: () {
@@ -161,23 +179,58 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
-                      onPressed: _isLoading
+                      onPressed: authState.isLoading
                           ? null
                           : () async {
-                              // Set loading state
-                              setState(() {
-                                _isLoading = true;
-                              });
+                              if (_passwordController.text != _confirmPasswordController.text) {
+                                await showCupertinoDialog(
+                                  context: context,
+                                  builder: (context) => CupertinoAlertDialog(
+                                    title: const Text('Gagal'),
+                                    content: const Text('Konfirmasi kata sandi tidak cocok.'),
+                                    actions: [
+                                      CupertinoDialogAction(
+                                        child: const Text('OK'),
+                                        onPressed: () => Navigator.pop(context),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                return;
+                              }
 
-                              // Fake network register action time
-                              await Future.delayed(const Duration(seconds: 2));
+                              await ref.read(authNotifierProvider.notifier).register(
+                                    _emailController.text.trim(),
+                                    _passwordController.text,
+                                    _nameController.text.trim(),
+                                  );
 
                               if (context.mounted) {
-                                setState(() {
-                                  _isLoading = false;
-                                });
-
-                                context.go('/home');
+                                final authStateAfter = ref.read(authNotifierProvider);
+                                if (!authStateAfter.hasError) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Pendaftaran berhasil! Selamat datang di Hondaku.'),
+                                      backgroundColor: Colors.green,
+                                    ),
+                                  );
+                                  context.go('/home');
+                                } else {
+                                  final errorMsg = authStateAfter.error?.toString() ?? 'Gagal melakukan registrasi.';
+                                  await showCupertinoDialog(
+                                    context: context,
+                                    builder: (context) => CupertinoAlertDialog(
+                                      title: const Text('Gagal'),
+                                      content: Text(errorMsg),
+                                      actions: [
+                                        CupertinoDialogAction(
+                                          child: const Text('OK'),
+                                          onPressed: () => Navigator.pop(context),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
                               }
                             },
                       style: ElevatedButton.styleFrom(
@@ -188,7 +241,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         elevation: 4, // Matching login shadow
                         shadowColor: const Color(0xFFC40000).withValues(alpha: 0.4),
                       ),
-                      child: _isLoading
+                      child: authState.isLoading
                           ? const SizedBox(
                               height: 24,
                               width: 24,
@@ -238,11 +291,63 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildAssetSocialButton('assets/icons/apple-logo.svg'),
+                      _buildAssetSocialButton(
+                        'assets/icons/facebook-logo.svg',
+                        onTap: () async {
+                          try {
+                            await ref.read(authNotifierProvider.notifier).loginWithFacebook(isLoginMode: false);
+                            if (context.mounted) {
+                              final stateAfter = ref.read(authNotifierProvider);
+                              if (!stateAfter.hasError) {
+                                context.go('/home');
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(stateAfter.error.toString())),
+                                );
+                              }
+                            }
+                          } catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(e.toString())),
+                              );
+                            }
+                          }
+                        },
+                      ),
                       const SizedBox(width: 16.0),
-                      _buildAssetSocialButton('assets/icons/goggle-logo.svg'),
+                      _buildAssetSocialButton(
+                        'assets/icons/goggle-logo.svg',
+                        onTap: () async {
+                          try {
+                            await ref.read(authNotifierProvider.notifier).loginWithGoogle(isLoginMode: false);
+                            if (context.mounted) {
+                              final stateAfter = ref.read(authNotifierProvider);
+                              if (!stateAfter.hasError) {
+                                context.go('/home');
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(stateAfter.error.toString())),
+                                );
+                              }
+                            }
+                          } catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(e.toString())),
+                              );
+                            }
+                          }
+                        },
+                      ),
                       const SizedBox(width: 16.0),
-                      _buildAssetSocialButton('assets/icons/facebook-logo.svg'),
+                      _buildIconSocialButton(
+                        Icons.phone_outlined,
+                        color: const Color(0xFFC40000), // Honda Red
+                        onTap: () {
+                          context.push('/phone-login', extra: false);
+                        },
+                      ),
                     ],
                   ),
                   SizedBox(height: spaceBeforeLogin),
@@ -284,10 +389,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Widget _buildTextField(
     String hint, {
+    TextEditingController? controller,
     TextInputType keyboardType = TextInputType.text,
     IconData? icon,
   }) {
     return TextField(
+      controller: controller,
       keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hint,
@@ -327,11 +434,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Widget _buildPasswordField({
     required String hint,
+    TextEditingController? controller,
     required bool isVisible,
     required VoidCallback onToggle,
     IconData? icon,
   }) {
     return TextField(
+      controller: controller,
       obscureText: !isVisible,
       decoration: InputDecoration(
         hintText: hint,
@@ -379,32 +488,64 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildAssetSocialButton(String assetPath) {
-    return Container(
-      width: 48,
-      height: 48,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-        border: Border.all(color: const Color(0xFFF0F0F0)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+  Widget _buildAssetSocialButton(String assetPath, {VoidCallback? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 48,
+        height: 48,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+          border: Border.all(color: const Color(0xFFF0F0F0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(11.0),
+            child: SvgPicture.asset(
+              assetPath,
+              height: 26,
+              width: 26,
+              fit: BoxFit.contain,
+              placeholderBuilder: (BuildContext context) =>
+                  const Icon(Icons.broken_image, color: Colors.grey, size: 18),
+            ),
           ),
-        ],
+        ),
       ),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(11.0),
-          child: SvgPicture.asset(
-            assetPath,
-            height: 26,
-            width: 26,
-            fit: BoxFit.contain,
-            placeholderBuilder: (BuildContext context) =>
-                const Icon(Icons.broken_image, color: Colors.grey, size: 18),
+    );
+  }
+
+  Widget _buildIconSocialButton(IconData icon, {Color? color, VoidCallback? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 48,
+        height: 48,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+          border: Border.all(color: const Color(0xFFF0F0F0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Icon(
+            icon,
+            color: color ?? Colors.black87,
+            size: 24,
           ),
         ),
       ),
