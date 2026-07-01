@@ -4,12 +4,28 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hondaku/ui/features/auth/views/login_screen.dart';
 import 'package:hondaku/l10n/app_localizations.dart';
+import 'package:hondaku/ui/features/auth/providers/auth_provider.dart';
+import 'package:hondaku/domain/repositories/auth_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+class MockFirebaseAuthRepository implements AuthRepository {
+  @override
+  Future<UserCredential> loginWithEmail(String email, String password) async {
+    throw Exception('Login Failed Mock');
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
 
 void main() {
   testWidgets('LoginScreen initial rendering and inputs validation', (WidgetTester tester) async {
     await tester.pumpWidget(
-      const ProviderScope(
-        child: MaterialApp(
+      ProviderScope(
+        overrides: [
+          authRepositoryProvider.overrideWithValue(MockFirebaseAuthRepository()),
+        ],
+        child: const MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           locale: Locale('id'),
@@ -37,7 +53,7 @@ void main() {
     // Verify error dialog appears
     expect(find.byType(CupertinoAlertDialog), findsOneWidget);
     expect(find.text('Login Gagal'), findsOneWidget);
-    expect(find.text('Email atau kata sandi yang Anda masukkan salah. Silakan coba lagi.'), findsOneWidget);
+    expect(find.text('Exception: Login Failed Mock'), findsOneWidget);
 
     // Tap OK on the dialog to dismiss
     await tester.tap(find.text('OK'));
