@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../data/motorcycle_data.dart';
 import '../../../core/hondaku_app.dart';
 import '../widgets/specs_section_widget.dart';
+import '../../favorites/providers/favorite_provider.dart';
 import 'package:hondaku/l10n/app_localizations.dart';
 
-class ProductDetailScreen extends StatefulWidget {
+class ProductDetailScreen extends ConsumerStatefulWidget {
   final int parentIndex;
   final Motorcycle motor;
   const ProductDetailScreen({
@@ -15,10 +17,10 @@ class ProductDetailScreen extends StatefulWidget {
   });
 
   @override
-  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+  ConsumerState<ProductDetailScreen> createState() => _ProductDetailScreenState();
 }
 
-class _ProductDetailScreenState extends State<ProductDetailScreen> {
+class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   late int _selectedBottomIndex;
 
   @override
@@ -34,7 +36,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     return Scaffold(
       body: Column(
         children: [
-          _buildHeader(),
+          _buildHeader(context),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -62,7 +64,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
+    // Watch the favorite provider
+    final favoritesList = ref.watch(favoriteProvider);
+    final isFav = favoritesList.contains(widget.motor.id);
+
     return Container(
       decoration: const BoxDecoration(
         color: _surface,
@@ -109,10 +115,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
               ),
               const Spacer(),
-              const CircleAvatar(
-                radius: 20,
-                backgroundColor: Color(0xFFE9E9E9),
-                backgroundImage: AssetImage('assets/images/profile.png'),
+              IconButton(
+                icon: Icon(
+                  isFav ? Icons.favorite : Icons.favorite_border,
+                  color: isFav ? const Color(0xFFC40000) : Colors.grey[600],
+                  size: 26,
+                ),
+                onPressed: () {
+                  ref.read(favoriteProvider.notifier).toggleFavorite(widget.motor);
+                },
               ),
             ],
           ),
