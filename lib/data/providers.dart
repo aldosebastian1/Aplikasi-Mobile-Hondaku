@@ -4,6 +4,7 @@ import '../domain/repositories/bank_repository.dart';
 import '../domain/repositories/garage_repository.dart';
 import '../domain/repositories/hero_banner_repository.dart';
 import '../domain/repositories/aktivitas_repository.dart';
+import '../domain/repositories/user_repository.dart';
 import '../domain/models/motorcycle.dart';
 import '../domain/models/bank_option.dart';
 import '../domain/models/hero_banner.dart';
@@ -12,6 +13,7 @@ import 'repositories/bank_repository_impl.dart';
 import 'repositories/garage_repository_impl.dart';
 import 'repositories/hero_banner_repository_impl.dart';
 import 'repositories/aktivitas_repository_impl.dart';
+import 'repositories/user_repository_impl.dart';
 
 final motorcycleRepositoryProvider = Provider<MotorcycleRepository>((ref) {
   return MotorcycleRepositoryImpl();
@@ -31,6 +33,10 @@ final heroBannerRepositoryProvider = Provider<HeroBannerRepository>((ref) {
 
 final aktivitasRepositoryProvider = Provider<AktivitasRepository>((ref) {
   return AktivitasRepositoryImpl();
+});
+
+final userRepositoryProvider = Provider<UserRepository>((ref) {
+  return UserRepositoryImpl();
 });
 
 // Future Providers for reactive UI consumption
