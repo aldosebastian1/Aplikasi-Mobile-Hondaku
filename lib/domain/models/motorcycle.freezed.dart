@@ -490,8 +490,8 @@ return $default(_that.id,_that.name,_that.categoryBadge,_that.subtitle,_that.des
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true)
 class _Motorcycle implements Motorcycle {
   const _Motorcycle({required this.id, required this.name, required this.categoryBadge, required this.subtitle, required this.description, required this.price, required this.imageAsset, this.isNew = false, this.isRecommended = false, required this.engine, required this.maxPower, required this.fuelCapacity, required final  List<MotorcycleFeature> features, required final  Map<String, String> specsMesin, required final  Map<String, String> specsRangka, required final  Map<String, String> specsDimensi}): _features = features,_specsMesin = specsMesin,_specsRangka = specsRangka,_specsDimensi = specsDimensi;
   factory _Motorcycle.fromJson(Map<String, dynamic> json) => _$MotorcycleFromJson(json);
