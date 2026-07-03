@@ -185,19 +185,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           ? null
                           : () async {
                               if (_passwordController.text != _confirmPasswordController.text) {
-                                await showCupertinoDialog(
-                                  context: context,
-                                  builder: (context) => CupertinoAlertDialog(
-                                    title: const Text('Gagal'),
-                                    content: const Text('Konfirmasi kata sandi tidak cocok.'),
-                                    actions: [
-                                      CupertinoDialogAction(
-                                        child: const Text('OK'),
-                                        onPressed: () => Navigator.pop(context),
-                                      ),
-                                    ],
-                                  ),
-                                );
+                                HondakuToast.showError(context, 'Konfirmasi kata sandi tidak cocok.');
                                 return;
                               }
 
@@ -214,19 +202,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   context.go('/home');
                                 } else {
                                   final errorMsg = authStateAfter.error?.toString() ?? 'Gagal melakukan registrasi.';
-                                  await showCupertinoDialog(
-                                    context: context,
-                                    builder: (context) => CupertinoAlertDialog(
-                                      title: const Text('Gagal'),
-                                      content: Text(errorMsg),
-                                      actions: [
-                                        CupertinoDialogAction(
-                                          child: const Text('OK'),
-                                          onPressed: () => Navigator.pop(context),
-                                        ),
-                                      ],
-                                    ),
-                                  );
+                                  HondakuToast.showError(context, errorMsg);
                                 }
                               }
                             },
