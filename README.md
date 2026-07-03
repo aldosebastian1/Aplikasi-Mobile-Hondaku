@@ -8,6 +8,17 @@
 
 Hondaku adalah aplikasi mobile modern yang dirancang khusus untuk mempermudah konsumen dalam mengeksplorasi, mensimulasikan, dan melakukan pemesanan sepeda motor Honda secara digital. Aplikasi ini menawarkan pengalaman pengguna yang premium dengan antarmuka yang bersih, responsif, dan selaras dengan identitas brand Honda.
 
+## 🎯 Mengapa Proyek Ini Dibuat? (Portfolio Context)
+
+### 🚨 Masalah yang Diselesaikan (Problem Statement)
+Proses pembelian sepeda motor secara konvensional seringkali memakan waktu dan kurang transparan. Calon pembeli biasanya harus berkunjung ke dealer fisik berkali-kali hanya untuk melihat ketersediaan unit, menghitung simulasi kredit manual dengan *sales*, atau menyerahkan dokumen persyaratan yang mudah hilang atau terselip. 
+**Hondaku** diciptakan untuk menyelesaikan masalah ini dengan mendigitalisasi seluruh pengalaman belanja (mulai dari melihat katalog 3D/Foto, kalkulasi cicilan transparan secara *real-time*, hingga penyerahan dokumen legalitas) ke dalam genggaman.
+
+### 👥 Target Market
+1. **Generasi Milenial & Gen Z**: Konsumen modern yang *tech-savvy*, menyukai efisiensi, serta mengutamakan pengalaman bertransaksi yang instan dan *cashless*.
+2. **Pekerja & Profesional**: Individu dengan jadwal padat yang tidak memiliki banyak waktu luang untuk melakukan survei dari satu dealer ke dealer lain.
+3. **Pembeli Motor Pertama (First-time Buyers)**: Pengguna yang membutuhkan panduan yang jelas, rincian biaya yang transparan (tanpa biaya tersembunyi), serta kebebasan bereksperimen dengan angka simulasi kredit sebelum membuat keputusan finansial.
+
 ## ✨ Fitur Utama
 
 - **Katalog Motor Dinamis**: Jelajahi berbagai tipe unit Honda (Matic, Sport, Cub, Electric) dengan informasi detail spesifikasi dan varian warna.
