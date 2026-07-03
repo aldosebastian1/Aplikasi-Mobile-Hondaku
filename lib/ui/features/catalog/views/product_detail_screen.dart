@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../data/motorcycle_data.dart';
 import '../../../core/hondaku_app.dart';
+import '../../../core/widgets/hondaku_toast.dart';
 import '../widgets/specs_section_widget.dart';
 import '../../favorites/providers/favorite_provider.dart';
 import 'package:hondaku/l10n/app_localizations.dart';
@@ -203,6 +204,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: double.infinity,
+                    cacheWidth: 800,
                   ),
                 ),
               ),
@@ -450,12 +452,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             child: ElevatedButton(
               onPressed: () {
                 // TODO: Implement contact sales functionality
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Hubungi sales untuk informasi lebih lanjut'),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
+                HondakuToast.showInfo(context, 'Hubungi sales untuk informasi lebih lanjut');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
