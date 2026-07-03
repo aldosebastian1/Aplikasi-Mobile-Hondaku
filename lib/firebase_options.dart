@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
 /// Example:
@@ -40,8 +42,8 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCf5DbB3yUgDIlIC8fEo6kVrRur_B2ZuAo',
+  static FirebaseOptions get web => FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_API_KEY_WEB'] ?? 'AIzaSyCf5DbB3yUgDIlIC8fEo6kVrRur_B2ZuAo',
     appId: '1:675175751660:web:e9a047f8c4c82f08046ac9',
     messagingSenderId: '675175751660',
     projectId: 'hondaku-app',
@@ -50,15 +52,15 @@ class DefaultFirebaseOptions {
     measurementId: 'G-TSLEX6N0G8',
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBr0xdIihN-uuHyJr_4nHFA-filDha0yYs',
+  static FirebaseOptions get android => FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_API_KEY_ANDROID'] ?? 'AIzaSyBr0xdIihN-uuHyJr_4nHFA-filDha0yYs',
     appId: '1:675175751660:android:64e988d81668171f046ac9',
     messagingSenderId: '675175751660',
     projectId: 'hondaku-app',
     storageBucket: 'hondaku-app.firebasestorage.app',
   );
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCYdeFHW3Nut7giz49gVDAd4egp78oF0oE',
+  static FirebaseOptions get ios => FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_API_KEY_IOS'] ?? 'AIzaSyCYdeFHW3Nut7giz49gVDAd4egp78oF0oE',
     appId: '1:675175751660:ios:ca629ca72337d9c3046ac9',
     messagingSenderId: '675175751660',
     projectId: 'hondaku-app',
@@ -66,8 +68,8 @@ class DefaultFirebaseOptions {
     iosClientId: '675175751660-704uhjme7lg5abria0q01uf415r0jedm.apps.googleusercontent.com',
     iosBundleId: 'com.example.hondaku',
   );
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCYdeFHW3Nut7giz49gVDAd4egp78oF0oE',
+  static FirebaseOptions get macos => FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_API_KEY_IOS'] ?? 'AIzaSyCYdeFHW3Nut7giz49gVDAd4egp78oF0oE',
     appId: '1:675175751660:ios:ca629ca72337d9c3046ac9',
     messagingSenderId: '675175751660',
     projectId: 'hondaku-app',
@@ -76,8 +78,8 @@ class DefaultFirebaseOptions {
     iosBundleId: 'com.example.hondaku',
   );
 
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCf5DbB3yUgDIlIC8fEo6kVrRur_B2ZuAo',
+  static FirebaseOptions get windows => FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_API_KEY_WEB'] ?? 'AIzaSyCf5DbB3yUgDIlIC8fEo6kVrRur_B2ZuAo',
     appId: '1:675175751660:web:34097c4cb6e299c1046ac9',
     messagingSenderId: '675175751660',
     projectId: 'hondaku-app',
