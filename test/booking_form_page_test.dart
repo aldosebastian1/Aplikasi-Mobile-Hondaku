@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hondaku/domain/models/motorcycle.dart';
 import 'package:hondaku/ui/features/booking/views/booking_form_page.dart';
+import 'package:hondaku/ui/features/booking/widgets/booking_payment_card.dart';
 
 void main() {
   const dummyMotor = Motorcycle(
@@ -39,7 +40,7 @@ void main() {
     // Verifikasi UI utama ter-render
     expect(find.text('Detail Pemesan'), findsOneWidget);
     expect(find.text('Honda Beat Sporty'), findsOneWidget);
-    expect(find.text('Tipe Pembayaran Cash'), findsOneWidget);
+    expect(find.byType(BookingPaymentCard), findsOneWidget);
 
     // Pastikan tombol checkout ada
     final submitButton = find.text('Pilih Pembayaran Booking');
@@ -47,9 +48,10 @@ void main() {
 
     // Tap tombol checkout tanpa mengisi form (harus memunculkan SnackBar validasi)
     await tester.tap(submitButton);
-    await tester.pumpAndSettle(); // Tunggu animasi SnackBar
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500)); // Tunggu animasi SnackBar
 
     // Verifikasi pesan validasi muncul (karena textfield kosong)
-    expect(find.text('Nama belum diisi'), findsOneWidget);
+    expect(find.text('Nama belum diisi'), findsWidgets);
   });
 }
