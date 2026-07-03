@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import '../../../../core/utils/form_validators.dart';
 class BookingFormState {
   final String nama;
   final String nik;
@@ -66,14 +66,24 @@ class BookingFormState {
   }
 
   String get validationMessage {
-    if (nama.trim().isEmpty) return "Nama belum diisi";
-    if (nik.trim().length < 15) return "NIK harus minimal 15-16 digit";
-    if (email.trim().isEmpty) return "Email belum diisi";
-    if (!email.contains('@')) return "Format email tidak valid (butuh @)";
+    final nameError = FormValidators.validateName(nama);
+    if (nameError != null) return nameError;
+
+    final nikError = FormValidators.validateNik(nik);
+    if (nikError != null) return nikError;
+
+    final emailError = FormValidators.validateEmail(email);
+    if (emailError != null) return emailError;
+
     if (selectedKecamatan == null) return "Kecamatan belum dipilih";
     if (selectedKelurahan == null) return "Kelurahan belum dipilih";
-    if (phone.trim().isEmpty) return "Nomor HP belum diisi";
-    if (alamat.trim().isEmpty) return "Alamat belum diisi";
+
+    final phoneError = FormValidators.validatePhone(phone);
+    if (phoneError != null) return phoneError;
+
+    final addressError = FormValidators.validateAddress(alamat);
+    if (addressError != null) return addressError;
+
     return "";
   }
 }
