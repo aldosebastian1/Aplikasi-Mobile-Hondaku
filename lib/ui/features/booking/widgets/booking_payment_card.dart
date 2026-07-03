@@ -40,7 +40,6 @@ class BookingPaymentCard extends StatelessWidget {
     return Expanded(
       child: Material(
         color: isSelected ? const Color(0xFFD32F2F) : Colors.white,
-        borderRadius: BorderRadius.circular(8),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
           side: BorderSide(
