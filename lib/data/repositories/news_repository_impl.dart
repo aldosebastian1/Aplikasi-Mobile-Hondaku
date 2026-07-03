@@ -24,6 +24,7 @@ class NewsRepositoryImpl implements NewsRepository {
 
   NewsRepositoryImpl(this._dio);
 
+  @override
   Future<List<NewsArticle>> fetchLatestNews() async {
     try {
       // Using DummyJSON API to simulate fetching automotive news
