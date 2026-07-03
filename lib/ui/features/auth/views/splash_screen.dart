@@ -37,6 +37,10 @@ class _SplashScreenState extends State<SplashScreen> {
     for (int i = 1; i <= 3; i++) {
       precacheImage(AssetImage('assets/images/onboarding$i.jpg'), context);
     }
+    // Precache home hero banners for smooth transition
+    for (int i = 1; i <= 3; i++) {
+      precacheImage(AssetImage('assets/images/home-hero$i.jpg'), context);
+    }
   }
 
   void _startExitTransition() async {
