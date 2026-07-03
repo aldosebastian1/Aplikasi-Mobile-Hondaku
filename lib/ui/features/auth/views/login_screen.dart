@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_provider.dart';
 import 'package:hondaku/l10n/app_localizations.dart';
+import '../../../core/widgets/hondaku_toast.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -357,16 +358,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 if (!stateAfter.hasError) {
                                   context.go('/home');
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(stateAfter.error.toString())),
-                                  );
+                                  HondakuToast.showError(context, stateAfter.error.toString());
                                 }
                               }
                             } catch (e) {
                               if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(e.toString())),
-                                );
+                                HondakuToast.showError(context, e.toString());
                               }
                             }
                           },
@@ -382,16 +379,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 if (!stateAfter.hasError) {
                                   context.go('/home');
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(stateAfter.error.toString())),
-                                  );
+                                  HondakuToast.showError(context, stateAfter.error.toString());
                                 }
                               }
                             } catch (e) {
                               if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(e.toString())),
-                                );
+                                HondakuToast.showError(context, e.toString());
                               }
                             }
                           },
