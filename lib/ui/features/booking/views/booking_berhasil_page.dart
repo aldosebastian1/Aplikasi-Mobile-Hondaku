@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
 import 'package:hondaku/l10n/app_localizations.dart';
 
 class BookingBerhasilPage extends StatelessWidget {
@@ -266,12 +267,7 @@ class BookingBerhasilPage extends StatelessWidget {
   Widget _buildBantuanText(BuildContext context) {
     return InkWell(
       onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Menghubungi Honda Care Medan via WhatsApp...'),
-            backgroundColor: _red,
-          ),
-        );
+        HondakuToast.showInfo(context, 'Menghubungi Honda Care Medan via WhatsApp...');
       },
       child: RichText(
         text: const TextSpan(
