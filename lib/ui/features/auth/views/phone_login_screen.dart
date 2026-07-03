@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_provider.dart';
+import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
 
 class PhoneLoginScreen extends ConsumerStatefulWidget {
   final bool isLoginMode;
@@ -131,9 +132,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                               });
                             },
                             onError: (error) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(error)),
-                              );
+                              HondakuToast.showError(context, error);
                             },
                           );
                         },
