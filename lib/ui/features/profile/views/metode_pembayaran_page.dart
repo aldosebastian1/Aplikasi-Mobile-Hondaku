@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/toast/hondaku_toast.dart';
+import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
 import '../view_models/profile_view_model.dart';
 import '../widgets/profile_theme.dart';
 
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // SUB-PAGE: PAYMENT METHODS (METODE PEMBAYARAN)
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class MetodePembayaranPage extends ConsumerWidget {
   const MetodePembayaranPage({super.key});
@@ -187,7 +187,7 @@ class MetodePembayaranPage extends ConsumerWidget {
                 onTap: () {
                   ref.read(paymentMethodsProvider.notifier).setDefaultPayment(item.id);
                   Navigator.pop(context);
-                  HondakuToastHelper.showSuccess(
+                  HondakuToast.showSuccess(
                     context,
                     loc.isEn ? 'Primary payment method updated!' : 'Metode pembayaran utama diperbarui!',
                   );
@@ -199,7 +199,7 @@ class MetodePembayaranPage extends ConsumerWidget {
                 onTap: () {
                   ref.read(paymentMethodsProvider.notifier).removePaymentMethod(item.id);
                   Navigator.pop(context);
-                  HondakuToastHelper.showSuccess(
+                  HondakuToast.showSuccess(
                     context,
                     loc.isEn ? 'Payment method deleted!' : 'Metode pembayaran dihapus!',
                   );
@@ -213,9 +213,9 @@ class MetodePembayaranPage extends ConsumerWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // STATEFUL WIDGET: ADD PAYMENT METHOD SHEET
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class AddPaymentMethodSheet extends ConsumerStatefulWidget {
   final ProfileThemeColors theme;
@@ -286,14 +286,14 @@ class _AddPaymentMethodSheetState extends ConsumerState<AddPaymentMethodSheet> {
 
     ref.read(paymentMethodsProvider.notifier).addPaymentMethod(newItem);
     Navigator.pop(context);
-    HondakuToastHelper.showSuccess(
+    HondakuToast.showSuccess(
       context,
       loc.isEn ? 'New payment method added!' : 'Metode pembayaran berhasil ditambahkan!',
     );
   }
 
   void _showErr(String msg) {
-    HondakuToastHelper.showError(context, msg);
+    HondakuToast.showError(context, msg);
   }
 
   @override
