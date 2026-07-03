@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/toast/hondaku_toast.dart';
+import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
 import '../view_models/profile_view_model.dart';
 import '../widgets/profile_theme.dart';
 
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // SUB-PAGE: HELP & SUPPORT (BANTUAN & DUKUNGAN)
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class BantuanDukunganPage extends ConsumerStatefulWidget {
   const BantuanDukunganPage({super.key});
@@ -505,9 +505,9 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
   }
 }
 
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // STATEFUL WIDGET: SUBMIT SUPPORT TICKET
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class SupportTicketSheet extends StatefulWidget {
   final ProfileThemeColors theme;
@@ -537,7 +537,7 @@ class _SupportTicketSheetState extends State<SupportTicketSheet> {
   void _submitTicket() {
     final desc = _descController.text.trim();
     if (desc.isEmpty) {
-      HondakuToastHelper.showError(
+      HondakuToast.showError(
         context,
         widget.loc.isEn ? 'Please describe your issue!' : 'Harap jelaskan kendala Anda!',
       );
