@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../ui/core/widgets/hondaku_avatar.dart';
-import '../../../../ui/core/toast/hondaku_toast.dart';
+import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
 import '../widgets/profile_theme.dart';
 import '../view_models/profile_view_model.dart';
 import 'profile.dart';
@@ -81,12 +81,12 @@ class _InformasiPribadiPageState extends ConsumerState<InformasiPribadiPage> {
       avatarBgColor: currentProfile.avatarBgColor,
     );
 
-    HondakuToastHelper.showSuccess(context, loc.profileUpdated);
+    HondakuToast.showSuccess(context, loc.profileUpdated);
     Navigator.pop(context);
   }
 
   void _showError(String message) {
-    HondakuToastHelper.showError(context, message);
+    HondakuToast.showError(context, message);
   }
 
   @override
