@@ -6,6 +6,7 @@ import '../local/database_helper.dart';
 class FavoriteRepositoryImpl implements FavoriteRepository {
   final DatabaseHelper _dbHelper = DatabaseHelper.instance;
 
+  @override
   Future<void> addFavorite(Motorcycle motor) async {
     final db = await _dbHelper.database;
     await db.insert(
@@ -20,6 +21,7 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
     );
   }
 
+  @override
   Future<void> removeFavorite(String motorId) async {
     final db = await _dbHelper.database;
     await db.delete(
@@ -29,6 +31,7 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
     );
   }
 
+  @override
   Future<bool> isFavorite(String motorId) async {
     final db = await _dbHelper.database;
     final maps = await db.query(
@@ -40,6 +43,7 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
     return maps.isNotEmpty;
   }
 
+  @override
   Future<List<Map<String, dynamic>>> getFavorites() async {
     final db = await _dbHelper.database;
     final result = await db.query('favorites');
