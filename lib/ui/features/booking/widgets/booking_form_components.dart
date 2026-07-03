@@ -195,7 +195,7 @@ class BookingDropdown extends StatelessWidget {
     return Semantics(
       label: semanticsLabel,
       child: DropdownButtonFormField<String>(
-        initialValue: value,
+        value: value,
         isExpanded: true,
         hint: Text(
           hint,
