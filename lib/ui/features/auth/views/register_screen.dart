@@ -5,6 +5,7 @@ import '../providers/auth_provider.dart';
 import '../../../core/widgets/hondaku_toast.dart';
 import '../widgets/auth_input_fields.dart';
 import '../widgets/auth_social_buttons.dart';
+import '../../../../core/utils/error_handler.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -200,7 +201,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   HondakuToast.showSuccess(context, 'Pendaftaran berhasil! Selamat datang di Hondaku.');
                                   context.go('/home');
                                 } else {
-                                  final errorMsg = authStateAfter.error?.toString() ?? 'Gagal melakukan registrasi.';
+                                  final errorMsg = AppErrorHandler.getMessage(authStateAfter.error);
                                   HondakuToast.showError(context, errorMsg);
                                 }
                               }
@@ -273,7 +274,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               if (!stateAfter.hasError) {
                                 context.go('/home');
                               } else {
-                                  HondakuToast.showError(context, stateAfter.error.toString());
+                                  HondakuToast.showError(context, AppErrorHandler.getMessage(stateAfter.error));
                               }
                             }
                           } catch (e) {
@@ -294,7 +295,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               if (!stateAfter.hasError) {
                                 context.go('/home');
                               } else {
-                                  HondakuToast.showError(context, stateAfter.error.toString());
+                                  HondakuToast.showError(context, AppErrorHandler.getMessage(stateAfter.error));
                               }
                             }
                           } catch (e) {
