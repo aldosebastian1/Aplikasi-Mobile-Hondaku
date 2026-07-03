@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../domain/models/aktivitas_item.dart';
@@ -6,14 +6,14 @@ import '../../../../domain/models/garage_item.dart';
 import '../../aktivitas/view_models/aktivitas_view_model.dart';
 import '../view_models/profile_view_model.dart';
 import '../../../core/widgets/hondaku_avatar.dart';
-import '../../../core/toast/hondaku_toast.dart';
+import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/profile_theme.dart';
 import '../../auth/providers/auth_provider.dart';
 
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // PROFILE MAIN SCREEN
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -771,7 +771,7 @@ class ProfilePage extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    HondakuToastHelper.showInfo(
+                    HondakuToast.showInfo(
                       context,
                       loc.isEn ? 'Service booking feature is coming soon!' : 'Fitur booking servis segera hadir!',
                     );
@@ -1078,7 +1078,7 @@ class ProfilePage extends ConsumerWidget {
                       avatarPath: 'assets/images/profile.png',
                       isCustomAvatar: false,
                     );
-                    HondakuToastHelper.showSuccess(
+                    HondakuToast.showSuccess(
                       context,
                       loc.isEn ? 'Changed to default avatar' : 'Avatar diubah ke default',
                     );
@@ -1134,7 +1134,7 @@ class ProfilePage extends ConsumerWidget {
             isCustomAvatar: true,
             avatarBgColor: color,
           );
-          HondakuToastHelper.showSuccess(context, 'Avatar warna $name diaktifkan!');
+          HondakuToast.showSuccess(context, 'Avatar warna $name diaktifkan!');
         },
         child: CircleAvatar(
           radius: 26,
@@ -1162,9 +1162,9 @@ class ProfilePage extends ConsumerWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // CUSTOM GALLERY UPLOAD STATEFUL DIALOG
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class GalleryUploadDialog extends ConsumerStatefulWidget {
   final ProfileThemeColors theme;
@@ -1205,7 +1205,7 @@ class _GalleryUploadDialogState extends ConsumerState<GalleryUploadDialog> {
               isCustomAvatar: false,
             );
             Navigator.pop(context);
-            HondakuToastHelper.showSuccess(
+            HondakuToast.showSuccess(
               context,
               widget.loc.isEn ? 'Avatar uploaded successfully!' : 'Avatar berhasil diunggah!',
             );
@@ -1260,9 +1260,9 @@ class _GalleryUploadDialogState extends ConsumerState<GalleryUploadDialog> {
   }
 }
 
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // MENU TILE COMPONENT
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class _MenuTile extends StatelessWidget {
   const _MenuTile({
