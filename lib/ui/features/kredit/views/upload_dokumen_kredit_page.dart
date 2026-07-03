@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../aktivitas/view_models/aktivitas_view_model.dart';
 import '../../../../domain/models/motorcycle.dart';
 import '../../../../data/providers.dart';
-import '../../../core/toast/hondaku_toast.dart';
+import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
 import 'package:hondaku/l10n/app_localizations.dart';
 
 
@@ -93,7 +93,7 @@ class _UploadDokumenKreditPageState extends ConsumerState<UploadDokumenKreditPag
 
         if (size > _maxFileSize) {
           if (!mounted) return;
-          HondakuToastHelper.showError(context, 'Ukuran file terlalu besar. Maksimal 5MB.');
+          HondakuToast.showError(context, 'Ukuran file terlalu besar. Maksimal 5MB.');
           return;
         }
 
@@ -111,7 +111,7 @@ class _UploadDokumenKreditPageState extends ConsumerState<UploadDokumenKreditPag
 
   void _kirimPengajuan() {
     if (!_semuaTerunggah) {
-      HondakuToastHelper.showError(
+      HondakuToast.showError(
         context,
         'Harap unggah semua dokumen wajib (KTP, Foto Selfie, dan Kartu Keluarga) terlebih dahulu.',
       );
@@ -182,9 +182,9 @@ class _UploadDokumenKreditPageState extends ConsumerState<UploadDokumenKreditPag
                   title: Text(AppLocalizations.of(context)!.uploadDocGuide),
                   content: const Text(
                     'Persyaratan file yang diunggah:\n\n'
-                    '• KTP Pemohon: Harus jelas, tidak blur, dan seluruh sudut KTP terlihat.\n'
-                    '• Kartu Keluarga: Pastikan NIK anggota keluarga terbaca.\n'
-                    '• Slip Gaji / Bukti Penghasilan: Rekening koran 3 bulan terakhir atau slip gaji bulan lalu.\n\n'
+                    'â€¢ KTP Pemohon: Harus jelas, tidak blur, dan seluruh sudut KTP terlihat.\n'
+                    'â€¢ Kartu Keluarga: Pastikan NIK anggota keluarga terbaca.\n'
+                    'â€¢ Slip Gaji / Bukti Penghasilan: Rekening koran 3 bulan terakhir atau slip gaji bulan lalu.\n\n'
                     'Semua data yang Anda unggah dilindungi dengan enkripsi ketat dan hanya digunakan untuk keperluan pengajuan kredit.',
                   ),
                   actions: [
