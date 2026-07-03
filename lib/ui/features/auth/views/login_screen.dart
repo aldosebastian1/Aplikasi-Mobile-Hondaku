@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_provider.dart';
 import 'package:hondaku/l10n/app_localizations.dart';
 import '../../../core/widgets/hondaku_toast.dart';
+import '../widgets/auth_input_fields.dart';
+import '../widgets/auth_social_buttons.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -88,45 +90,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     const SizedBox(height: 8.0),
                     // Email Input Field
-                    TextField(
+                    AuthTextField(
+                      hint: 'Masukkan alamat email',
                       controller: _emailController,
+                      icon: Icons.email_outlined,
                       keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        hintText: 'Masukkan alamat email',
-                        hintStyle: TextStyle(
-                          color: Colors.grey[500],
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        prefixIcon: Icon(
-                          Icons.email_outlined,
-                          color: const Color(0xFF5A4D4C).withValues(alpha: 0.6),
-                          size: 22,
-                        ),
-                        filled: true,
-                        fillColor: const Color(
-                          0xFFE8E8E8,
-                        ).withValues(alpha: 0.5),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 18.0,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                          borderSide: BorderSide(color: Colors.grey.shade200),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                          borderSide: BorderSide(color: Colors.grey.shade200),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                          borderSide: const BorderSide(
-                            color: Color(0xFFC40000),
-                            width: 2.0,
-                          ),
-                        ),
-                      ),
                     ),
                     const SizedBox(height: 24.0),
 
@@ -142,61 +110,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     const SizedBox(height: 8.0),
                     // Password Input Field
-                    TextField(
+                    AuthPasswordField(
+                      hint: 'Masukkan kata sandi',
                       controller: _passwordController,
-                      obscureText: !_isPasswordVisible,
-                      decoration: InputDecoration(
-                        hintText: 'Masukkan kata sandi',
-                        hintStyle: TextStyle(
-                          color: Colors.grey[500],
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        prefixIcon: Icon(
-                          Icons.lock_outline,
-                          color: const Color(0xFF5A4D4C).withValues(alpha: 0.6),
-                          size: 22,
-                        ),
-                        filled: true,
-                        fillColor: const Color(
-                          0xFFE8E8E8,
-                        ).withValues(alpha: 0.5),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 18.0,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                          borderSide: BorderSide(color: Colors.grey.shade200),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                          borderSide: BorderSide(color: Colors.grey.shade200),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                          borderSide: const BorderSide(
-                            color: Color(0xFFC40000),
-                            width: 2.0,
-                          ),
-                        ),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _isPasswordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: const Color(
-                              0xFF5A4D4C,
-                            ).withValues(alpha: 0.8),
-                            size: 20.0,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _isPasswordVisible = !_isPasswordVisible;
-                            });
-                          },
-                        ),
-                      ),
+                      icon: Icons.lock_outline,
+                      isVisible: _isPasswordVisible,
+                      onToggle: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
                     ),
                     const SizedBox(height: 16.0),
 
@@ -332,8 +255,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _buildAssetSocialButton(
-                          'assets/icons/facebook-logo.svg',
+                        AuthSocialButton(
+                          assetPath: 'assets/icons/facebook-logo.svg',
                           onTap: () async {
                             try {
                               await ref.read(authNotifierProvider.notifier).loginWithFacebook(isLoginMode: true);
@@ -353,8 +276,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           },
                         ),
                         const SizedBox(width: 16.0),
-                        _buildAssetSocialButton(
-                          'assets/icons/goggle-logo.svg',
+                        AuthSocialButton(
+                          assetPath: 'assets/icons/goggle-logo.svg',
                           onTap: () async {
                             try {
                               await ref.read(authNotifierProvider.notifier).loginWithGoogle(isLoginMode: true);
@@ -374,8 +297,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           },
                         ),
                         const SizedBox(width: 16.0),
-                        _buildIconSocialButton(
-                          Icons.phone_outlined,
+                        AuthIconSocialButton(
+                          icon: Icons.phone_outlined,
                           color: const Color(0xFFC40000), // Honda Red
                           onTap: () {
                             context.push('/phone-login', extra: true);
@@ -417,71 +340,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Builder method for Asset Social Button
-  Widget _buildAssetSocialButton(String assetPath, {VoidCallback? onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 48,
-        height: 48,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-          border: Border.all(color: const Color(0xFFF0F0F0)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(11.0),
-            child: SvgPicture.asset(
-              assetPath,
-              height: 26,
-              width: 26,
-              fit: BoxFit.contain,
-              placeholderBuilder: (BuildContext context) =>
-                  const Icon(Icons.broken_image, color: Colors.grey, size: 18),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildIconSocialButton(IconData icon, {Color? color, VoidCallback? onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 48,
-        height: 48,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-          border: Border.all(color: const Color(0xFFF0F0F0)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Center(
-          child: Icon(
-            icon,
-            color: color ?? Colors.black87,
-            size: 24,
           ),
         ),
       ),
