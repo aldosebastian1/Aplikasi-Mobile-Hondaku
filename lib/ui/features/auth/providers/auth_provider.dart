@@ -59,8 +59,9 @@ class AuthNotifier extends AsyncNotifier<void> {
   Future<void> loginWithGoogle({required bool isLoginMode}) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final GoogleSignInAccount googleUser = await GoogleSignIn.instance.authenticate();
-      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+      final googleUser = await GoogleSignIn.instance.authenticate();
+      
+      final googleAuth = googleUser.authentication;
       
       final AuthCredential credential = GoogleAuthProvider.credential(
         idToken: googleAuth.idToken,
