@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/widgets/hondaku_toast.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../view_models/booking_view_model.dart';
 import '../../../../data/motorcycle_data.dart';
+import '../widgets/booking_product_card.dart';
+import '../widgets/booking_payment_card.dart';
+import '../widgets/booking_form_components.dart';
 
 class BookingFormPage extends ConsumerStatefulWidget {
   final Motorcycle motor;
@@ -120,24 +124,30 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildProductCard(),
+                    BookingProductCard(motor: widget.motor),
                     const SizedBox(height: 20),
-                    _buildPaymentTypeSelector(),
-                    const SizedBox(height: 16),
-                    _buildPaymentDetailCard(),
+                    BookingPaymentCard(
+                      motor: widget.motor,
+                      isFullPayment: _isFullPayment,
+                      onPaymentTypeChanged: (isFull) {
+                        ref.read(bookingViewModelProvider.notifier).updatePaymentType(
+                          isFullPayment: isFull,
+                        );
+                      },
+                    ),
                     const SizedBox(height: 24),
                     _buildPageHeader(),
                     const SizedBox(height: 16),
 
                     // ── Informasi Identitas ──
-                    _buildSectionTitle(
-                      iconWidget: _buildIdCardIcon(),
+                    const BookingSectionTitle(
+                      iconWidget: BookingIdCardIcon(),
                       title: 'Informasi Identitas (KTP)',
                     ),
                     const SizedBox(height: 14),
-                    _buildLabel('Nama Lengkap (Sesuai KTP)'),
+                    const BookingLabel('Nama Lengkap (Sesuai KTP)'),
                     const SizedBox(height: 6),
-                    _buildInputField(
+                    BookingInputField(
                       controller: _namaController,
                       hint: 'Contoh: Budi Setiawan',
                       semanticsLabel: 'Nama Lengkap (Sesuai KTP)',
@@ -148,9 +158,9 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                       errorText: nameError,
                     ),
                     const SizedBox(height: 14),
-                    _buildLabel('Nomor NIK'),
+                    const BookingLabel('Nomor NIK'),
                     const SizedBox(height: 6),
-                    _buildInputField(
+                    BookingInputField(
                       controller: _nikController,
                       hint: '16 digit angka KTP',
                       semanticsLabel: 'Nomor NIK',
@@ -165,9 +175,9 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                       errorText: nikError,
                     ),
                     const SizedBox(height: 14),
-                    _buildLabel('Email Address'),
+                    const BookingLabel('Email Address'),
                     const SizedBox(height: 6),
-                    _buildInputField(
+                    BookingInputField(
                       controller: _emailController,
                       hint: 'contoh@email.com',
                       semanticsLabel: 'Email Address',
@@ -180,8 +190,8 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                     const SizedBox(height: 22),
 
                     // ── Domisili ──
-                    _buildSectionTitle(
-                      iconWidget: const Icon(
+                    const BookingSectionTitle(
+                      iconWidget: Icon(
                         Icons.location_on,
                         color: Color(0xFFD32F2F),
                         size: 18,
@@ -189,9 +199,9 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                       title: 'Domisili Medan',
                     ),
                     const SizedBox(height: 14),
-                    _buildLabel('Kecamatan'),
+                    const BookingLabel('Kecamatan'),
                     const SizedBox(height: 6),
-                    _buildDropdown(
+                    BookingDropdown(
                       value: _selectedKecamatan,
                       hint: 'Pilih Kecamatan',
                       semanticsLabel: 'Kecamatan',
@@ -200,9 +210,9 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                       errorText: kecamatanError,
                     ),
                     const SizedBox(height: 14),
-                    _buildLabel('Kelurahan'),
+                    const BookingLabel('Kelurahan'),
                     const SizedBox(height: 6),
-                    _buildDropdown(
+                    BookingDropdown(
                       value: _selectedKelurahan,
                       hint: 'Pilih Kelurahan',
                       semanticsLabel: 'Kelurahan',
@@ -211,18 +221,19 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                       errorText: kelurahanError,
                     ),
                     const SizedBox(height: 14),
-                    _buildLabel('No. HP (WhatsApp Aktif)'),
+                    const BookingLabel('No. HP (WhatsApp Aktif)'),
                     const SizedBox(height: 6),
-                    _buildPhoneField(
+                    BookingPhoneField(
+                      controller: _phoneController,
                       focusNode: _phoneFocusNode,
                       textInputAction: TextInputAction.next,
                       onSubmitted: (_) => FocusScope.of(context).requestFocus(_alamatFocusNode),
                       errorText: phoneError,
                     ),
                     const SizedBox(height: 14),
-                    _buildLabel('Alamat Pengiriman (Medan)'),
+                    const BookingLabel('Alamat Pengiriman (Medan)'),
                     const SizedBox(height: 6),
-                    _buildInputField(
+                    BookingInputField(
                       controller: _alamatController,
                       hint: 'Jl. Ahmad Yani No. 123, Medan',
                       semanticsLabel: 'Alamat Pengiriman (Medan)',
@@ -322,121 +333,6 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
 
 
   // ─────────────────────────────────────────────────────────
-  // PRODUCT CARD
-  // ─────────────────────────────────────────────────────────
-  Widget _buildProductCard() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFEEEEEE)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
-            blurRadius: 15,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          // 1. Image Section
-          Container(
-            width: 110,
-            height: 85,
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF9F9F9),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Image.asset(
-              widget.motor.imageAsset,
-              semanticLabel: 'Foto Motor ${widget.motor.name}',
-              fit: BoxFit.contain,
-              errorBuilder: (_, _, _) => const Icon(
-                Icons.two_wheeler,
-                color: Color(0xFFD32F2F),
-                size: 40,
-              ),
-            ),
-          ),
-          const SizedBox(width: 14),
-          // 2. Info Section
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  widget.motor.name,
-                  style: const TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.black,
-                    letterSpacing: -0.4,
-                  ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  widget.motor.subtitle,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF757575),
-                    fontWeight: FontWeight.w500,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 10),
-                // Location & Price row for better space usage
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Row(
-                      children: [
-                        ExcludeSemantics(
-                          child: Icon(Icons.location_on, size: 12, color: Color(0xFFD32F2F)),
-                        ),
-                        SizedBox(width: 3),
-                        Text(
-                          'Medan',
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: Color(0xFF616161),
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: const Color(0xFFE0E0E0), width: 1.0),
-                      ),
-                      child: Text(
-                        widget.motor.price,
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFFD32F2F),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ─────────────────────────────────────────────────────────
   // PAGE HEADER
   // ─────────────────────────────────────────────────────────
   Widget _buildPageHeader() {
@@ -464,409 +360,6 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
     );
   }
 
-  // ─────────────────────────────────────────────────────────
-  // TANDA JADI CARD
-  // ─────────────────────────────────────────────────────────
-  Widget _buildPaymentTypeSelector() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Tipe Pembayaran Cash',
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 10),
-        Row(
-          children: [
-            _buildTypeChip('Booking Unit', !_isFullPayment),
-            const SizedBox(width: 10),
-            _buildTypeChip('Pelunasan Full', _isFullPayment),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTypeChip(String label, bool isSelected) {
-    return Expanded(
-      child: Material(
-        color: isSelected ? const Color(0xFFD32F2F) : Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-          side: BorderSide(
-            color: isSelected ? const Color(0xFFD32F2F) : const Color(0xFFE0E0E0),
-          ),
-        ),
-        child: InkWell(
-          onTap: () => ref.read(bookingViewModelProvider.notifier).updatePaymentType(
-                isFullPayment: label == 'Pelunasan Full',
-              ),
-          borderRadius: BorderRadius.circular(8),
-          child: Container(
-            height: 48,
-            alignment: Alignment.center,
-            child: Text(
-              label,
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w700,
-                color: isSelected ? Colors.white : const Color(0xFF707070),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPaymentDetailCard() {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: const Color(0xFFF9F9F9),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE0E0E0), width: 1),
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _isFullPayment ? 'TOTAL PELUNASAN (FULL)' : 'BIAYA RESERVASI (BOOKING)',
-                  style: const TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF555555),
-                    letterSpacing: 0.8,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'Rp ',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFFD32F2F),
-                        ),
-                      ),
-                      TextSpan(
-                        text: _isFullPayment ? widget.motor.price.replaceAll('Rp ', '') : '500.000',
-                        style: const TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFFD32F2F),
-                          letterSpacing: -1,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  _isFullPayment
-                      ? 'Pembayaran penuh untuk unit ${widget.motor.name}. Anda tidak perlu membayar lagi saat serah terima unit.'
-                      : 'Biaya untuk mengamankan antrian unit. Akan memotong harga OTR saat pelunasan nanti.',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF555555),
-                    height: 1.45,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 12),
-          ExcludeSemantics(
-            child: Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: const Color(0xFFEEEEEE)),
-              ),
-              child: const Icon(Icons.payments_outlined, color: Color(0xFFD32F2F), size: 24),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ─────────────────────────────────────────────────────────
-  // SECTION TITLE  (icon + bold label)
-  // ─────────────────────────────────────────────────────────
-  Widget _buildSectionTitle({
-    required Widget iconWidget,
-    required String title,
-  }) {
-    return Row(
-      children: [
-        ExcludeSemantics(child: iconWidget),
-        const SizedBox(width: 7),
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
-        ),
-      ],
-    );
-  }
-
-  // KTP card icon (red outline rectangle with face & lines)
-  Widget _buildIdCardIcon() {
-    return ExcludeSemantics(
-      child: SizedBox(
-        width: 20,
-        height: 20,
-        child: Stack(
-          children: [
-            // Card border
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2),
-                  border: Border.all(color: const Color(0xFFD32F2F), width: 1.8),
-                ),
-              ),
-            ),
-            // Face circle
-            Positioned(
-              left: 2,
-              top: 3,
-              child: Container(
-                width: 6,
-                height: 6,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFD32F2F), width: 1.5),
-                ),
-              ),
-            ),
-            // Text lines
-            Positioned(
-              right: 2,
-              top: 4,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 7,
-                    height: 1.5,
-                    color: const Color(0xFFD32F2F),
-                  ),
-                  const SizedBox(height: 2.5),
-                  Container(
-                    width: 5,
-                    height: 1.5,
-                    color: const Color(0xFFD32F2F),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // ─────────────────────────────────────────────────────────
-  // FORM HELPERS
-  // ─────────────────────────────────────────────────────────
-  Widget _buildLabel(String text) {
-    return ExcludeSemantics(
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w500,
-          color: Colors.black,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInputField({
-    required TextEditingController controller,
-    required String hint,
-    required String semanticsLabel,
-    TextInputType keyboardType = TextInputType.text,
-    List<TextInputFormatter>? formatters,
-    TextInputAction? textInputAction,
-    FocusNode? focusNode,
-    ValueChanged<String>? onSubmitted,
-    String? errorText,
-  }) {
-    return Semantics(
-      label: semanticsLabel,
-      child: TextField(
-        controller: controller,
-        focusNode: focusNode,
-        keyboardType: keyboardType,
-        inputFormatters: formatters,
-        textInputAction: textInputAction,
-        onSubmitted: onSubmitted,
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: const TextStyle(fontSize: 14, color: Color(0xFF707070)),
-          errorText: errorText,
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0xFFE0E0E0), width: 1.2),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
-          ),
-          errorStyle: const TextStyle(fontSize: 12, color: Color(0xFFD32F2F)),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDropdown({
-    required String? value,
-    required String hint,
-    required String semanticsLabel,
-    required List<String> items,
-    required ValueChanged<String?> onChanged,
-    String? errorText,
-  }) {
-    return Semantics(
-      label: semanticsLabel,
-      child: DropdownButtonFormField<String>(
-        value: value,
-        isExpanded: true,
-        hint: Text(
-          hint,
-          style: const TextStyle(fontSize: 14, color: Color(0xFF707070)),
-        ),
-        icon: const ExcludeSemantics(
-          child: Icon(
-            Icons.keyboard_arrow_down,
-            color: Color(0xFF707070),
-            size: 22,
-          ),
-        ),
-        style: const TextStyle(fontSize: 14, color: Colors.black),
-        items: items
-            .map((e) => DropdownMenuItem<String>(value: e, child: Text(e)))
-            .toList(),
-        onChanged: onChanged,
-        decoration: InputDecoration(
-          errorText: errorText,
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0xFFE0E0E0), width: 1.2),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
-          ),
-          errorStyle: const TextStyle(fontSize: 12, color: Color(0xFFD32F2F)),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPhoneField({
-    required FocusNode focusNode,
-    required TextInputAction textInputAction,
-    required ValueChanged<String>? onSubmitted,
-    String? errorText,
-  }) {
-    return Semantics(
-      label: 'No. HP (WhatsApp Aktif)',
-      child: TextField(
-        controller: _phoneController,
-        focusNode: focusNode,
-        keyboardType: TextInputType.phone,
-        textInputAction: textInputAction,
-        onSubmitted: onSubmitted,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        style: const TextStyle(fontSize: 14, color: Colors.black),
-        decoration: InputDecoration(
-          hintText: '812xxxx',
-          hintStyle: const TextStyle(fontSize: 14, color: Color(0xFF707070)),
-          errorText: errorText,
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-          prefixIcon: Container(
-            margin: const EdgeInsets.only(right: 8),
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            decoration: const BoxDecoration(
-              border: Border(
-                right: BorderSide(color: Color(0xFFE0E0E0), width: 1.2),
-              ),
-            ),
-            child: const Text(
-              '+62',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          prefixIconConstraints: const BoxConstraints(
-            minWidth: 58,
-            minHeight: 48,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0xFFE0E0E0), width: 1.2),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 1.2),
-          ),
-          errorStyle: const TextStyle(fontSize: 12, color: Color(0xFFD32F2F)),
-        ),
-      ),
-    );
-  }
 
   // ─────────────────────────────────────────────────────────
   // CTA BUTTON
@@ -885,12 +378,7 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
             setState(() {
               _isNavigating = false;
             });
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(_getValidationMessage()),
-                backgroundColor: const Color(0xFFD32F2F),
-              ),
-            );
+            HondakuToast.showError(context, _getValidationMessage());
             return;
           }
 
