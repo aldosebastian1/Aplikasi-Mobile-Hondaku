@@ -258,23 +258,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   } else {
                                     final errorMsg = authStateAfter.error?.toString() ??
                                         'Email atau kata sandi yang Anda masukkan salah. Silakan coba lagi.';
-                                    await showCupertinoDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return CupertinoAlertDialog(
-                                          title: Text(AppLocalizations.of(context)!.loginFailed),
-                                          content: Text(errorMsg),
-                                          actions: <Widget>[
-                                            CupertinoDialogAction(
-                                              child: Text(AppLocalizations.of(context)!.ok),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
+                                    HondakuToast.showError(context, errorMsg);
                                   }
                                 }
                               },
