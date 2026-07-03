@@ -9,12 +9,15 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
 
   /// Stream of [User] which will emit the current user when
   /// the authentication state changes.
+  @override
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
   /// Gets the currently signed-in user, if any.
+  @override
   User? get currentUser => _firebaseAuth.currentUser;
 
   /// Signs in a user with their [email] and [password].
+  @override
   Future<UserCredential> loginWithEmail(String email, String password) async {
     try {
       return await _firebaseAuth.signInWithEmailAndPassword(
@@ -27,6 +30,7 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   }
 
   /// Registers a new user with their [email], [password], and [name].
+  @override
   Future<UserCredential> registerWithEmail(String email, String password, String name) async {
     try {
       final credential = await _firebaseAuth.createUserWithEmailAndPassword(
@@ -41,11 +45,13 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   }
 
   /// Signs out the current user.
+  @override
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
   }
 
   /// Signs in a user using Google.
+  @override
   Future<UserCredential> signInWithGoogleCredential(AuthCredential credential) async {
     try {
       return await _firebaseAuth.signInWithCredential(credential);
@@ -55,6 +61,7 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   }
 
   /// Signs in a user using Facebook.
+  @override
   Future<UserCredential> signInWithFacebook(String accessToken) async {
     try {
       final AuthCredential credential = FacebookAuthProvider.credential(accessToken);
@@ -65,6 +72,7 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   }
 
   /// Starts the phone number verification process.
+  @override
   Future<void> verifyPhoneNumber({
     required String phoneNumber,
     required Function(PhoneAuthCredential) verificationCompleted,
@@ -82,6 +90,7 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   }
 
   /// Signs in a user with a phone auth credential (verificationId + smsCode).
+  @override
   Future<UserCredential> signInWithPhoneCredential(String verificationId, String smsCode) async {
     try {
       final PhoneAuthCredential credential = PhoneAuthProvider.credential(
