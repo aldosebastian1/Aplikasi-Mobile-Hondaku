@@ -47,19 +47,14 @@ void main() {
     
     // Pump frames to complete the Future delay in AuthViewModel
     await tester.pump();
-    await tester.pump(const Duration(seconds: 3));
-    await tester.pumpAndSettle();
+    // Verify error toast appears (HondakuToast)
+    // "Login Gagal" isn't explicitly passed to HondakuToast in the test snippet, it just passes the exception text.
+    expect(find.textContaining('Login Failed Mock'), findsOneWidget);
 
-    // Verify error dialog appears
-    expect(find.byType(CupertinoAlertDialog), findsOneWidget);
-    expect(find.text('Login Gagal'), findsOneWidget);
-    expect(find.text('Exception: Login Failed Mock'), findsOneWidget);
+    // Wait for HondakuToast to auto-dismiss (2.5 seconds + animations)
+    await tester.pumpAndSettle(const Duration(seconds: 4));
 
-    // Tap OK on the dialog to dismiss
-    await tester.tap(find.text('OK'));
-    await tester.pumpAndSettle();
-
-    // Verify dialog is gone
-    expect(find.byType(CupertinoAlertDialog), findsNothing);
+    // Verify toast is gone
+    expect(find.textContaining('Login Failed Mock'), findsNothing);
   });
 }
