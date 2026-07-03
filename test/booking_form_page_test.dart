@@ -23,16 +23,18 @@ void main() {
     specsDimensi: {},
   );
 
-  Widget createTestWidget() {
-    return const ProviderScope(
-      child: MaterialApp(
-        home: BookingFormPage(motor: dummyMotor),
+  Future<void> createTestWidget(WidgetTester tester) async {
+    await tester.pumpWidget(
+      const ProviderScope(
+        child: MaterialApp(
+          home: BookingFormPage(motor: dummyMotor),
+        ),
       ),
     );
   }
 
   testWidgets('BookingFormPage renders correctly and shows validation error on empty submit', (WidgetTester tester) async {
-    await tester.pumpWidget(createTestWidget());
+    await createTestWidget(tester);
     
     // Tunggu sampai animasi/rendering awal selesai
     await tester.pumpAndSettle();
