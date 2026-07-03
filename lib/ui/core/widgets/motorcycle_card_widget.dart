@@ -44,6 +44,7 @@ class MotorcycleCardWidget extends ConsumerWidget {
                     motor.imageAsset,
                     fit: BoxFit.contain,
                     height: isCompact ? 180 : 220,
+                    cacheHeight: isCompact ? 400 : 500, // Optimize memory for grid views
                   ),
                 ),
               ),
