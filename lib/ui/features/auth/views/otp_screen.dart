@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_provider.dart';
 import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
+import '../../../../core/utils/error_handler.dart';
 
 class OtpScreen extends ConsumerStatefulWidget {
   final String verificationId;
@@ -119,7 +120,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                             if (!stateAfter.hasError) {
                               context.go('/home');
                             } else {
-                              HondakuToast.showError(context, stateAfter.error.toString());
+                              HondakuToast.showError(context, AppErrorHandler.getMessage(stateAfter.error));
                             }
                           }
                         },
