@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../domain/models/aktivitas_item.dart';
+import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
 import '../../aktivitas/view_models/aktivitas_view_model.dart';
 
 
@@ -77,12 +78,7 @@ class _StatusPesananPageState extends ConsumerState<StatusPesananPage> {
           IconButton(
             icon: const Icon(Icons.info_outline, color: Colors.black),
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Halaman ini memantau pengiriman unit motor Anda secara real-time.'),
-                  backgroundColor: _red,
-                ),
-              );
+              HondakuToast.showInfo(context, 'Halaman ini memantau pengiriman unit motor Anda secara real-time.');
             },
           ),
         ],
@@ -461,12 +457,7 @@ class _StatusPesananPageState extends ConsumerState<StatusPesananPage> {
             child: IconButton(
               icon: const Icon(Icons.phone, size: 18, color: Colors.white),
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Menghubungi Kurir (Agus Setiawan) di nomor +62 812-3456-7890...'),
-                    backgroundColor: Colors.blue,
-                  ),
-                );
+                HondakuToast.showInfo(context, 'Menghubungi Kurir (Agus Setiawan) di nomor +62 812-3456-7890...');
               },
             ),
           ),
@@ -517,12 +508,7 @@ class _StatusPesananPageState extends ConsumerState<StatusPesananPage> {
                 child: IconButton(
                   icon: const Icon(Icons.phone_outlined, size: 20, color: Colors.black87),
                   onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Menghubungi Sales (Budi Santoso) di nomor +62 821-9876-5432...'),
-                        backgroundColor: Colors.blue,
-                      ),
-                    );
+                    HondakuToast.showInfo(context, 'Menghubungi Sales (Budi Santoso) di nomor +62 821-9876-5432...');
                   },
                 ),
               ),
@@ -533,12 +519,7 @@ class _StatusPesananPageState extends ConsumerState<StatusPesananPage> {
             width: double.infinity,
             child: ElevatedButton.icon(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Membuka chat WhatsApp dengan Sales Consultant Budi Santoso...'),
-                    backgroundColor: Color(0xFF25D366),
-                  ),
-                );
+                HondakuToast.showSuccess(context, 'Membuka chat WhatsApp dengan Sales Consultant Budi Santoso...');
               },
               icon: const Icon(Icons.chat_bubble_outline, color: Colors.white, size: 20),
               label: const Text(
@@ -579,12 +560,7 @@ class _StatusPesananPageState extends ConsumerState<StatusPesananPage> {
             Expanded(
               child: OutlinedButton(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Menghubungi Layanan Bantuan Honda Care Medan di 1-500-989...'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
+                  HondakuToast.showInfo(context, 'Menghubungi Layanan Bantuan Honda Care Medan di 1-500-989...');
                 },
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 14),
