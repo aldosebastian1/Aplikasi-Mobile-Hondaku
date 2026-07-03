@@ -47,11 +47,17 @@ void main() {
     expect(submitButton, findsOneWidget);
 
     // Tap tombol checkout tanpa mengisi form (harus memunculkan SnackBar validasi)
-    await tester.tap(submitButton);
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 500)); // Tunggu animasi SnackBar
+    try {
+      await tester.tap(submitButton);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500)); // Tunggu animasi SnackBar
 
-    // Verifikasi pesan validasi muncul (karena textfield kosong)
-    expect(find.text('Nama belum diisi'), findsWidgets);
+      // Verifikasi pesan validasi muncul (karena textfield kosong)
+      expect(find.text('Nama belum diisi'), findsWidgets);
+    } catch (e, stack) {
+      print('TEST ERROR: $e');
+      print(stack);
+      rethrow;
+    }
   });
 }
