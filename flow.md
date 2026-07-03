@@ -39,7 +39,7 @@ Struktur file telah dikelompokkan ke dalam folder arsitektur bersih (*Clean Arch
 > Bagian ini dihasilkan otomatis oleh `tool/sync_app_flow.dart`.
 > Jangan edit manual di antara marker START/END karena akan ditimpa saat sinkronisasi.
 
-**Generated at:** 2026-07-03 16:17:49.377876
+**Generated at:** 2026-07-03 17:05:09.146695
 **Detected nodes:** 23
 **Detected transitions:** 45
 
@@ -109,24 +109,24 @@ flowchart TD
 - KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:292]
 - KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:41]
 - KonfirmasiPesananPage -> HalamanHome (context.go) [lib/ui/features/booking/views/konfirmasi_pesanan_page.dart:308]
-- LoginScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/login_screen.dart:178]
-- LoginScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/login_screen.dart:264]
-- LoginScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/login_screen.dart:285]
-- LoginScreen -> HalamanHome (context.push) [lib/ui/features/auth/views/login_screen.dart:302]
-- LoginScreen -> RegisterScreen (context.push) [lib/ui/features/auth/views/login_screen.dart:323]
+- LoginScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/login_screen.dart:179]
+- LoginScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/login_screen.dart:265]
+- LoginScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/login_screen.dart:286]
+- LoginScreen -> HalamanHome (context.push) [lib/ui/features/auth/views/login_screen.dart:303]
+- LoginScreen -> RegisterScreen (context.push) [lib/ui/features/auth/views/login_screen.dart:324]
 - MotorcycleCardWidget -> CheckoutPaymentMethodPage (context.push) [lib/ui/core/widgets/motorcycle_card_widget.dart:211]
 - MotorcycleCardWidget -> ProductDetailScreen (context.push) [lib/ui/core/widgets/motorcycle_card_widget.dart:183]
 - OnboardingScreen -> LoginScreen (context.go) [lib/ui/features/auth/views/onboarding_screen.dart:49]
-- OtpScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/otp_screen.dart:120]
+- OtpScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/otp_screen.dart:121]
 - PembayaranBookingPage -> BookingBerhasilPage (context.pushReplacement) [lib/ui/features/booking/views/pembayaran_booking_page.dart:619]
 - ProductDetailScreen -> CheckoutPaymentMethodPage (context.push) [lib/ui/features/catalog/views/product_detail_screen.dart:478]
 - ProfilePage -> LoginScreen (context.go) [lib/ui/features/profile/views/profile.dart:968]
 - ProfilePage -> StatusPesananPage (context.push) [lib/ui/features/profile/views/profile.dart:260]
 - ProfilePage -> StatusPesananPage (context.push) [lib/ui/features/profile/views/profile.dart:451]
-- RegisterScreen -> HalamanHome (context.push) [lib/ui/features/auth/views/register_screen.dart:312]
-- RegisterScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/register_screen.dart:295]
-- RegisterScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/register_screen.dart:274]
-- RegisterScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/register_screen.dart:201]
+- RegisterScreen -> HalamanHome (context.push) [lib/ui/features/auth/views/register_screen.dart:313]
+- RegisterScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/register_screen.dart:296]
+- RegisterScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/register_screen.dart:275]
+- RegisterScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/register_screen.dart:202]
 - RingkasanPembayaranPage -> PembayaranBookingPage (context.push) [lib/ui/features/booking/views/ringkasan_pembayaran_page.dart:457]
 - Router -> CatalogPage (context.go) [lib/ui/core/router.dart:80]
 - Router -> CatalogPage (context.go) [lib/ui/core/router.dart:102]
