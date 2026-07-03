@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_provider.dart';
 import 'package:hondaku/l10n/app_localizations.dart';
 import '../../../core/widgets/hondaku_toast.dart';
+import '../../../../core/utils/error_handler.dart';
 import '../widgets/auth_input_fields.dart';
 import '../widgets/auth_social_buttons.dart';
 
@@ -263,7 +264,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 if (!stateAfter.hasError) {
                                   context.go('/home');
                                 } else {
-                                  HondakuToast.showError(context, stateAfter.error.toString());
+                                  HondakuToast.showError(context, AppErrorHandler.getMessage(stateAfter.error));
                                 }
                               }
                             } catch (e) {
@@ -284,7 +285,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 if (!stateAfter.hasError) {
                                   context.go('/home');
                                 } else {
-                                  HondakuToast.showError(context, stateAfter.error.toString());
+                                  HondakuToast.showError(context, AppErrorHandler.getMessage(stateAfter.error));
                                 }
                               }
                             } catch (e) {
