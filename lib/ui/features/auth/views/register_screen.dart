@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_provider.dart';
-import 'package:flutter/cupertino.dart';
 import '../../../core/widgets/hondaku_toast.dart';
 import '../widgets/auth_input_fields.dart';
 import '../widgets/auth_social_buttons.dart';
