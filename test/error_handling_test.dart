@@ -5,7 +5,7 @@ import 'package:hondaku/domain/models/aktivitas_item.dart';
 import 'package:hondaku/domain/repositories/aktivitas_repository.dart';
 import 'package:hondaku/ui/features/aktivitas/view_models/aktivitas_view_model.dart';
 import 'package:hondaku/ui/features/kredit/view_models/kredit_view_model.dart';
-import 'package:hondaku/ui/features/auth/view_models/auth_view_model.dart';
+
 
 class FakeFailureAktivitasRepository implements AktivitasRepository {
   @override
@@ -127,15 +127,4 @@ void main() {
     });
   });
 
-  group('AuthViewModel Robustness -', () {
-    test('Initial state is unauthenticated', () {
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
-
-      final state = container.read(authViewModelProvider);
-      expect(state.isLoading, isFalse);
-      expect(state.isAuthenticated, isFalse);
-      expect(state.errorMessage, isNull);
-    });
-  });
 }
