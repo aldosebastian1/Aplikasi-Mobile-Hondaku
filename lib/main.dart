@@ -12,17 +12,22 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  await GoogleSignIn.instance.initialize();
-  
-  // UNCOMMENT LATER IF NEEDED: await seedFirestoreDatabase();
-  // We'll let the user run it from a button if they want or just run it here temporarily
-  await seedFirestoreDatabase().then((_) {
-    debugPrint("✅ SEEDING SELESAI");
-  });
+  try {
+    await dotenv.load(fileName: ".env");
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    await GoogleSignIn.instance.initialize();
+    
+    // UNCOMMENT LATER IF NEEDED: await seedFirestoreDatabase();
+    // await seedFirestoreDatabase().then((_) {
+    //   debugPrint("✅ SEEDING SELESAI");
+    // });
+  } catch (e) {
+    debugPrint("⚠️ Initialization Error: $e");
+    // We still want to run the app even if Firebase fails, 
+    // to prevent the user from being stuck on a white screen.
+  }
   
   runApp(const ProviderScope(child: MyApp()));
 }
