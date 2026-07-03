@@ -19,29 +19,21 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   /// Signs in a user with their [email] and [password].
   @override
   Future<UserCredential> loginWithEmail(String email, String password) async {
-    try {
-      return await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } catch (e) {
-      throw Exception('Gagal login: $e');
-    }
+    return await _firebaseAuth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
   }
 
   /// Registers a new user with their [email], [password], and [name].
   @override
   Future<UserCredential> registerWithEmail(String email, String password, String name) async {
-    try {
-      final credential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      await credential.user?.updateDisplayName(name);
-      return credential;
-    } catch (e) {
-      throw Exception('Gagal registrasi: $e');
-    }
+    final credential = await _firebaseAuth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    await credential.user?.updateDisplayName(name);
+    return credential;
   }
 
   /// Signs out the current user.
@@ -53,22 +45,14 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   /// Signs in a user using Google.
   @override
   Future<UserCredential> signInWithGoogleCredential(AuthCredential credential) async {
-    try {
-      return await _firebaseAuth.signInWithCredential(credential);
-    } catch (e) {
-      throw Exception('Gagal verifikasi Google: $e');
-    }
+    return await _firebaseAuth.signInWithCredential(credential);
   }
 
   /// Signs in a user using Facebook.
   @override
   Future<UserCredential> signInWithFacebook(String accessToken) async {
-    try {
-      final AuthCredential credential = FacebookAuthProvider.credential(accessToken);
-      return await _firebaseAuth.signInWithCredential(credential);
-    } catch (e) {
-      throw Exception('Gagal verifikasi Facebook: $e');
-    }
+    final AuthCredential credential = FacebookAuthProvider.credential(accessToken);
+    return await _firebaseAuth.signInWithCredential(credential);
   }
 
   /// Starts the phone number verification process.
@@ -92,14 +76,10 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   /// Signs in a user with a phone auth credential (verificationId + smsCode).
   @override
   Future<UserCredential> signInWithPhoneCredential(String verificationId, String smsCode) async {
-    try {
-      final PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: verificationId,
-        smsCode: smsCode,
-      );
-      return await _firebaseAuth.signInWithCredential(credential);
-    } catch (e) {
-      throw Exception('Gagal verifikasi OTP: $e');
-    }
+    final PhoneAuthCredential credential = PhoneAuthProvider.credential(
+      verificationId: verificationId,
+      smsCode: smsCode,
+    );
+    return await _firebaseAuth.signInWithCredential(credential);
   }
 }
