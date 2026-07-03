@@ -54,6 +54,9 @@ void main() {
 
       // Verifikasi pesan validasi muncul (karena textfield kosong)
       expect(find.text('Nama belum diisi'), findsWidgets);
+      
+      // Tunggu hingga toast selesai dan hilang agar tidak ada timer tersisa
+      await tester.pump(const Duration(seconds: 3));
     } catch (e, stack) {
       print('TEST ERROR: $e');
       print(stack);
