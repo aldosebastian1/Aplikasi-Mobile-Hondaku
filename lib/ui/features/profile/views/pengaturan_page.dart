@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/toast/hondaku_toast.dart';
+import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
 import '../view_models/profile_view_model.dart';
 import '../widgets/profile_theme.dart';
 
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // SUB-PAGE: SETTINGS (PENGATURAN)
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class PengaturanPage extends ConsumerWidget {
   const PengaturanPage({super.key});
@@ -58,7 +58,7 @@ class PengaturanPage extends ConsumerWidget {
             value: appSettings.biometricEnabled,
             onChanged: (v) {
               ref.read(appSettingsProvider.notifier).updateSettings(biometricEnabled: v);
-              HondakuToastHelper.showSuccess(
+              HondakuToast.showSuccess(
                 context,
                 v
                     ? (loc.isEn ? 'Biometric login enabled!' : 'Login biometrik diaktifkan!')
