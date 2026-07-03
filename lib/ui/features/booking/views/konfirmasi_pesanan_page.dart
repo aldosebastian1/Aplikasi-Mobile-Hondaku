@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
 import '../../../../domain/models/aktivitas_item.dart';
-import '../../../core/toast/hondaku_toast.dart';
 
 class KonfirmasiPesananPage extends StatefulWidget {
   final AktivitasItem item;
@@ -47,12 +47,7 @@ class _KonfirmasiPesananPageState extends State<KonfirmasiPesananPage> {
           IconButton(
             icon: const Icon(Icons.info_outline, color: Colors.black),
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Penerimaan unit dikonfirmasi otomatis saat unit telah sampai di lokasi Anda.'),
-                  backgroundColor: _red,
-                ),
-              );
+              HondakuToast.showInfo(context, 'Penerimaan unit dikonfirmasi otomatis saat unit telah sampai di lokasi Anda.');
             },
           ),
         ],
@@ -309,7 +304,7 @@ class _KonfirmasiPesananPageState extends State<KonfirmasiPesananPage> {
                     ? 'Terima kasih atas penilaian $_rating bintang! Pesanan Anda telah selesai dikonfirmasi.'
                     : 'Terima kasih! Pesanan Anda telah selesai dikonfirmasi.';
 
-                HondakuToastHelper.showSuccess(context, message);
+                HondakuToast.showSuccess(context, message);
                 context.go('/home');
               },
               style: ElevatedButton.styleFrom(
