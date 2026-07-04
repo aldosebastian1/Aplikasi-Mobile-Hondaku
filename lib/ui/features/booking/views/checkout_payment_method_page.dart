@@ -36,7 +36,7 @@ class _CheckoutPaymentMethodPageState extends ConsumerState<CheckoutPaymentMetho
                   children: [
                     _buildHeader(),
                     const SizedBox(height: 16),
-                    _buildProductCard(),
+                    _buildProductCard(selectedMethod: selectedMethod),
                     const SizedBox(height: 16),
                     _buildPaymentOption(
                       index: 0,
@@ -134,7 +134,7 @@ class _CheckoutPaymentMethodPageState extends ConsumerState<CheckoutPaymentMetho
     );
   }
 
-  Widget _buildProductCard() {
+  Widget _buildProductCard({required int selectedMethod}) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -214,18 +214,18 @@ class _CheckoutPaymentMethodPageState extends ConsumerState<CheckoutPaymentMetho
             ),
           ),
           const Divider(height: 1, color: Color(0xFFEEEEEE)),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Estimasi Pengiriman',
                   style: TextStyle(fontSize: 13, color: Color(0xFF757575)),
                 ),
                 Text(
-                  '1-3 Hari Kerja',
-                  style: TextStyle(
+                  selectedMethod == 0 ? '1-3 Hari Kerja' : '3-7 Hari Kerja',
+                  style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: Colors.black,
