@@ -92,7 +92,7 @@ class _InformasiPribadiPageState extends ConsumerState<InformasiPribadiPage> {
   @override
   Widget build(BuildContext context) {
     final settingsVal = ref.watch(appSettingsProvider);
-    final isDark = false;
+    const isDark = false;
     final theme = ProfileThemeColors(isDark);
     final loc = ProfileLocalizations(settingsVal.selectedLanguage);
 
