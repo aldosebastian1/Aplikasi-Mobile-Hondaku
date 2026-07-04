@@ -34,19 +34,19 @@ class NewsRepositoryImpl implements NewsRepository {
         final List<dynamic> data = response.data['posts'];
         return data.map((json) => NewsArticle.fromJson(json)).toList();
       } else {
-        throw Exception('Gagal mengambil berita: ${response.statusCode}');
+        throw Exception('Gagal mengambil berita terbaru dari server. Silakan coba sesaat lagi.');
       }
     } on DioException catch (e) {
       // Demonstrating HTTP Error Handling with Dio
       if (e.type == DioExceptionType.connectionTimeout) {
         throw Exception('Koneksi timeout. Silakan periksa internet Anda.');
       } else if (e.type == DioExceptionType.badResponse) {
-        throw Exception('Server merespons dengan error: ${e.response?.statusCode}');
+        throw Exception('Server sedang mengalami gangguan sementara. Silakan coba lagi nanti.');
       } else {
-        throw Exception('Terjadi kesalahan jaringan: ${e.message}');
+        throw Exception('Terjadi kesalahan jaringan. Pastikan perangkat Anda terhubung ke internet.');
       }
     } catch (e) {
-      throw Exception('Terjadi kesalahan yang tidak terduga: $e');
+      throw Exception('Terjadi kesalahan tidak terduga pada sistem.');
     }
   }
 }
