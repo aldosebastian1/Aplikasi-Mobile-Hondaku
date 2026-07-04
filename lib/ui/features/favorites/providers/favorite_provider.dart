@@ -2,9 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../domain/models/motorcycle.dart';
 import '../../../../domain/repositories/favorite_repository.dart';
 import '../../../../data/repositories/favorite_repository_impl.dart';
+import '../../auth/providers/auth_provider.dart';
 
 final favoriteRepositoryProvider = Provider<FavoriteRepository>((ref) {
-  return FavoriteRepositoryImpl();
+  final user = ref.watch(authStateProvider).value;
+  return FavoriteRepositoryImpl(uid: user?.uid);
 });
 
 class FavoriteNotifier extends Notifier<List<String>> {
