@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../ui/core/widgets/hondaku_avatar.dart';
 import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
@@ -92,7 +92,7 @@ class _InformasiPribadiPageState extends ConsumerState<InformasiPribadiPage> {
   @override
   Widget build(BuildContext context) {
     final settingsVal = ref.watch(appSettingsProvider);
-    final isDark = settingsVal.darkModeEnabled;
+    final isDark = false;
     final theme = ProfileThemeColors(isDark);
     final loc = ProfileLocalizations(settingsVal.selectedLanguage);
 
