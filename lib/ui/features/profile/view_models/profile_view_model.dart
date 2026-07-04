@@ -223,7 +223,6 @@ class AppSettingsNotifier extends Notifier<AppSettings> {
     return const AppSettings(
       notifEnabled: true,
       biometricEnabled: false,
-      darkModeEnabled: false,
       selectedLanguage: 'Bahasa Indonesia',
     );
   }
@@ -231,13 +230,11 @@ class AppSettingsNotifier extends Notifier<AppSettings> {
   void updateSettings({
     bool? notifEnabled,
     bool? biometricEnabled,
-    bool? darkModeEnabled,
     String? selectedLanguage,
   }) {
     state = state.copyWith(
       notifEnabled: notifEnabled,
       biometricEnabled: biometricEnabled,
-      darkModeEnabled: darkModeEnabled,
       selectedLanguage: selectedLanguage,
     );
   }
