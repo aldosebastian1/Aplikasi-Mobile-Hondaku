@@ -198,8 +198,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               if (context.mounted) {
                                 final authStateAfter = ref.read(authNotifierProvider);
                                 if (!authStateAfter.hasError) {
-                                  HondakuToast.showSuccess(context, 'Pendaftaran berhasil! Selamat datang di Hondaku.');
-                                  context.go('/home');
+                                  HondakuToast.showSuccess(context, 'Pendaftaran berhasil! Silakan masuk dengan akun Anda.');
+                                  context.go('/login');
                                 } else {
                                   final errorMsg = AppErrorHandler.getMessage(authStateAfter.error);
                                   HondakuToast.showError(context, errorMsg);
