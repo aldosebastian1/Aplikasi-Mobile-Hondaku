@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
 import '../view_models/profile_view_model.dart';
@@ -14,7 +14,7 @@ class MetodePembayaranPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appSettings = ref.watch(appSettingsProvider);
-    final isDark = appSettings.darkModeEnabled;
+    final isDark = false;
     final theme = ProfileThemeColors(isDark);
     final loc = ProfileLocalizations(appSettings.selectedLanguage);
     final methodsList = ref.watch(paymentMethodsProvider);
