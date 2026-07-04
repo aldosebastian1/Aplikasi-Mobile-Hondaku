@@ -53,25 +53,33 @@ class _AutoSliderBannerState extends ConsumerState<AutoSliderBanner> {
   Widget build(BuildContext context) {
     final banners = ref.watch(homeBannersProvider).value ?? const [];
     
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final sliderHeight = (screenWidth * 0.7).clamp(260.0, 360.0);
+    
     if (banners.isEmpty) {
-      return const SizedBox(
-        height: 320,
-        child: Center(child: CircularProgressIndicator()),
+      return SizedBox(
+        height: sliderHeight,
+        child: const Center(child: CircularProgressIndicator()),
       );
     }
     
     return Column(
       children: [
         SizedBox(
-          height: 320,
+          height: sliderHeight,
           child: PageView.builder(
             controller: _bannerController,
             onPageChanged: (i) => setState(() => _currentBanner = i),
             itemCount: banners.length,
-            itemBuilder: (_, i) => HeroBannerWidget(data: banners[i]),
+            itemBuilder: (_, i) {
+              final banner = banners[i];
+              return HeroBannerWidget(
+                data: banner,
+              );
+            },
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(banners.length, (i) {
