@@ -24,7 +24,7 @@ class UserProfileNotifier extends Notifier<UserProfile> {
     return userAsync.when(
       data: (User? user) {
         if (user == null) {
-          return const UserProfile(
+          return UserProfile(
             nama: 'Guest',
             username: 'guest',
             email: '-',
@@ -69,7 +69,7 @@ class UserProfileNotifier extends Notifier<UserProfile> {
 
         return basicProfile;
       },
-      loading: () => const UserProfile(
+      loading: () => UserProfile(
         nama: 'Memuat...',
         username: 'loading',
         email: '...',
@@ -78,7 +78,7 @@ class UserProfileNotifier extends Notifier<UserProfile> {
         avatarPath: 'assets/images/profile.png',
         isCustomAvatar: false,
       ),
-      error: (error, stackTrace) => const UserProfile(
+      error: (error, stackTrace) => UserProfile(
         nama: 'Error',
         username: 'error',
         email: 'error',
