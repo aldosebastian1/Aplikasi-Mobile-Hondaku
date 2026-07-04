@@ -126,7 +126,7 @@ class _InformasiPribadiPageState extends ConsumerState<InformasiPribadiPage> {
                       border: Border.all(color: theme.surface, width: 2),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.1),
+                          color: Colors.black.withValues(alpha: 0.1),
                           blurRadius: 10,
                         ),
                       ],
