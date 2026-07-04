@@ -14,7 +14,6 @@ import '../../auth/providers/auth_provider.dart';
 import '../../../../data/providers.dart';
 
 class UserProfileNotifier extends Notifier<UserProfile> {
-  bool _isFetching = false;
 
   @override
   UserProfile build() {
@@ -62,10 +61,9 @@ class UserProfileNotifier extends Notifier<UserProfile> {
         );
 
         // Fetch complete profile from Firestore asynchronously
-        if (!_isFetching) {
-          _isFetching = true;
-          Future.microtask(() => _fetchFromFirestore(user.uid, basicProfile));
-        }
+        // Always reset flag if it's a new build cycle triggered by auth state change
+        // to ensure we fetch the correct data for the new account
+        Future.microtask(() => _fetchFromFirestore(user.uid, basicProfile));
 
         return basicProfile;
       },
@@ -142,12 +140,14 @@ class UserProfileNotifier extends Notifier<UserProfile> {
           avatarPath: profile.isCustomAvatar ? profile.avatarPath : basicProfile.avatarPath,
           email: basicProfile.email.isNotEmpty ? basicProfile.email : profile.email,
         );
-        state = mergedProfile;
+        // Ensure we only update state if the current user is still the same
+        final currentUser = ref.read(authStateProvider).value;
+        if (currentUser?.uid == uid) {
+          state = mergedProfile;
+        }
       }
     } catch (e) {
       // ignore
-    } finally {
-      _isFetching = false;
     }
   }
 }
