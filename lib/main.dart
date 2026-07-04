@@ -8,6 +8,7 @@ import 'ui/core/router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'firebase_options.dart';
+import 'ui/features/profile/view_models/profile_view_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,17 +31,23 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Watch app settings to listen for language/theme changes
+    final appSettings = ref.watch(appSettingsProvider);
+    final locale = appSettings.selectedLanguage == 'English' 
+        ? const Locale('en') 
+        : const Locale('id');
+
     return MaterialApp.router(
       title: 'Hondaku',
       debugShowCheckedModeBanner: false,
       theme: HondakuTheme.lightTheme,
-      darkTheme: HondakuTheme.darkTheme,
       themeMode: ThemeMode.light,
+      locale: locale,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
