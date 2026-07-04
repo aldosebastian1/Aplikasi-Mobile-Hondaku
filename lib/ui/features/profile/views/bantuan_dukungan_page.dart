@@ -71,7 +71,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
   @override
   Widget build(BuildContext context) {
     final appSettings = ref.watch(appSettingsProvider);
-    final isDark = false;
+    const isDark = false;
     final theme = ProfileThemeColors(isDark);
     final loc = ProfileLocalizations(appSettings.selectedLanguage);
     final faqs = _filteredFaqs(loc.isEn);
