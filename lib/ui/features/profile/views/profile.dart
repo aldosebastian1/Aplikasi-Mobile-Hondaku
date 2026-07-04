@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../domain/models/aktivitas_item.dart';
@@ -39,7 +39,7 @@ class ProfilePage extends ConsumerWidget {
           )
         : null;
 
-    final isDark = appSettings.darkModeEnabled;
+    final isDark = false;
     final loc = ProfileLocalizations(appSettings.selectedLanguage);
     final theme = ProfileThemeColors(isDark);
 
@@ -1150,7 +1150,7 @@ class ProfilePage extends ConsumerWidget {
 
   static void _showGalleryUploadSimulation(BuildContext context, WidgetRef ref) {
     final appSettings = ref.read(appSettingsProvider);
-    final isDark = appSettings.darkModeEnabled;
+    final isDark = false;
     final theme = ProfileThemeColors(isDark);
     final loc = ProfileLocalizations(appSettings.selectedLanguage);
 
