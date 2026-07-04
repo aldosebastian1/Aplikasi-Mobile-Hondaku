@@ -94,9 +94,7 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
 
   String _getValidationMessage() => ref.read(bookingViewModelProvider).validationMessage;
 
-  // ─────────────────────────────────────────────────────────
   // BUILD
-  // ─────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
     final bookingState = ref.watch(bookingViewModelProvider);
@@ -139,7 +137,6 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                     _buildPageHeader(),
                     const SizedBox(height: 16),
 
-                    // ── Informasi Identitas ──
                     const BookingSectionTitle(
                       iconWidget: BookingIdCardIcon(),
                       title: 'Informasi Identitas (KTP)',
@@ -189,7 +186,6 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                     ),
                     const SizedBox(height: 22),
 
-                    // ── Domisili ──
                     const BookingSectionTitle(
                       iconWidget: Icon(
                         Icons.location_on,
@@ -276,9 +272,7 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
     );
   }
 
-  // ─────────────────────────────────────────────────────────
   // APPBAR
-  // ─────────────────────────────────────────────────────────
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.white,
@@ -332,9 +326,7 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
   }
 
 
-  // ─────────────────────────────────────────────────────────
   // PAGE HEADER
-  // ─────────────────────────────────────────────────────────
   Widget _buildPageHeader() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -361,9 +353,7 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
   }
 
 
-  // ─────────────────────────────────────────────────────────
   // CTA BUTTON
-  // ─────────────────────────────────────────────────────────
   Widget _buildPilihBookingButton() {
     return SizedBox(
       width: double.infinity,
@@ -412,16 +402,11 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
     );
   }
 
-  // ─────────────────────────────────────────────────────────
   // PRODUCT CARD
-  // ─────────────────────────────────────────────────────────
 
 
-  // ─────────────────────────────────────────────────────────
   // PAYMENT TOGGLE  (Tunai / Kredit chips)
-  // ─────────────────────────────────────────────────────────
   // BOTTOM BAR
-  // ─────────────────────────────────────────────────────────
   Widget _buildBottomBar() {
     return Column(
       children: [
