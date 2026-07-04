@@ -15,7 +15,7 @@ class AutoSliderBanner extends ConsumerStatefulWidget {
 class _AutoSliderBannerState extends ConsumerState<AutoSliderBanner> {
   static const _red = HondakuTheme.red;
   int _currentBanner = 0;
-  final PageController _bannerController = PageController();
+  final PageController _bannerController = PageController(viewportFraction: 0.88);
   Timer? _bannerTimer;
 
   @override
@@ -35,8 +35,8 @@ class _AutoSliderBannerState extends ConsumerState<AutoSliderBanner> {
         }
         _bannerController.animateToPage(
           nextPage,
-          duration: const Duration(milliseconds: 800),
-          curve: Curves.easeInOut,
+          duration: const Duration(milliseconds: 900),
+          curve: Curves.fastOutSlowIn,
         );
       }
     });
@@ -73,8 +73,29 @@ class _AutoSliderBannerState extends ConsumerState<AutoSliderBanner> {
             itemCount: banners.length,
             itemBuilder: (_, i) {
               final banner = banners[i];
-              return HeroBannerWidget(
-                data: banner,
+              return AnimatedBuilder(
+                animation: _bannerController,
+                builder: (context, child) {
+                  double page = i.toDouble();
+                  if (_bannerController.position.haveDimensions) {
+                    page = _bannerController.page ?? i.toDouble();
+                  } else {
+                    page = _currentBanner.toDouble();
+                  }
+
+                  final double value = (page - i).abs();
+                  final double scale = (1 - (value * 0.12)).clamp(0.8, 1.0);
+                  final double opacity = (1 - (value * 0.4)).clamp(0.4, 1.0);
+
+                  return Opacity(
+                    opacity: opacity,
+                    child: Transform.scale(
+                      scale: scale,
+                      child: child,
+                    ),
+                  );
+                },
+                child: HeroBannerWidget(data: banner),
               );
             },
           ),
