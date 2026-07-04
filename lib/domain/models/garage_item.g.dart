@@ -2,9 +2,7 @@
 
 part of 'garage_item.dart';
 
-// **************************************************************************
 // JsonSerializableGenerator
-// **************************************************************************
 
 _GarageItem _$GarageItemFromJson(Map<String, dynamic> json) => _GarageItem(
   id: json['id'] as String,
