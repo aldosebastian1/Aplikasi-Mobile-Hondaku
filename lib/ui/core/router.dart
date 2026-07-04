@@ -29,9 +29,11 @@ import '../features/kredit/views/konfirmasi_pengajuan_page.dart';
 import '../../domain/models/motorcycle.dart';
 import '../../domain/models/aktivitas_item.dart';
 import '../../data/bank_data.dart';
+import 'error_page.dart';
 
 final goRouter = GoRouter(
   initialLocation: '/',
+  errorBuilder: (context, state) => ErrorPage(error: state.error),
   routes: [
     GoRoute(
       path: '/',
