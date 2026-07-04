@@ -1,16 +1,19 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../domain/models/aktivitas_item.dart';
+import '../../domain/models/garage_item.dart';
 import '../../domain/repositories/aktivitas_repository.dart';
+import '../../domain/repositories/garage_repository.dart';
 
 class AktivitasRepositoryImpl implements AktivitasRepository {
   final FirebaseFirestore _firestore;
   final String? uid;
+  final GarageRepository? garageRepository;
   final StreamController<List<AktivitasItem>> _controller = StreamController<List<AktivitasItem>>.broadcast();
   StreamSubscription? _firestoreSub;
   final Map<String, Timer> _activeTimers = {};
 
-  AktivitasRepositoryImpl({this.uid, FirebaseFirestore? firestore}) 
+  AktivitasRepositoryImpl({this.uid, this.garageRepository, FirebaseFirestore? firestore}) 
       : _firestore = firestore ?? FirebaseFirestore.instance {
     if (uid != null && uid!.isNotEmpty) {
       _listenToFirestore();
@@ -122,6 +125,21 @@ class AktivitasRepositoryImpl implements AktivitasRepository {
       if (nextStatus == StatusAktivitas.selesai) {
         timer.cancel();
         _activeTimers.remove(id);
+        
+        if (garageRepository != null) {
+          try {
+            final garageItem = GarageItem(
+              id: item.id,
+              name: item.namaMotor,
+              type: item.tipeUnit,
+              imagePath: item.imagePath,
+              category: 'DAILY RIDE',
+            );
+            await garageRepository!.addVehicle(garageItem);
+          } catch (e) {
+            // Silently ignore if it fails to add
+          }
+        }
       } else {
         // Update local reference to continue correctly
         item = updatedItem;
