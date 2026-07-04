@@ -1,6 +1,6 @@
 import '../models/garage_item.dart';
 
 abstract class GarageRepository {
-  Future<List<GarageItem>> getGarageItems();
+  Stream<List<GarageItem>> watchGarageItems();
   Future<void> addVehicle(GarageItem item);
 }
