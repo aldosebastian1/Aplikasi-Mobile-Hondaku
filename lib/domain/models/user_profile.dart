@@ -90,7 +90,8 @@ class UserProfile {
       nik: json['nik'] as String? ?? '-',
       avatarPath: json['avatarPath'] as String? ?? 'assets/images/profile.png',
       isCustomAvatar: json['isCustomAvatar'] as bool? ?? true,
-      initials: json['initials'] as String?, // will fall back to auto-generated from name if null
+      initials: json['initials'] as String?,
+      avatarBgColor: json['avatarBgColor'] != null ? Color(json['avatarBgColor'] as int) : null,
     );
   }
 
@@ -104,7 +105,7 @@ class UserProfile {
       'avatarPath': avatarPath,
       'isCustomAvatar': isCustomAvatar,
       'initials': initials,
-      // We don't save avatarBgColor to Firestore usually since it's UI specific, but we could save a hex
+      'avatarBgColor': avatarBgColor.toARGB32(),
     };
   }
 }
