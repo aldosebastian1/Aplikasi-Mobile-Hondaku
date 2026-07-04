@@ -43,6 +43,8 @@ class AuthNotifier extends AsyncNotifier<void> {
       final userCred = await _authRepository.registerWithEmail(email, password, name);
       if (userCred.user != null) {
         await _initializeFirestoreProfile(userCred.user!, name: name);
+        // Force logout after registration to require manual login
+        await FirebaseAuth.instance.signOut();
       }
     });
   }
