@@ -148,7 +148,7 @@ class BookingInputField extends StatelessWidget {
           errorText: errorText,
           filled: true,
           fillColor: Colors.white,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: Color(0xFFE0E0E0), width: 1.2),
@@ -217,7 +217,7 @@ class BookingDropdown extends StatelessWidget {
           errorText: errorText,
           filled: true,
           fillColor: Colors.white,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: Color(0xFFE0E0E0), width: 1.2),
@@ -275,7 +275,7 @@ class BookingPhoneField extends StatelessWidget {
           errorText: errorText,
           filled: true,
           fillColor: Colors.white,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           prefixIcon: Container(
             margin: const EdgeInsets.only(right: 8),
             padding: const EdgeInsets.symmetric(horizontal: 12),
