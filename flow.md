@@ -39,9 +39,9 @@ Struktur file telah dikelompokkan ke dalam folder arsitektur bersih (*Clean Arch
 > Bagian ini dihasilkan otomatis oleh `tool/sync_app_flow.dart`.
 > Jangan edit manual di antara marker START/END karena akan ditimpa saat sinkronisasi.
 
-**Generated at:** 2026-07-03 17:05:09.146695
+**Generated at:** 2026-07-04 16:24:57.446589
 **Detected nodes:** 23
-**Detected transitions:** 45
+**Detected transitions:** 46
 
 ```mermaid
 flowchart TD
@@ -77,7 +77,7 @@ flowchart TD
   RegisterScreen -->|context.push| HalamanHome
   RegisterScreen -->|context.go| HalamanHome
   RegisterScreen -->|context.go| HalamanHome
-  RegisterScreen -->|context.go| HalamanHome
+  RegisterScreen -->|context.go| LoginScreen
   RingkasanPembayaranPage -->|context.push| PembayaranBookingPage
   Router -->|context.go| CatalogPage
   Router -->|context.go| CatalogPage
@@ -86,6 +86,7 @@ flowchart TD
   Router -->|context.go| ProfilePage
   SimulasiKreditPage -->|context.push| UploadDokumenKreditPage
   SplashScreen -->|context.go| HalamanHome
+  SplashScreen -->|context.go| LoginScreen
   SplashScreen -->|context.go| LoginScreen
   SplashScreen -->|context.go| OnboardingScreen
   StatusPesananPage -->|context.pushReplacement| KonfirmasiPesananPage
@@ -105,8 +106,8 @@ flowchart TD
 - CheckoutPaymentMethodPage -> SimulasiKreditPage (context.push) [lib/ui/features/booking/views/checkout_payment_method_page.dart:544]
 - FavoritePage -> CatalogPage (context.go) [lib/ui/features/favorites/views/favorite_page.dart:64]
 - HalamanHome -> CatalogPage (context.go) [lib/ui/features/home/views/home_page.dart:274]
-- KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:51]
 - KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:292]
+- KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:51]
 - KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:41]
 - KonfirmasiPesananPage -> HalamanHome (context.go) [lib/ui/features/booking/views/konfirmasi_pesanan_page.dart:308]
 - LoginScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/login_screen.dart:179]
@@ -126,7 +127,7 @@ flowchart TD
 - RegisterScreen -> HalamanHome (context.push) [lib/ui/features/auth/views/register_screen.dart:313]
 - RegisterScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/register_screen.dart:296]
 - RegisterScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/register_screen.dart:275]
-- RegisterScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/register_screen.dart:202]
+- RegisterScreen -> LoginScreen (context.go) [lib/ui/features/auth/views/register_screen.dart:202]
 - RingkasanPembayaranPage -> PembayaranBookingPage (context.push) [lib/ui/features/booking/views/ringkasan_pembayaran_page.dart:457]
 - Router -> CatalogPage (context.go) [lib/ui/core/router.dart:80]
 - Router -> CatalogPage (context.go) [lib/ui/core/router.dart:102]
@@ -134,9 +135,10 @@ flowchart TD
 - Router -> ProfilePage (context.go) [lib/ui/core/router.dart:91]
 - Router -> ProfilePage (context.go) [lib/ui/core/router.dart:81]
 - SimulasiKreditPage -> UploadDokumenKreditPage (context.push) [lib/ui/features/kredit/views/simulasi_kredit_page.dart:416]
-- SplashScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/splash_screen.dart:55]
-- SplashScreen -> LoginScreen (context.go) [lib/ui/features/auth/views/splash_screen.dart:57]
-- SplashScreen -> OnboardingScreen (context.go) [lib/ui/features/auth/views/splash_screen.dart:60]
+- SplashScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/splash_screen.dart:56]
+- SplashScreen -> LoginScreen (context.go) [lib/ui/features/auth/views/splash_screen.dart:58]
+- SplashScreen -> LoginScreen (context.go) [lib/ui/features/auth/views/splash_screen.dart:62]
+- SplashScreen -> OnboardingScreen (context.go) [lib/ui/features/auth/views/splash_screen.dart:65]
 - StatusPesananPage -> KonfirmasiPesananPage (context.pushReplacement) [lib/ui/features/booking/views/status_pesanan_page.dart:52]
 - UploadDokumenKreditPage -> KonfirmasiPengajuanPage (context.push) [lib/ui/features/kredit/views/upload_dokumen_kredit_page.dart:141]
 <!-- AUTO_FLOW_END -->
