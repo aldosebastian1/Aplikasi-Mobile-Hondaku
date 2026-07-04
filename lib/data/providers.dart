@@ -8,6 +8,7 @@ import '../domain/repositories/user_repository.dart';
 import '../domain/models/motorcycle.dart';
 import '../domain/models/bank_option.dart';
 import '../domain/models/hero_banner.dart';
+import '../domain/models/garage_item.dart';
 import 'repositories/motorcycle_repository_impl.dart';
 import 'repositories/bank_repository_impl.dart';
 import 'repositories/garage_repository_impl.dart';
@@ -25,7 +26,13 @@ final bankRepositoryProvider = Provider<BankRepository>((ref) {
 });
 
 final garageRepositoryProvider = Provider<GarageRepository>((ref) {
-  return GarageRepositoryImpl();
+  final user = ref.watch(authStateProvider).value;
+  return GarageRepositoryImpl(uid: user?.uid);
+});
+
+final garageViewModelProvider = StreamProvider<List<GarageItem>>((ref) {
+  final repo = ref.watch(garageRepositoryProvider);
+  return repo.watchGarageItems();
 });
 
 final heroBannerRepositoryProvider = Provider<HeroBannerRepository>((ref) {
@@ -34,7 +41,8 @@ final heroBannerRepositoryProvider = Provider<HeroBannerRepository>((ref) {
 
 final aktivitasRepositoryProvider = Provider<AktivitasRepository>((ref) {
   final user = ref.watch(authStateProvider).value;
-  final repo = AktivitasRepositoryImpl(uid: user?.uid);
+  final garageRepo = ref.watch(garageRepositoryProvider);
+  final repo = AktivitasRepositoryImpl(uid: user?.uid, garageRepository: garageRepo);
   ref.onDispose(() => repo.dispose());
   return repo;
 });
