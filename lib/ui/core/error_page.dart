@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hondaku/l10n/app_localizations.dart';
 
 class ErrorPage extends StatelessWidget {
   final Exception? error;
