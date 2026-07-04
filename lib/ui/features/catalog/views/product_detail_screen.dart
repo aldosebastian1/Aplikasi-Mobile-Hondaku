@@ -47,11 +47,17 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   const SizedBox(height: 16),
                   _buildTitlePriceSection(),
                   const SizedBox(height: 20),
-                  SpecsSectionWidget(motor: widget.motor, isDetailed: false),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SpecsSectionWidget(motor: widget.motor, isDetailed: false),
+                  ),
                   const SizedBox(height: 20),
                   _buildFeaturesSection(),
                   const SizedBox(height: 20),
-                  SpecsSectionWidget(motor: widget.motor, isDetailed: true),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SpecsSectionWidget(motor: widget.motor, isDetailed: true),
+                  ),
                   const SizedBox(height: 40),
                   _buildBottomButtonsSection(),
                   const SizedBox(height: 20),
@@ -78,7 +84,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       child: SafeArea(
         bottom: false,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 14),
           child: Row(
             children: [
               IconButton(
@@ -136,7 +142,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   Widget _buildHeroSection() {
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+      padding: const EdgeInsets.fromLTRB(20, 14, 20, 16),
       child: Column(
         children: [
           Align(
@@ -211,8 +217,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             ),
           ),
           const SizedBox(height: 18),
-          _buildColorSelectors(),
-          const SizedBox(height: 12),
+          // TODO: Fitur Pilihan Warna dinonaktifkan sementara karena membutuhkan implementasi yang kompleks
+          // _buildColorSelectors(),
+          // const SizedBox(height: 12),
         ],
       ),
     );
