@@ -4,8 +4,6 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
 /// Example:
@@ -42,49 +40,51 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static FirebaseOptions get web => FirebaseOptions(
-    apiKey: dotenv.env['FIREBASE_API_KEY_WEB'] ?? 'AIzaSyCf5DbB3yUgDIlIC8fEo6kVrRur_B2ZuAo',
-    appId: '1:675175751660:web:e9a047f8c4c82f08046ac9',
-    messagingSenderId: '675175751660',
-    projectId: 'hondaku-app',
-    authDomain: 'hondaku-app.firebaseapp.com',
-    storageBucket: 'hondaku-app.firebasestorage.app',
-    measurementId: 'G-TSLEX6N0G8',
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCIsbk51wnbJElX3a3rf3iR495vmGOA6so',
+    appId: '1:512206691328:web:b9fd9395d0083e38e58ce5',
+    messagingSenderId: '512206691328',
+    projectId: 'hondaku1',
+    authDomain: 'hondaku1.firebaseapp.com',
+    storageBucket: 'hondaku1.firebasestorage.app',
+    measurementId: 'G-38EP74G7PY',
   );
 
-  static FirebaseOptions get android => FirebaseOptions(
-    apiKey: dotenv.env['FIREBASE_API_KEY_ANDROID'] ?? 'AIzaSyBr0xdIihN-uuHyJr_4nHFA-filDha0yYs',
-    appId: '1:675175751660:android:64e988d81668171f046ac9',
-    messagingSenderId: '675175751660',
-    projectId: 'hondaku-app',
-    storageBucket: 'hondaku-app.firebasestorage.app',
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyAA2rSmrtdvyO-ef4KURyQcz8DjeIA86fg',
+    appId: '1:512206691328:android:0818e5d5060f5113e58ce5',
+    messagingSenderId: '512206691328',
+    projectId: 'hondaku1',
+    storageBucket: 'hondaku1.firebasestorage.app',
   );
-  static FirebaseOptions get ios => FirebaseOptions(
-    apiKey: dotenv.env['FIREBASE_API_KEY_IOS'] ?? 'AIzaSyCYdeFHW3Nut7giz49gVDAd4egp78oF0oE',
-    appId: '1:675175751660:ios:ca629ca72337d9c3046ac9',
-    messagingSenderId: '675175751660',
-    projectId: 'hondaku-app',
-    storageBucket: 'hondaku-app.firebasestorage.app',
-    iosClientId: '675175751660-704uhjme7lg5abria0q01uf415r0jedm.apps.googleusercontent.com',
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyApWjxMzfm5E8ddF07NMHzYr9DVRy7CYs0',
+    appId: '1:512206691328:ios:52f0f95592330a5ce58ce5',
+    messagingSenderId: '512206691328',
+    projectId: 'hondaku1',
+    storageBucket: 'hondaku1.firebasestorage.app',
+    androidClientId: '512206691328-5rvgtaj6l2coido732426sqdpv7vnqul.apps.googleusercontent.com',
+    iosClientId: '512206691328-k0k0ftnj3c0mpvo1sekg8s1g4ltu8aa3.apps.googleusercontent.com',
     iosBundleId: 'com.example.hondaku',
   );
-  static FirebaseOptions get macos => FirebaseOptions(
-    apiKey: dotenv.env['FIREBASE_API_KEY_IOS'] ?? 'AIzaSyCYdeFHW3Nut7giz49gVDAd4egp78oF0oE',
-    appId: '1:675175751660:ios:ca629ca72337d9c3046ac9',
-    messagingSenderId: '675175751660',
-    projectId: 'hondaku-app',
-    storageBucket: 'hondaku-app.firebasestorage.app',
-    iosClientId: '675175751660-704uhjme7lg5abria0q01uf415r0jedm.apps.googleusercontent.com',
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyApWjxMzfm5E8ddF07NMHzYr9DVRy7CYs0',
+    appId: '1:512206691328:ios:52f0f95592330a5ce58ce5',
+    messagingSenderId: '512206691328',
+    projectId: 'hondaku1',
+    storageBucket: 'hondaku1.firebasestorage.app',
+    androidClientId: '512206691328-5rvgtaj6l2coido732426sqdpv7vnqul.apps.googleusercontent.com',
+    iosClientId: '512206691328-k0k0ftnj3c0mpvo1sekg8s1g4ltu8aa3.apps.googleusercontent.com',
     iosBundleId: 'com.example.hondaku',
   );
 
-  static FirebaseOptions get windows => FirebaseOptions(
-    apiKey: dotenv.env['FIREBASE_API_KEY_WEB'] ?? 'AIzaSyCf5DbB3yUgDIlIC8fEo6kVrRur_B2ZuAo',
-    appId: '1:675175751660:web:34097c4cb6e299c1046ac9',
-    messagingSenderId: '675175751660',
-    projectId: 'hondaku-app',
-    authDomain: 'hondaku-app.firebaseapp.com',
-    storageBucket: 'hondaku-app.firebasestorage.app',
-    measurementId: 'G-L4YWXWKC8M',
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyCIsbk51wnbJElX3a3rf3iR495vmGOA6so',
+    appId: '1:512206691328:web:86d51433ed9ad83de58ce5',
+    messagingSenderId: '512206691328',
+    projectId: 'hondaku1',
+    authDomain: 'hondaku1.firebaseapp.com',
+    storageBucket: 'hondaku1.firebasestorage.app',
+    measurementId: 'G-99MTYS6970',
   );
 }
