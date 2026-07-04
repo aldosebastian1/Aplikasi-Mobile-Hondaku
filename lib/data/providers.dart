@@ -14,6 +14,7 @@ import 'repositories/garage_repository_impl.dart';
 import 'repositories/hero_banner_repository_impl.dart';
 import 'repositories/aktivitas_repository_impl.dart';
 import 'repositories/user_repository_impl.dart';
+import '../ui/features/auth/providers/auth_provider.dart';
 
 final motorcycleRepositoryProvider = Provider<MotorcycleRepository>((ref) {
   return MotorcycleRepositoryImpl();
@@ -32,7 +33,10 @@ final heroBannerRepositoryProvider = Provider<HeroBannerRepository>((ref) {
 });
 
 final aktivitasRepositoryProvider = Provider<AktivitasRepository>((ref) {
-  return AktivitasRepositoryImpl();
+  final user = ref.watch(authStateProvider).value;
+  final repo = AktivitasRepositoryImpl(uid: user?.uid);
+  ref.onDispose(() => repo.dispose());
+  return repo;
 });
 
 final userRepositoryProvider = Provider<UserRepository>((ref) {
