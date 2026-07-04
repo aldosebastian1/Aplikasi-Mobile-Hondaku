@@ -73,7 +73,7 @@ class ProfilePage extends ConsumerWidget {
                       'MEDAN V1.1.1 (BUILD 1082)',
                       style: TextStyle(
                         fontSize: 11,
-                        color: isDark ? Colors.grey.shade600 : Colors.grey.shade500,
+                        color: Colors.grey.shade500,
                         letterSpacing: 1.1,
                       ),
                     ),
