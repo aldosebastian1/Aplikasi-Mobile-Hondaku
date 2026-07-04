@@ -5,9 +5,7 @@ import '../../../../domain/models/motorcycle.dart';
 import '../../../../domain/models/bank_option.dart';
 import '../../../../data/providers.dart';
 
-// ─────────────────────────────────────────────────────────────
 // PAGE
-// ─────────────────────────────────────────────────────────────
 class RingkasanPembayaranPage extends ConsumerStatefulWidget {
   final Motorcycle motor;
   final bool isFullPayment;
@@ -30,7 +28,6 @@ class _RingkasanPembayaranPageState extends ConsumerState<RingkasanPembayaranPag
     return ref.watch(bankOptionsProvider).value ?? const [];
   }
 
-  // ───── BUILD ─────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,19 +42,15 @@ class _RingkasanPembayaranPageState extends ConsumerState<RingkasanPembayaranPag
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ── Page heading ──
                     _buildPageHeader(),
                     const SizedBox(height: 16),
 
-                    // ── Product card ──
                     _buildProductCard(),
                     const SizedBox(height: 12),
 
-                    // ── Payment detail card ──
                     _buildRingkasanHargaCard(),
                     const SizedBox(height: 20),
 
-                    // ── Metode Pembayaran label ──
                     const Text(
                       'Pilihan Bank Transfer',
                       style: TextStyle(
@@ -68,11 +61,9 @@ class _RingkasanPembayaranPageState extends ConsumerState<RingkasanPembayaranPag
                     ),
                     const SizedBox(height: 12),
 
-                    // ── Bank list ──
                     _buildBankList(),
                     const SizedBox(height: 14),
 
-                    // ── Security note ──
                     _buildSecurityNote(),
                   ],
                 ),
@@ -80,14 +71,12 @@ class _RingkasanPembayaranPageState extends ConsumerState<RingkasanPembayaranPag
             ),
           ),
 
-          // ── Bottom CTA ──
           _buildBottomBar(),
         ],
       ),
     );
   }
 
-  // ───── APPBAR ────────────────────────────────────────────
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.white,
@@ -133,7 +122,6 @@ class _RingkasanPembayaranPageState extends ConsumerState<RingkasanPembayaranPag
     );
   }
 
-  // ───── PAGE HEADER ───────────────────────────────────────
   Widget _buildPageHeader() {
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +147,6 @@ class _RingkasanPembayaranPageState extends ConsumerState<RingkasanPembayaranPag
     );
   }
 
-  // ───── PRODUCT CARD ──────────────────────────────────────
   Widget _buildProductCard() {
     return Container(
       decoration: BoxDecoration(
@@ -252,7 +239,6 @@ class _RingkasanPembayaranPageState extends ConsumerState<RingkasanPembayaranPag
     );
   }
 
-  // ───── HARGA DETAIL CARD ──────────────────────────────────
   Widget _buildRingkasanHargaCard() {
     return Container(
       decoration: BoxDecoration(
@@ -305,7 +291,6 @@ class _RingkasanPembayaranPageState extends ConsumerState<RingkasanPembayaranPag
     );
   }
 
-  // ───── BANK LIST ─────────────────────────────────────────
   Widget _buildBankList() {
     return Container(
       decoration: BoxDecoration(
@@ -410,7 +395,6 @@ class _RingkasanPembayaranPageState extends ConsumerState<RingkasanPembayaranPag
     );
   }
 
-  // ───── SECURITY NOTE ─────────────────────────────────────
   Widget _buildSecurityNote() {
     return Container(
       decoration: BoxDecoration(
@@ -442,7 +426,6 @@ class _RingkasanPembayaranPageState extends ConsumerState<RingkasanPembayaranPag
     );
   }
 
-  // ───── BOTTOM BAR ────────────────────────────────────────
   Widget _buildBottomBar() {
     return Container(
       color: Colors.white,
