@@ -17,6 +17,6 @@ Future<void> seedFirestoreDatabase() async {
     developer.log('✅ Berhasil upload ${motorcycleDatabase.length} motor ke Firestore!');
   } catch (e) {
     developer.log('❌ Gagal upload: $e');
-    throw Exception('Gagal upload data: $e');
+    throw Exception('Gagal upload data ke server. Pastikan koneksi dan aturan database sudah benar.');
   }
 }
