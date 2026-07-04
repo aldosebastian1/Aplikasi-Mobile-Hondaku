@@ -178,8 +178,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   if (!authStateAfter.hasError) {
                                     context.go('/home');
                                   } else {
-                                    final errorMsg = authStateAfter.error?.toString() ??
-                                        'Email atau kata sandi yang Anda masukkan salah. Silakan coba lagi.';
+                                    final errorMsg = authStateAfter.error != null ? AppErrorHandler.getMessage(authStateAfter.error) : 'Email atau kata sandi yang Anda masukkan salah. Silakan coba lagi.';
                                     HondakuToast.showError(context, errorMsg);
                                   }
                                 }
@@ -269,7 +268,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               }
                             } catch (e) {
                               if (context.mounted) {
-                                HondakuToast.showError(context, e.toString());
+                                HondakuToast.showError(context, AppErrorHandler.getMessage(e));
                               }
                             }
                           },
@@ -290,7 +289,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               }
                             } catch (e) {
                               if (context.mounted) {
-                                HondakuToast.showError(context, e.toString());
+                                HondakuToast.showError(context, AppErrorHandler.getMessage(e));
                               }
                             }
                           },
@@ -321,7 +320,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            context.push('/register');
+                            context.go('/register');
                           },
                           child: const Text(
                             'Daftar Sekarang',
