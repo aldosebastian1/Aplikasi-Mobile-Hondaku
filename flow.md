@@ -39,7 +39,7 @@ Struktur file telah dikelompokkan ke dalam folder arsitektur bersih (*Clean Arch
 > Bagian ini dihasilkan otomatis oleh `tool/sync_app_flow.dart`.
 > Jangan edit manual di antara marker START/END karena akan ditimpa saat sinkronisasi.
 
-**Generated at:** 2026-07-04 16:46:01.225613
+**Generated at:** 2026-07-04 23:00:37.731076
 **Detected nodes:** 24
 **Detected transitions:** 49
 
@@ -107,9 +107,9 @@ flowchart TD
 - BookingFormPage -> RingkasanPembayaranPage (context.push) [lib/ui/features/booking/views/booking_form_page.dart:385]
 - CheckoutPaymentMethodPage -> BookingFormPage (context.push) [lib/ui/features/booking/views/checkout_payment_method_page.dart:548]
 - CheckoutPaymentMethodPage -> SimulasiKreditPage (context.push) [lib/ui/features/booking/views/checkout_payment_method_page.dart:544]
-- ErrorPage -> HalamanHome (context.go) [lib/ui/core/error_page.dart:56]
+- ErrorPage -> HalamanHome (context.go) [lib/ui/core/error_page.dart:55]
 - FavoritePage -> CatalogPage (context.go) [lib/ui/features/favorites/views/favorite_page.dart:64]
-- HalamanHome -> CatalogPage (context.go) [lib/ui/features/home/views/home_page.dart:274]
+- HalamanHome -> CatalogPage (context.go) [lib/ui/features/home/views/home_page.dart:269]
 - KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:51]
 - KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:41]
 - KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:292]
@@ -124,7 +124,7 @@ flowchart TD
 - OnboardingScreen -> LoginScreen (context.go) [lib/ui/features/auth/views/onboarding_screen.dart:49]
 - OtpScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/otp_screen.dart:121]
 - PembayaranBookingPage -> BookingBerhasilPage (context.pushReplacement) [lib/ui/features/booking/views/pembayaran_booking_page.dart:619]
-- ProductDetailScreen -> CheckoutPaymentMethodPage (context.push) [lib/ui/features/catalog/views/product_detail_screen.dart:478]
+- ProductDetailScreen -> CheckoutPaymentMethodPage (context.push) [lib/ui/features/catalog/views/product_detail_screen.dart:485]
 - ProfilePage -> LoginScreen (context.go) [lib/ui/features/profile/views/profile.dart:968]
 - ProfilePage -> StatusPesananPage (context.push) [lib/ui/features/profile/views/profile.dart:260]
 - ProfilePage -> StatusPesananPage (context.push) [lib/ui/features/profile/views/profile.dart:451]
