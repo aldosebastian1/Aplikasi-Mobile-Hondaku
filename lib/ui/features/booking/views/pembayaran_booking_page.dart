@@ -29,7 +29,6 @@ class PembayaranBookingPage extends ConsumerStatefulWidget {
 
 class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
   late BankOption _currentBank;
-  // â”€â”€ countdown: 24 jam â”€â”€
   static const int _totalSeconds = 24 * 3600 - 1; // 23:59:59
   int _remainingSeconds = _totalSeconds;
   Timer? _timer;
@@ -163,7 +162,6 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
         '${s.toString().padLeft(2, '0')}';
   }
 
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -175,7 +173,6 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // â”€â”€ countdown â”€â”€
                   _buildCountdown(),
 
                   Padding(
@@ -184,11 +181,9 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 16),
-                        // â”€â”€ total bayar + VA card â”€â”€
                         _buildTotalCard(),
                         const SizedBox(height: 20),
 
-                        // â”€â”€ pilih bank lain â”€â”€
                         const Text(
                           'Pilih Bank Lain',
                           style: TextStyle(
@@ -201,7 +196,6 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
                         _buildBankList(),
                         const SizedBox(height: 16),
 
-                        // â”€â”€ petunjuk â”€â”€
                         _buildInstructions(),
                         const SizedBox(height: 20),
                       ],
@@ -217,7 +211,6 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
     );
   }
 
-  // â”€â”€ AppBar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   PreferredSizeWidget _buildAppBar() => AppBar(
     backgroundColor: Colors.white,
     elevation: 0.5,
@@ -263,7 +256,6 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
     ],
   );
 
-  // â”€â”€ Countdown â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   Widget _buildCountdown() {
     return Container(
       color: Colors.white,
@@ -301,7 +293,6 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
     );
   }
 
-  // â”€â”€ Total Bayar + VA number â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   Widget _buildTotalCard() {
     final String totalPrice = widget.isFullPayment ? widget.motor.price : 'Rp 500.000';
     
@@ -431,7 +422,6 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
     );
   }
 
-  // â”€â”€ Bank list (Pilih Bank Lain) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   Widget _buildBankList() {
     final banksAsync = ref.watch(bankOptionsProvider);
 
@@ -525,7 +515,6 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
     );
   }
 
-  // â”€â”€ Petunjuk Pembayaran â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   Widget _buildInstructions() {
     const steps = [
       'Salin nomor Virtual Account di atas.',
@@ -591,7 +580,6 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
     );
   }
 
-  // â”€â”€ Bottom bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   Widget _buildBottomBar() {
     return Container(
       color: Colors.white,
