@@ -76,6 +76,8 @@ class HondakuTheme {
       appBarTheme: const AppBarTheme(
         backgroundColor: lightSurface,
         elevation: 0.5,
+        scrolledUnderElevation: 0,
+        surfaceTintColor: Colors.transparent,
         iconTheme: IconThemeData(color: lightTextPrimary),
         titleTextStyle: TextStyle(
           color: lightTextPrimary,
@@ -115,6 +117,8 @@ class HondakuTheme {
       appBarTheme: const AppBarTheme(
         backgroundColor: darkSurface,
         elevation: 0.5,
+        scrolledUnderElevation: 0,
+        surfaceTintColor: Colors.transparent,
         iconTheme: IconThemeData(color: darkTextPrimary),
         titleTextStyle: TextStyle(
           color: darkTextPrimary,
