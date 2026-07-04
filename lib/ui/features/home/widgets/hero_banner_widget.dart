@@ -20,9 +20,10 @@ class HeroBannerWidget extends StatelessWidget {
         final verticalPadding = (constraints.maxWidth * 0.08).clamp(16.0, 28.0);
         final title1Size = (constraints.maxWidth * 0.08).clamp(22.0, 28.0);
         final title2Size = (constraints.maxWidth * 0.06).clamp(16.0, 22.0);
-        final subtitleSize = (constraints.maxWidth * 0.038).clamp(11.0, 13.0);
-        final gap1 = (constraints.maxWidth * 0.03).clamp(6.0, 12.0);
-        final gap2 = (constraints.maxWidth * 0.02).clamp(4.0, 8.0);
+        final subtitleSize = (constraints.maxWidth * 0.04).clamp(13.0, 15.0); // Diperbesar dari 11-13 ke 13-15 sesuai standar keterbacaan mobile
+        final gapTagToTitle = (constraints.maxWidth * 0.045).clamp(6.0, 12.0); // Diperkecil agar tidak overflow vertikal
+        final gapTitleToDivider = (constraints.maxWidth * 0.05).clamp(10.0, 16.0); // Diperkecil
+        final gapDividerToSubtitle = (constraints.maxWidth * 0.035).clamp(6.0, 10.0); // Diperkecil
         final badgePaddingV = (constraints.maxWidth * 0.018).clamp(4.0, 6.0);
         final badgePaddingH = (constraints.maxWidth * 0.04).clamp(10.0, 14.0);
 
@@ -50,14 +51,16 @@ class HeroBannerWidget extends StatelessWidget {
                 stops: const [0.0, 0.5, 1.0],
               ),
             ),
-            padding: EdgeInsets.symmetric(
-              horizontal: horizontalPadding,
-              vertical: verticalPadding,
+            padding: EdgeInsets.only(
+              left: horizontalPadding,
+              right: horizontalPadding,
+              top: verticalPadding,
+              bottom: verticalPadding, // Kembali ke simetris agar ruang berimbang
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Spacer(),
                 // Tag / Badge
                 Container(
                   padding: EdgeInsets.symmetric(
@@ -72,13 +75,13 @@ class HeroBannerWidget extends StatelessWidget {
                     data.tag,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 10.5,
+                      fontSize: 11.5, // Diperbesar dari 10.5 agar lebih standar
                       fontWeight: FontWeight.w900,
                       letterSpacing: 0.8,
                     ),
                   ),
                 ),
-                SizedBox(height: gap1),
+                SizedBox(height: gapTagToTitle),
                 // Title 1
                 Text(
                   data.title1,
@@ -87,9 +90,11 @@ class HeroBannerWidget extends StatelessWidget {
                     fontSize: title1Size,
                     fontWeight: FontWeight.w900,
                     fontStyle: FontStyle.italic,
-                    height: 0.9,
-                    letterSpacing: -1.5,
+                    height: 1.1,
+                    letterSpacing: -0.5,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 // Title 2
                 Text(
@@ -98,24 +103,34 @@ class HeroBannerWidget extends StatelessWidget {
                     color: themeRed,
                     fontSize: title2Size,
                     fontWeight: FontWeight.w800,
-                    height: 1.1,
-                    letterSpacing: -0.8,
+                    height: 1.2,
+                    letterSpacing: -0.5,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: gapTitleToDivider),
+                // Divider Line
+                Container(
+                  width: 32, 
+                  height: 3, 
+                  decoration: BoxDecoration(
+                    color: themeRed,
+                    borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-                SizedBox(height: gap2),
-                // Divider Line
-                Container(width: 28, height: 2.5, color: themeRed),
-                SizedBox(height: gap2),
+                SizedBox(height: gapDividerToSubtitle),
                 // Subtitle / Description
                 SizedBox(
                   width: constraints.maxWidth * 0.7,
+                  height: subtitleSize * 1.4 * 3, // Mengunci tinggi ke 3 baris
                   child: Text(
                     data.subtitle,
                     style: TextStyle(
                       color: Colors.white.withValues(alpha: 0.95),
                       fontSize: subtitleSize,
-                      fontWeight: FontWeight.w500,
-                      height: 1.35,
+                      fontWeight: FontWeight.w400,
+                      height: 1.4,
                     ),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
