@@ -78,8 +78,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           color: Colors.black87,
                         ),
                         onPressed: () {
-                          // Go back to login screen
-                          Navigator.pop(context);
+                          // Go back to login screen safely using go router
+                          context.go('/login');
                         },
                       ),
                     ),
@@ -279,7 +279,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             }
                           } catch (e) {
                             if (context.mounted) {
-                                HondakuToast.showError(context, e.toString());
+                                HondakuToast.showError(context, AppErrorHandler.getMessage(e));
                             }
                           }
                         },
@@ -300,7 +300,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             }
                           } catch (e) {
                             if (context.mounted) {
-                                HondakuToast.showError(context, e.toString());
+                                HondakuToast.showError(context, AppErrorHandler.getMessage(e));
                             }
                           }
                         },
@@ -328,7 +328,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pop(context); // Go back to login screen
+                          context.go('/login'); // Go back to login screen cleanly
                         },
                         child: const Text(
                           'Masuk di sini',
