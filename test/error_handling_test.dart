@@ -22,6 +22,9 @@ class FakeFailureAktivitasRepository implements AktivitasRepository {
   Future<void> upsertAktivitas(AktivitasItem item) async {
     throw Exception('Failed to upsert transaction');
   }
+
+  @override
+  void dispose() {}
 }
 
 void main() {
