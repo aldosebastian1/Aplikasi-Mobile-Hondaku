@@ -15,14 +15,11 @@ final dioProvider = Provider<Dio>((ref) {
 
 // Provider for the NewsRepository
 final newsRepositoryProvider = Provider<NewsRepository>((ref) {
-  final dio = ref.watch(dioProvider);
-  return NewsRepositoryImpl(dio);
+  return NewsRepositoryImpl();
 });
 
 class NewsRepositoryImpl implements NewsRepository {
-  final Dio _dio;
-
-  NewsRepositoryImpl(this._dio);
+  NewsRepositoryImpl();
 
   @override
   Future<List<NewsArticle>> fetchLatestNews() async {
