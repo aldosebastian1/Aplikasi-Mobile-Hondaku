@@ -42,9 +42,15 @@ class AuthNotifier extends AsyncNotifier<void> {
     state = await AsyncValue.guard(() async {
       final userCred = await _authRepository.registerWithEmail(email, password, name);
       if (userCred.user != null) {
-        await _initializeFirestoreProfile(userCred.user!, name: name);
-        // Force logout after registration to require manual login
-        await FirebaseAuth.instance.signOut();
+        try {
+          await _initializeFirestoreProfile(userCred.user!, name: name);
+          // Force logout after registration to require manual login
+          await FirebaseAuth.instance.signOut();
+        } catch (e) {
+          // ROLLBACK: Delete Auth user because Firestore initialization failed
+          await userCred.user!.delete();
+          throw Exception('Pendaftaran gagal saat menyiapkan database profil. Transaksi dibatalkan. Pastikan perangkat Anda terhubung ke internet.');
+        }
       }
     });
   }
@@ -104,7 +110,14 @@ class AuthNotifier extends AsyncNotifier<void> {
     } else if (!isLoginMode && isNewUser) {
       // User successfully registered via social/phone
       if (credential.user != null) {
-        await _initializeFirestoreProfile(credential.user!);
+        try {
+          await _initializeFirestoreProfile(credential.user!);
+        } catch (e) {
+          // ROLLBACK
+          await credential.user!.delete();
+          await FirebaseAuth.instance.signOut();
+          throw Exception('Pendaftaran via sosial gagal saat menyiapkan database profil. Transaksi dibatalkan. Silakan coba lagi nanti.');
+        }
       }
     }
   }
@@ -170,7 +183,7 @@ class AuthNotifier extends AsyncNotifier<void> {
       );
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
-      onError(e.toString());
+      onError('Terjadi gangguan saat memproses OTP. Silakan coba lagi nanti.');
     }
   }
 
