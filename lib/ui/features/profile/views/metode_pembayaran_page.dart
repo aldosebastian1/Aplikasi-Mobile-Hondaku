@@ -14,7 +14,7 @@ class MetodePembayaranPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appSettings = ref.watch(appSettingsProvider);
-    final isDark = false;
+    const isDark = false;
     final theme = ProfileThemeColors(isDark);
     final loc = ProfileLocalizations(appSettings.selectedLanguage);
     final methodsList = ref.watch(paymentMethodsProvider);
