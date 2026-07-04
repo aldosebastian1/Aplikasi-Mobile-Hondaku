@@ -17,7 +17,7 @@ class UserRepositoryImpl implements UserRepository {
       }
       return null;
     } catch (e) {
-      throw Exception('Gagal mengambil data profil dari server: $e');
+      throw Exception('Gagal mengambil data profil dari server. Silakan coba lagi nanti.');
     }
   }
 
@@ -29,7 +29,7 @@ class UserRepositoryImpl implements UserRepository {
         SetOptions(merge: true),
       );
     } catch (e) {
-      throw Exception('Gagal menyimpan data profil ke server: $e');
+      throw Exception('Gagal menyimpan data profil ke server. Pastikan koneksi internet stabil.');
     }
   }
 }
