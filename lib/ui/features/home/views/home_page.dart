@@ -10,7 +10,7 @@ import '../../../core/widgets/motorcycle_card_widget.dart';
 import '../widgets/home_search_bar.dart';
 import '../widgets/home_category_selector.dart';
 import 'package:hondaku/l10n/app_localizations.dart';
-import '../../news/views/news_section.dart';
+
 import '../widgets/auto_slider_banner.dart';
 
 class HalamanHome extends ConsumerStatefulWidget {
@@ -108,12 +108,7 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
                         child: AutoSliderBanner(),
                       ),
                     ),
-                    const SliverToBoxAdapter(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 24),
-                        child: NewsSection(),
-                      ),
-                    ),
+
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
