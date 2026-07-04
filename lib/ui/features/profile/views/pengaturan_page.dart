@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
 import '../view_models/profile_view_model.dart';
@@ -14,7 +14,7 @@ class PengaturanPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appSettings = ref.watch(appSettingsProvider);
-    final isDark = appSettings.darkModeEnabled;
+    final isDark = false;
     final theme = ProfileThemeColors(isDark);
     final loc = ProfileLocalizations(appSettings.selectedLanguage);
 
@@ -67,17 +67,7 @@ class PengaturanPage extends ConsumerWidget {
             },
             theme: theme,
           ),
-          const SizedBox(height: 10),
-          _buildSwitchTile(
-            title: loc.darkMode,
-            subtitle: loc.darkModeDesc,
-            value: appSettings.darkModeEnabled,
-            onChanged: (v) {
-              ref.read(appSettingsProvider.notifier).updateSettings(darkModeEnabled: v);
-            },
-            theme: theme,
-          ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 14),
           Text(
             loc.localization,
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: theme.textSecondary),
