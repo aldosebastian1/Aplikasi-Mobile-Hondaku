@@ -187,7 +187,8 @@ class _CatalogPageState extends ConsumerState<CatalogPage> {
                         delegate: SliverChildBuilderDelegate(
                           (_, i) => MotorcycleCardWidget(
                             motor: filteredMotors[i],
-                            isCompact: false,
+                            isCompact: true,
+                            parentIndex: 1,
                           ),
                           childCount: filteredMotors.length,
                         ),
