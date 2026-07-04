@@ -2,9 +2,7 @@
 
 part of 'bank_option.dart';
 
-// **************************************************************************
 // JsonSerializableGenerator
-// **************************************************************************
 
 _BankOption _$BankOptionFromJson(Map<String, dynamic> json) => _BankOption(
   name: json['name'] as String,
