@@ -217,77 +217,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             ),
           ),
           const SizedBox(height: 18),
-          // TODO: Fitur Pilihan Warna dinonaktifkan sementara karena membutuhkan implementasi yang kompleks
-          // _buildColorSelectors(),
-          // const SizedBox(height: 12),
         ],
-      ),
-    );
-  }
-
-  Widget _buildColorSelectors() {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(999),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 12,
-              offset: const Offset(0, 6),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _colorCircle(const Color(0xFF6A625C), true),
-            const SizedBox(width: 10),
-            _colorCircle(Colors.black, false),
-            const SizedBox(width: 10),
-            _colorCircle(const Color(0xFFD7DCE3), false, border: Colors.grey),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _colorCircle(Color color, bool selected, {Color? border}) {
-    if (selected) {
-      return Container(
-        width: 40,
-        height: 40,
-        padding: const EdgeInsets.all(6),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
-            border: Border.all(color: const Color(0xFFCCCCCC), width: 1.2),
-          ),
-        ),
-      );
-    }
-
-    return Container(
-      width: 32,
-      height: 32,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-        border: border != null ? Border.all(color: border, width: 1) : null,
       ),
     );
   }
