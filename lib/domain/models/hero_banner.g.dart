@@ -2,9 +2,7 @@
 
 part of 'hero_banner.dart';
 
-// **************************************************************************
 // JsonSerializableGenerator
-// **************************************************************************
 
 _HeroBanner _$HeroBannerFromJson(Map<String, dynamic> json) => _HeroBanner(
   image: json['image'] as String,
