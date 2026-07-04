@@ -2,9 +2,7 @@
 
 part of 'news_article.dart';
 
-// **************************************************************************
 // JsonSerializableGenerator
-// **************************************************************************
 
 _NewsArticle _$NewsArticleFromJson(Map<String, dynamic> json) => _NewsArticle(
   id: (json['id'] as num).toInt(),
