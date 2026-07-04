@@ -50,10 +50,15 @@ class _SplashScreenState extends State<SplashScreen> {
     if (!mounted) return;
 
     if (hasCompletedOnboarding) {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        context.go('/home');
-      } else {
+      try {
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          context.go('/home');
+        } else {
+          context.go('/login');
+        }
+      } catch (e) {
+        debugPrint("Firebase not initialized in Splash: $e");
         context.go('/login');
       }
     } else {
