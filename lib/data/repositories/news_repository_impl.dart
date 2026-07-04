@@ -27,15 +27,25 @@ class NewsRepositoryImpl implements NewsRepository {
   @override
   Future<List<NewsArticle>> fetchLatestNews() async {
     try {
-      // Using DummyJSON API to simulate fetching automotive news
-      final response = await _dio.get('/posts', queryParameters: {'limit': 5});
-      
-      if (response.statusCode == 200) {
-        final List<dynamic> data = response.data['posts'];
-        return data.map((json) => NewsArticle.fromJson(json)).toList();
-      } else {
-        throw Exception('Gagal mengambil berita terbaru dari server. Silakan coba sesaat lagi.');
-      }
+      // Menggunakan data mock berita berbahasa Indonesia
+      await Future.delayed(const Duration(seconds: 1)); // Simulasi network delay
+      return [
+        const NewsArticle(
+          id: 1,
+          title: 'Vario 160 | Tampil Lebih Sporty',
+          body: 'Varian warna matte terbaru Vario 160 resmi mengaspal makin agresif.',
+        ),
+        const NewsArticle(
+          id: 2,
+          title: 'Tips Ahli | Rawat Mesin Injeksi',
+          body: 'Jaga performa optimal mesin injeksi Anda dengan rutin servis berkala.',
+        ),
+        const NewsArticle(
+          id: 3,
+          title: 'Klub CB150R | Touring Lintas Pulau',
+          body: 'Komunitas CB150R sukses gelar touring meriah lintas pulau Jawa & Bali.',
+        ),
+      ];
     } on DioException catch (e) {
       // Demonstrating HTTP Error Handling with Dio
       if (e.type == DioExceptionType.connectionTimeout) {
