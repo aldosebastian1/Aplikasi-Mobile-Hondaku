@@ -69,3 +69,4 @@ lib/l10n/app_localizations*.dart
 .env
 .env.*
 !.env.example
+flutter_commands.md
