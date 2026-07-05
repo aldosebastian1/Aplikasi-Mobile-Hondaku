@@ -39,7 +39,7 @@ Struktur file telah dikelompokkan ke dalam folder arsitektur bersih (*Clean Arch
 > Bagian ini dihasilkan otomatis oleh `tool/sync_app_flow.dart`.
 > Jangan edit manual di antara marker START/END karena akan ditimpa saat sinkronisasi.
 
-**Generated at:** 2026-07-05 13:11:56.351140
+**Generated at:** 2026-07-05 13:12:30.470639
 **Detected nodes:** 24
 **Detected transitions:** 49
 
@@ -109,7 +109,7 @@ flowchart TD
 - CheckoutPaymentMethodPage -> SimulasiKreditPage (context.push) [lib/ui/features/booking/views/checkout_payment_method_page.dart:544]
 - ErrorPage -> HalamanHome (context.go) [lib/ui/core/error_page.dart:55]
 - FavoritePage -> CatalogPage (context.go) [lib/ui/features/favorites/views/favorite_page.dart:64]
-- HalamanHome -> CatalogPage (context.go) [lib/ui/features/home/views/home_page.dart:269]
+- HalamanHome -> CatalogPage (context.go) [lib/ui/features/home/views/home_page.dart:265]
 - KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:51]
 - KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:41]
 - KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:292]
@@ -125,9 +125,9 @@ flowchart TD
 - OtpScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/otp_screen.dart:121]
 - PembayaranBookingPage -> BookingBerhasilPage (context.pushReplacement) [lib/ui/features/booking/views/pembayaran_booking_page.dart:616]
 - ProductDetailScreen -> CheckoutPaymentMethodPage (context.push) [lib/ui/features/catalog/views/product_detail_screen.dart:415]
-- ProfilePage -> LoginScreen (context.go) [lib/ui/features/profile/views/profile.dart:958]
-- ProfilePage -> StatusPesananPage (context.push) [lib/ui/features/profile/views/profile.dart:250]
-- ProfilePage -> StatusPesananPage (context.push) [lib/ui/features/profile/views/profile.dart:441]
+- ProfilePage -> LoginScreen (context.go) [lib/ui/features/profile/views/profile.dart:954]
+- ProfilePage -> StatusPesananPage (context.push) [lib/ui/features/profile/views/profile.dart:246]
+- ProfilePage -> StatusPesananPage (context.push) [lib/ui/features/profile/views/profile.dart:437]
 - RegisterScreen -> HalamanHome (context.push) [lib/ui/features/auth/views/register_screen.dart:313]
 - RegisterScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/register_screen.dart:296]
 - RegisterScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/register_screen.dart:275]
