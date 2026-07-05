@@ -85,14 +85,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 children: [
                   // Center Logo
                   Center(
-                    child: Text(
-                      'HONDAKU',
-                      style: TextStyle(
-                        fontSize: logoFontSize,
-                        fontWeight: FontWeight.w900,
-                        color: const Color(0xFFC40000), // Honda Red
-                        letterSpacing: -1.5,
-                      ),
+                    child: Image.asset(
+                      'assets/images/logos/logo.png',
+                      height: constraints.maxHeight < 450 ? 50.0 : 80.0,
+                      fit: BoxFit.contain,
                     ),
                   ),
                   // Bottom Text
