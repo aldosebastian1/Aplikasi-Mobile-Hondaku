@@ -5,6 +5,7 @@ class AssetPaths {
   static const String _paymentPath = 'assets/payments';
 
   // --- IMAGES ---
+  static const String logo = '$_imagePath/logos/logo.png';
   static const String profile = '$_imagePath/profile.png';
   
   // Products (Matic)
