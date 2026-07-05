@@ -366,7 +366,7 @@ class ProfilePage extends ConsumerWidget {
               child: Row(
                 children: [
                   Image.asset(
-                    'assets/images/Beat 1.png',
+                    'assets/images/products/matic/beat.webp',
                     width: 74,
                     height: 58,
                     fit: BoxFit.contain,
@@ -586,7 +586,7 @@ class ProfilePage extends ConsumerWidget {
                               : Opacity(
                                   opacity: 0.3,
                                   child: Image.asset(
-                                    'assets/images/Beat 1.png',
+                                    'assets/images/products/matic/beat.webp',
                                     fit: BoxFit.contain,
                                     alignment: Alignment.center,
                                   ),
