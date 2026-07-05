@@ -26,7 +26,7 @@ final homeBannersProvider = FutureProvider.autoDispose<List<HeroBanner>>((ref) a
     final t2 = titleParts.length > 1 ? titleParts[1].trim() : '';
 
     return HeroBanner(
-      image: 'assets/images/home-hero1.jpg', // Use a generic background for news if they don't have images
+      image: 'assets/images/banners/home_hero1.jpg', // Use a generic background for news if they don't have images
       tag: 'BERITA TERKINI',
       title1: t1,
       title2: t2,
