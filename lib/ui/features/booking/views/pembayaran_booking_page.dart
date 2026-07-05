@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,6 +32,7 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
   static const int _totalSeconds = 24 * 3600 - 1; // 23:59:59
   int _remainingSeconds = _totalSeconds;
   Timer? _timer;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -593,26 +594,37 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: _isLoading ? null : () async {
+                  setState(() => _isLoading = true);
+
                   final now = DateTime.now();
                   final orderId = 'HND-${now.year}${now.month.toString().padLeft(2, '0')}${now.day.toString().padLeft(2, '0')}-${now.millisecondsSinceEpoch.toString().substring(7)}';
 
-                  ref.read(aktivitasViewModelProvider.notifier).submitCashTransaction(
+                  final success = await ref.read(aktivitasViewModelProvider.notifier).submitCashTransaction(
                     id: orderId,
                     namaMotor: widget.motor.name,
                     tipeUnit: widget.motor.subtitle,
                     dealer: 'Honda Medan Center',
                     imagePath: widget.motor.imageAsset,
                   );
-                  context.pushReplacement(
-                    '/booking-berhasil',
-                    extra: {
-                      'orderId': orderId,
-                      'tipeUnit': widget.motor.subtitle,
-                      'dealer': 'Honda Medan Center',
-                      'namaMotor': widget.motor.name,
-                    },
-                  );
+
+                  if (!mounted) return;
+                  
+                  setState(() => _isLoading = false);
+
+                  if (success) {
+                    context.pushReplacement(
+                      '/booking-berhasil',
+                      extra: {
+                        'orderId': orderId,
+                        'tipeUnit': widget.motor.subtitle,
+                        'dealer': 'Honda Medan Center',
+                        'namaMotor': widget.motor.name,
+                      },
+                    );
+                  } else {
+                    HondakuToast.showError(context, 'Gagal memproses pembayaran. Silakan coba lagi.');
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFD32F2F),
@@ -622,10 +634,16 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
                   ),
                   elevation: 0,
                 ),
-                child: const Text(
-                  'Saya Sudah Membayar',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                ),
+                child: _isLoading 
+                    ? const SizedBox(
+                        height: 20, 
+                        width: 20, 
+                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
+                      )
+                    : const Text(
+                        'Saya Sudah Membayar',
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                      ),
               ),
             ),
             const SizedBox(height: 6),
