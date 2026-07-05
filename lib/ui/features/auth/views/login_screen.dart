@@ -254,7 +254,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         AuthSocialButton(
-                          assetPath: 'assets/icons/facebook-logo.svg',
+                          assetPath: 'assets/icons/facebook_logo.svg',
                           onTap: () async {
                             try {
                               await ref.read(authNotifierProvider.notifier).loginWithFacebook(isLoginMode: true);
@@ -275,7 +275,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                         const SizedBox(width: 16.0),
                         AuthSocialButton(
-                          assetPath: 'assets/icons/goggle-logo.svg',
+                          assetPath: 'assets/icons/google_logo.svg',
                           onTap: () async {
                             try {
                               await ref.read(authNotifierProvider.notifier).loginWithGoogle(isLoginMode: true);
