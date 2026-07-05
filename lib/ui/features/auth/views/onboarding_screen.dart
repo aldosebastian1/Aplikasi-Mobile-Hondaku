@@ -166,7 +166,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             ),
                             clipBehavior: Clip.hardEdge,
                             child: Image.asset(
-                              'assets/images/onboarding${index + 1}.jpg',
+                              'assets/images/onboarding/onboarding${index + 1}.jpg',
                               fit: BoxFit.cover,
                               width: double.infinity,
                               height: double.infinity,
@@ -178,7 +178,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(16.0),
                                       child: Text(
-                                        'Harap tambahkan gambar:\n"assets/images/onboarding${index + 1}.jpg"',
+                                        'Harap tambahkan gambar:\n"assets/images/onboarding/onboarding${index + 1}.jpg"',
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
                                           color: Colors.white70,
@@ -288,7 +288,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                       clipBehavior: Clip.hardEdge,
                       child: Image.asset(
-                        'assets/images/onboarding${index + 1}.jpg',
+                        'assets/images/onboarding/onboarding${index + 1}.jpg',
                         fit: BoxFit.cover,
                         width: double.infinity,
                         height: double.infinity,
@@ -300,7 +300,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
-                                  'Harap tambahkan gambar:\n"assets/images/onboarding${index + 1}.jpg"',
+                                  'Harap tambahkan gambar:\n"assets/images/onboarding/onboarding${index + 1}.jpg"',
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     color: Colors.white70,
