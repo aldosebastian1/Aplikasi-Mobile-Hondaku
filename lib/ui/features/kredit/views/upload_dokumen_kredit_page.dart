@@ -1,4 +1,4 @@
-﻿import 'dart:io';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -58,6 +58,7 @@ class UploadDokumenKreditPage extends ConsumerStatefulWidget {
 class _UploadDokumenKreditPageState extends ConsumerState<UploadDokumenKreditPage> {
   static const _red = Color(0xFFC40000);
   static const int _maxFileSize = 5 * 1024 * 1024; // 5MB
+  bool _isLoading = false;
 
   final List<DokumenItem> _dokumen = [
     DokumenItem(
@@ -109,7 +110,7 @@ class _UploadDokumenKreditPageState extends ConsumerState<UploadDokumenKreditPag
     }
   }
 
-  void _kirimPengajuan() {
+  Future<void> _kirimPengajuan() async {
     if (!_semuaTerunggah) {
       HondakuToast.showError(
         context,
@@ -117,6 +118,8 @@ class _UploadDokumenKreditPageState extends ConsumerState<UploadDokumenKreditPag
       );
       return;
     }
+
+    setState(() => _isLoading = true);
 
     final now = DateTime.now();
     final referenceId =
@@ -127,10 +130,10 @@ class _UploadDokumenKreditPageState extends ConsumerState<UploadDokumenKreditPag
       (e) => e?.name.toLowerCase() == widget.namaMotor.toLowerCase(),
       orElse: () => motorcycles.isNotEmpty ? motorcycles.first : null,
     );
-    final imagePath = motor?.imageAsset ?? 'assets/images/Beat 1.png';
+    final imagePath = motor?.imageAsset ?? 'assets/images/products/matic/beat.webp';
     const dealer = 'Honda Sisingamangaraja';
 
-    ref.read(aktivitasViewModelProvider.notifier).submitKreditTransaction(
+    final success = await ref.read(aktivitasViewModelProvider.notifier).submitKreditTransaction(
       id: referenceId,
       namaMotor: widget.namaMotor,
       tipeUnit: 'Kredit ${widget.tenor} Bulan - ${widget.selectedLeasing}',
@@ -138,18 +141,26 @@ class _UploadDokumenKreditPageState extends ConsumerState<UploadDokumenKreditPag
       imagePath: imagePath,
     );
 
-    context.push(
-      '/konfirmasi-pengajuan',
-      extra: {
-        'referenceId': referenceId,
-        'namaMotor': widget.namaMotor,
-        'leasing': widget.selectedLeasing,
-        'angsuranPerBulan': widget.angsuran,
-        'tenor': widget.tenor,
-        'dpNominal': widget.dpNominal,
-        'hargaOTR': widget.hargaOTR,
-      },
-    );
+    if (!mounted) return;
+    
+    setState(() => _isLoading = false);
+
+    if (success) {
+      context.pushReplacement(
+        '/konfirmasi-pengajuan',
+        extra: {
+          'referenceId': referenceId,
+          'namaMotor': widget.namaMotor,
+          'leasing': widget.selectedLeasing,
+          'angsuranPerBulan': widget.angsuran,
+          'tenor': widget.tenor,
+          'dpNominal': widget.dpNominal,
+          'hargaOTR': widget.hargaOTR,
+        },
+      );
+    } else {
+      HondakuToast.showError(context, 'Gagal mengirim pengajuan kredit. Silakan coba lagi.');
+    }
   }
 
   @override
@@ -182,9 +193,9 @@ class _UploadDokumenKreditPageState extends ConsumerState<UploadDokumenKreditPag
                   title: Text(AppLocalizations.of(context)!.uploadDocGuide),
                   content: const Text(
                     'Persyaratan file yang diunggah:\n\n'
-                    'â€¢ KTP Pemohon: Harus jelas, tidak blur, dan seluruh sudut KTP terlihat.\n'
-                    'â€¢ Kartu Keluarga: Pastikan NIK anggota keluarga terbaca.\n'
-                    'â€¢ Slip Gaji / Bukti Penghasilan: Rekening koran 3 bulan terakhir atau slip gaji bulan lalu.\n\n'
+                    '• KTP Pemohon: Harus jelas, tidak blur, dan seluruh sudut KTP terlihat.\n'
+                    '• Kartu Keluarga: Pastikan NIK anggota keluarga terbaca.\n'
+                    '• Slip Gaji / Bukti Penghasilan: Rekening koran 3 bulan terakhir atau slip gaji bulan lalu.\n\n'
                     'Semua data yang Anda unggah dilindungi dengan enkripsi ketat dan hanya digunakan untuk keperluan pengajuan kredit.',
                   ),
                   actions: [
@@ -449,7 +460,7 @@ class _UploadDokumenKreditPageState extends ConsumerState<UploadDokumenKreditPag
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () => _kirimPengajuan(),
+        onPressed: _isLoading ? null : () => _kirimPengajuan(),
         style: ElevatedButton.styleFrom(
           backgroundColor: _red,
           foregroundColor: Colors.white,
@@ -459,13 +470,19 @@ class _UploadDokumenKreditPageState extends ConsumerState<UploadDokumenKreditPag
           ),
           elevation: 0,
         ),
-        child: const Text(
-          'Kirim Pengajuan',
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        child: _isLoading
+            ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+              )
+            : const Text(
+                'Kirim Pengajuan',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
       ),
     );
   }
