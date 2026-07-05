@@ -189,14 +189,10 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
           child: Row(
             children: [
-              const Text(
-                'Hondaku',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                  color: _red,
-                  letterSpacing: -0.9,
-                ),
+              Image.asset(
+                'assets/images/logos/logo.png',
+                height: 24,
+                fit: BoxFit.contain,
               ),
               const SizedBox(width: 10),
               Container(
