@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../domain/models/motorcycle.dart';
 import '../../../../domain/repositories/favorite_repository.dart';
@@ -25,12 +26,30 @@ class FavoriteNotifier extends Notifier<List<String>> {
   }
 
   Future<void> toggleFavorite(Motorcycle motor) async {
-    if (state.contains(motor.id)) {
-      await _repository.removeFavorite(motor.id);
+    final isCurrentlyFav = state.contains(motor.id);
+    
+    // Optimistic UI Update: Langsung ubah state agar tombol terasa responsif
+    if (isCurrentlyFav) {
       state = state.where((id) => id != motor.id).toList();
     } else {
-      await _repository.addFavorite(motor);
       state = [...state, motor.id];
+    }
+
+    try {
+      // Background request ke database
+      if (isCurrentlyFav) {
+        await _repository.removeFavorite(motor.id);
+      } else {
+        await _repository.addFavorite(motor);
+      }
+    } catch (e) {
+      // Rollback jika terjadi error pada database (misal: permission denied / koneksi putus)
+      if (isCurrentlyFav) {
+        state = [...state, motor.id];
+      } else {
+        state = state.where((id) => id != motor.id).toList();
+      }
+      debugPrint('Error toggling favorite: $e');
     }
   }
 
