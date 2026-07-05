@@ -35,11 +35,11 @@ class _SplashScreenState extends State<SplashScreen> {
     super.didChangeDependencies();
     // Precache onboarding images to prevent stuttering
     for (int i = 1; i <= 3; i++) {
-      precacheImage(AssetImage('assets/images/onboarding$i.jpg'), context);
+      precacheImage(AssetImage('assets/images/onboarding/onboarding$i.jpg'), context);
     }
     // Precache home hero banners for smooth transition
     for (int i = 1; i <= 3; i++) {
-      precacheImage(AssetImage('assets/images/home-hero$i.jpg'), context);
+      precacheImage(AssetImage('assets/images/banners/home_hero$i.jpg'), context);
     }
   }
 
