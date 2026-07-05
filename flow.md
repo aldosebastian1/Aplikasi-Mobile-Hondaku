@@ -39,7 +39,7 @@ Struktur file telah dikelompokkan ke dalam folder arsitektur bersih (*Clean Arch
 > Bagian ini dihasilkan otomatis oleh `tool/sync_app_flow.dart`.
 > Jangan edit manual di antara marker START/END karena akan ditimpa saat sinkronisasi.
 
-**Generated at:** 2026-07-04 23:53:38.378184
+**Generated at:** 2026-07-05 08:25:58.339320
 **Detected nodes:** 24
 **Detected transitions:** 49
 
