@@ -39,7 +39,7 @@ Struktur file telah dikelompokkan ke dalam folder arsitektur bersih (*Clean Arch
 > Bagian ini dihasilkan otomatis oleh `tool/sync_app_flow.dart`.
 > Jangan edit manual di antara marker START/END karena akan ditimpa saat sinkronisasi.
 
-**Generated at:** 2026-07-05 08:25:58.339320
+**Generated at:** 2026-07-05 12:51:01.289888
 **Detected nodes:** 24
 **Detected transitions:** 49
 
@@ -93,7 +93,7 @@ flowchart TD
   SplashScreen -->|context.go| LoginScreen
   SplashScreen -->|context.go| OnboardingScreen
   StatusPesananPage -->|context.pushReplacement| KonfirmasiPesananPage
-  UploadDokumenKreditPage -->|context.push| KonfirmasiPengajuanPage
+  UploadDokumenKreditPage -->|context.pushReplacement| KonfirmasiPengajuanPage
 ```
 
 ### Detected Transitions
@@ -123,7 +123,7 @@ flowchart TD
 - MotorcycleCardWidget -> ProductDetailScreen (context.push) [lib/ui/core/widgets/motorcycle_card_widget.dart:183]
 - OnboardingScreen -> LoginScreen (context.go) [lib/ui/features/auth/views/onboarding_screen.dart:49]
 - OtpScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/otp_screen.dart:121]
-- PembayaranBookingPage -> BookingBerhasilPage (context.pushReplacement) [lib/ui/features/booking/views/pembayaran_booking_page.dart:607]
+- PembayaranBookingPage -> BookingBerhasilPage (context.pushReplacement) [lib/ui/features/booking/views/pembayaran_booking_page.dart:616]
 - ProductDetailScreen -> CheckoutPaymentMethodPage (context.push) [lib/ui/features/catalog/views/product_detail_screen.dart:415]
 - ProfilePage -> LoginScreen (context.go) [lib/ui/features/profile/views/profile.dart:958]
 - ProfilePage -> StatusPesananPage (context.push) [lib/ui/features/profile/views/profile.dart:250]
@@ -146,5 +146,5 @@ flowchart TD
 - SplashScreen -> LoginScreen (context.go) [lib/ui/features/auth/views/splash_screen.dart:58]
 - SplashScreen -> OnboardingScreen (context.go) [lib/ui/features/auth/views/splash_screen.dart:65]
 - StatusPesananPage -> KonfirmasiPesananPage (context.pushReplacement) [lib/ui/features/booking/views/status_pesanan_page.dart:52]
-- UploadDokumenKreditPage -> KonfirmasiPengajuanPage (context.push) [lib/ui/features/kredit/views/upload_dokumen_kredit_page.dart:141]
+- UploadDokumenKreditPage -> KonfirmasiPengajuanPage (context.pushReplacement) [lib/ui/features/kredit/views/upload_dokumen_kredit_page.dart:149]
 <!-- AUTO_FLOW_END -->

@@ -84,6 +84,10 @@ flutter:
     - assets/images/banners/
     - assets/images/onboarding/
     - assets/images/products/
+    - assets/images/products/matic/
+    - assets/images/products/sport/
+    - assets/images/products/cub/
+    - assets/images/products/ev/
     - assets/images/logos/
     - assets/icons/
     - assets/payments/
