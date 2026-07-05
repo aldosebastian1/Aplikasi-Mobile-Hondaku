@@ -100,13 +100,13 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
     final bookingState = ref.watch(bookingViewModelProvider);
     final errorMessage = bookingState.errorMessage;
     
-    final nameError = errorMessage == "Nama belum diisi" ? errorMessage : null;
-    final nikError = errorMessage == "NIK harus minimal 15-16 digit" ? errorMessage : null;
-    final emailError = (errorMessage == "Email belum diisi" || errorMessage == "Format email tidak valid (butuh @)") ? errorMessage : null;
-    final kecamatanError = errorMessage == "Kecamatan belum dipilih" ? errorMessage : null;
-    final kelurahanError = errorMessage == "Kelurahan belum dipilih" ? errorMessage : null;
-    final phoneError = errorMessage == "Nomor HP belum diisi" ? errorMessage : null;
-    final alamatError = errorMessage == "Alamat belum diisi" ? errorMessage : null;
+    final nameError = errorMessage?.contains("Nama") == true ? errorMessage : null;
+    final nikError = errorMessage?.contains("NIK") == true ? errorMessage : null;
+    final emailError = (errorMessage?.toLowerCase().contains("email") == true) ? errorMessage : null;
+    final kecamatanError = errorMessage?.contains("Kecamatan") == true ? errorMessage : null;
+    final kelurahanError = errorMessage?.contains("Kelurahan") == true ? errorMessage : null;
+    final phoneError = errorMessage?.contains("Nomor HP") == true ? errorMessage : null;
+    final alamatError = errorMessage?.contains("Alamat") == true ? errorMessage : null;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
