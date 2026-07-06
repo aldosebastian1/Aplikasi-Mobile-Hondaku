@@ -214,17 +214,13 @@ class _CatalogPageState extends ConsumerState<CatalogPage> {
       child: SafeArea(
         bottom: false,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
           child: Row(
             children: [
-              const Text(
-                'Hondaku',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                  color: _red,
-                  letterSpacing: -0.9,
-                ),
+              Image.asset(
+                'assets/images/logos/logo.png',
+                height: 32,
+                fit: BoxFit.contain,
               ),
               const SizedBox(width: 10),
               Container(
