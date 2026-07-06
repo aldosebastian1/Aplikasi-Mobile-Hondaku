@@ -1045,4 +1045,178 @@ final List<Motorcycle> motorcycleDatabase = [
       'Kapasitas Tangki': '12,8 Liter',
     },
   ),
+  const Motorcycle(
+    id: '18',
+    name: "Honda EM1 e:",
+    categoryBadge: "EV",
+    subtitle: "Electric Vehicle",
+    description:
+        "Honda EM1 e: adalah motor listrik inovatif pertama dari Honda di Indonesia yang menghadirkan gaya hidup modern dan ramah lingkungan.",
+    price: "Rp 40.000.000",
+    imageAsset: "assets/images/products/ev/em1_and_em1_plus.webp",
+    engine: "Brushless Motor",
+    maxPower: "1,7 kW",
+    fuelCapacity: "Baterai",
+    features: [
+      MotorcycleFeature(
+        icon: Icons.electric_bolt_outlined,
+        title: "Honda Mobile Power Pack e:",
+        description:
+            "Baterai lithium-ion yang dapat ditukar dengan mudah dan praktis.",
+      ),
+      MotorcycleFeature(
+        icon: Icons.light_mode_outlined,
+        title: "Full LED Lighting",
+        description:
+            "Sistem pencahayaan LED di seluruh lampu untuk penerangan maksimal.",
+      ),
+      MotorcycleFeature(
+        icon: Icons.speed_outlined,
+        title: "Digital Panel Meter",
+        description:
+            "Panel meter digital yang informatif menampilkan indikator baterai dan kecepatan.",
+      ),
+    ],
+    specsMesin: {
+      'Tipe Motor': 'In-Wheel Brushless Motor',
+      'Tenaga Maksimal': '1,7 kW / 540 rpm',
+      'Torsi Maksimal': '90 Nm / 25 rpm',
+      'Baterai': 'Lithium-ion 50.26 V / 26.1 Ah',
+      'Waktu Pengisian': '160 Menit (25% - 75%)',
+    },
+    specsRangka: {
+      'Tipe Rangka': 'Underbone',
+      'Suspensi Depan': 'Teleskopik',
+      'Suspensi Belakang': 'Twin Shock',
+      'Ban Depan': '90/90 - 12 Tubeless',
+      'Ban Belakang': '100/90 - 10 Tubeless',
+      'Rem Depan': 'Cakram',
+      'Rem Belakang': 'Tromol',
+      'Sistem Pengereman': 'CBS',
+    },
+    specsDimensi: {
+      'Panjang x Lebar x Tinggi': '1.795 x 680 x 1.080 mm',
+      'Jarak Sumbu Roda': '1.300 mm',
+      'Jarak Terendah': '135 mm',
+      'Tinggi Jok': '740 mm',
+      'Berat Kosong': '93 kg',
+      'Kapasitas Tangki': '-',
+    },
+  ),
+  const Motorcycle(
+    id: '19',
+    name: "Honda CUV e:",
+    categoryBadge: "EV",
+    subtitle: "Electric Vehicle",
+    description:
+        "Honda CUV e: menawarkan performa bertenaga dengan desain futuristik dan fitur canggih untuk mobilitas bebas emisi masa depan.",
+    price: "Rp 53.000.000",
+    imageAsset: "assets/images/products/ev/cuv_and_cuv_roadsync_duo.webp",
+    engine: "Brushless Motor",
+    maxPower: "6,0 kW",
+    fuelCapacity: "Dual Baterai",
+    features: [
+      MotorcycleFeature(
+        icon: Icons.electric_bolt_outlined,
+        title: "Dual Mobile Power Pack",
+        description:
+            "Dilengkapi dua baterai yang memberikan jarak tempuh lebih jauh.",
+      ),
+      MotorcycleFeature(
+        icon: Icons.phone_android_outlined,
+        title: "RoadSync Duo",
+        description:
+            "Konektivitas canggih dengan smartphone untuk navigasi dan informasi kendaraan.",
+      ),
+      MotorcycleFeature(
+        icon: Icons.speed_outlined,
+        title: "Riding Mode",
+        description:
+            "Berbagai pilihan mode berkendara sesuai dengan kebutuhan.",
+      ),
+    ],
+    specsMesin: {
+      'Tipe Motor': 'In-Wheel Brushless Motor',
+      'Tenaga Maksimal': '6,0 kW',
+      'Torsi Maksimal': '22 Nm',
+      'Baterai': '2x Lithium-ion',
+      'Sistem Suplai': '-',
+    },
+    specsRangka: {
+      'Tipe Rangka': 'Underbone',
+      'Suspensi Depan': 'Teleskopik',
+      'Suspensi Belakang': 'Lengan Ayun',
+      'Ban Depan': '110/70 - 12',
+      'Ban Belakang': '110/70 - 12',
+      'Rem Depan': 'Cakram',
+      'Rem Belakang': 'Cakram',
+      'Sistem Pengereman': 'CBS',
+    },
+    specsDimensi: {
+      'Panjang x Lebar x Tinggi': '1.889 x 664 x 1.096 mm',
+      'Jarak Sumbu Roda': '1.310 mm',
+      'Jarak Terendah': '135 mm',
+      'Tinggi Jok': '765 mm',
+      'Berat Kosong': '118 kg',
+      'Kapasitas Tangki': '-',
+    },
+  ),
+  const Motorcycle(
+    id: '20',
+    name: "Honda ICON e:",
+    categoryBadge: "EV",
+    subtitle: "Electric Vehicle",
+    description:
+        "Honda ICON e: merupakan motor listrik compact yang stylish, sangat cocok untuk mobilitas harian dengan desain atraktif.",
+    price: "Rp 28.000.000",
+    imageAsset: "assets/images/products/ev/icon.webp",
+    engine: "Brushless Motor",
+    maxPower: "1,8 kW",
+    fuelCapacity: "Baterai",
+    features: [
+      MotorcycleFeature(
+        icon: Icons.design_services_outlined,
+        title: "Compact Design",
+        description:
+            "Desain yang ringan dan ramping memudahkan bermanuver di jalanan.",
+      ),
+      MotorcycleFeature(
+        icon: Icons.lightbulb_outline,
+        title: "LED Lighting",
+        description:
+            "Lampu LED depan dan belakang modern yang terang dan hemat energi.",
+      ),
+      MotorcycleFeature(
+        icon: Icons.battery_charging_full_outlined,
+        title: "Direct Charging",
+        description:
+            "Pengisian daya baterai yang mudah langsung ke kendaraan.",
+      ),
+    ],
+    specsMesin: {
+      'Tipe Motor': 'In-Wheel Brushless Motor',
+      'Tenaga Maksimal': '1,8 kW',
+      'Torsi Maksimal': '85 Nm',
+      'Baterai': 'Lithium-ion 48V 30.6 Ah',
+      'Sistem Suplai': '-',
+    },
+    specsRangka: {
+      'Tipe Rangka': 'Underbone',
+      'Suspensi Depan': 'Teleskopik',
+      'Suspensi Belakang': 'Lengan Ayun',
+      'Ban Depan': '90/90 - 10',
+      'Ban Belakang': '100/90 - 10',
+      'Rem Depan': 'Cakram',
+      'Rem Belakang': 'Tromol',
+      'Sistem Pengereman': 'CBS',
+    },
+    specsDimensi: {
+      'Panjang x Lebar x Tinggi': '1.796 x 680 x 1.085 mm',
+      'Jarak Sumbu Roda': '1.265 mm',
+      'Jarak Terendah': '132 mm',
+      'Tinggi Jok': '742 mm',
+      'Berat Kosong': '89 kg',
+      'Kapasitas Tangki': '-',
+    },
+  ),
 ];
