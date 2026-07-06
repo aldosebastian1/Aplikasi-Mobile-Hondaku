@@ -42,20 +42,20 @@ class HondakuBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double sysBottom = MediaQuery.of(context).padding.bottom;
-    // Jarak yang lebih seimbang untuk semua jenis perangkat
-    final double bottomInset = sysBottom > 0 ? 4 : 14;
+    // Mengurangi gap agar lebih turun (standard)
+    final double bottomInset = sysBottom > 0 ? 0 : 10;
 
     return SafeArea(
       top: false,
       bottom: true,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(32, 6, 32, bottomInset),
+        padding: EdgeInsets.fromLTRB(20, 6, 20, bottomInset),
         child: Container(
-          height: 72,
+          height: 68,
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
           decoration: BoxDecoration(
             color: const Color(0xFFF5F5F5),
-            borderRadius: BorderRadius.circular(999),
+            borderRadius: BorderRadius.circular(24), // standard rounded corners
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.04),
