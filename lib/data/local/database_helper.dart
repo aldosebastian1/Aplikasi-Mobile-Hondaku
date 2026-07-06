@@ -38,6 +38,31 @@ CREATE TABLE favorites (
   imageAsset TEXT NOT NULL
 )
 ''');
+
+    // Creating the 'garage' table
+    await db.execute('''
+CREATE TABLE garage (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  type TEXT NOT NULL,
+  imagePath TEXT NOT NULL,
+  category TEXT NOT NULL
+)
+''');
+
+    // Creating the 'aktivitas' table
+    await db.execute('''
+CREATE TABLE aktivitas (
+  id TEXT PRIMARY KEY,
+  namaMotor TEXT NOT NULL,
+  tipeUnit TEXT NOT NULL,
+  dealer TEXT NOT NULL,
+  imagePath TEXT NOT NULL,
+  tanggal TEXT NOT NULL,
+  tipe TEXT NOT NULL,
+  status TEXT NOT NULL
+)
+''');
   }
 
   Future<void> close() async {
@@ -45,3 +70,4 @@ CREATE TABLE favorites (
     await db.close();
   }
 }
+
