@@ -103,7 +103,10 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                       ? null
                       : () {
                           String phone = _phoneController.text.trim();
-                          if (phone.isEmpty) return;
+                          if (phone.isEmpty) {
+                            HondakuToast.showError(context, 'Nomor handphone tidak boleh kosong.');
+                            return;
+                          }
                           
                           // Hapus semua karakter yang bukan angka (seperti spasi atau strip)
                           // Jika ada tanda '+', biarkan saja di awal.
