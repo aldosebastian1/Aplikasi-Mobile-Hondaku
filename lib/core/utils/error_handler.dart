@@ -10,6 +10,11 @@ class AppErrorHandler {
           return 'Email ini sudah terdaftar. Silakan gunakan email lain atau masuk.';
         case 'invalid-email':
           return 'Format email tidak valid.';
+        case 'missing-email':
+        case 'channel-error': // Sometimes thrown by firebase web/platforms for empty fields
+          return 'Email tidak boleh kosong. Silakan masukkan email Anda.';
+        case 'missing-password':
+          return 'Kata sandi tidak boleh kosong. Silakan masukkan kata sandi.';
         case 'operation-not-allowed':
           return 'Operasi tidak diizinkan. Hubungi dukungan.';
         case 'weak-password':
@@ -24,6 +29,8 @@ class AppErrorHandler {
           return 'Email atau kata sandi yang Anda masukkan salah.';
         case 'network-request-failed':
           return 'Koneksi jaringan gagal. Periksa koneksi internet Anda.';
+        case 'too-many-requests':
+          return 'Terlalu banyak percobaan. Silakan coba lagi nanti.';
         default:
           return 'Terjadi kesalahan: ${error.message}';
       }
