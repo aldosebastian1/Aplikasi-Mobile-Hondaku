@@ -39,7 +39,7 @@ Struktur file telah dikelompokkan ke dalam folder arsitektur bersih (*Clean Arch
 > Bagian ini dihasilkan otomatis oleh `tool/sync_app_flow.dart`.
 > Jangan edit manual di antara marker START/END karena akan ditimpa saat sinkronisasi.
 
-**Generated at:** 2026-07-06 06:51:29.265638
+**Generated at:** 2026-07-06 07:05:04.518557
 **Detected nodes:** 24
 **Detected transitions:** 49
 
@@ -98,8 +98,8 @@ flowchart TD
 
 ### Detected Transitions
 
-- AktivitasPage -> CatalogPage (context.go) [lib/ui/features/aktivitas/views/aktivitas_page.dart:281]
-- AktivitasPage -> StatusPesananPage (context.push) [lib/ui/features/aktivitas/views/aktivitas_page.dart:332]
+- AktivitasPage -> CatalogPage (context.go) [lib/ui/features/aktivitas/views/aktivitas_page.dart:277]
+- AktivitasPage -> StatusPesananPage (context.push) [lib/ui/features/aktivitas/views/aktivitas_page.dart:328]
 - BookingBerhasilPage -> AktivitasPage (context.go) [lib/ui/features/booking/views/booking_berhasil_page.dart:220]
 - BookingBerhasilPage -> HalamanHome (context.go) [lib/ui/features/booking/views/booking_berhasil_page.dart:28]
 - BookingBerhasilPage -> HalamanHome (context.go) [lib/ui/features/booking/views/booking_berhasil_page.dart:246]
