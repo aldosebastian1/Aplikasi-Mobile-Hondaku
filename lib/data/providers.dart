@@ -27,7 +27,11 @@ final bankRepositoryProvider = Provider<BankRepository>((ref) {
 
 final garageRepositoryProvider = Provider<GarageRepository>((ref) {
   final user = ref.watch(authStateProvider).value;
-  return GarageRepositoryImpl(uid: user?.uid);
+  final repo = GarageRepositoryImpl(uid: user?.uid);
+  ref.onDispose(() {
+    repo.dispose();
+  });
+  return repo;
 });
 
 final garageViewModelProvider = StreamProvider<List<GarageItem>>((ref) {
