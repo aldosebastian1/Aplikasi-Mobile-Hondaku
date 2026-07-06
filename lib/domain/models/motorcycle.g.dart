@@ -2,7 +2,9 @@
 
 part of 'motorcycle.dart';
 
+// **************************************************************************
 // JsonSerializableGenerator
+// **************************************************************************
 
 _MotorcycleFeature _$MotorcycleFeatureFromJson(Map<String, dynamic> json) =>
     _MotorcycleFeature(

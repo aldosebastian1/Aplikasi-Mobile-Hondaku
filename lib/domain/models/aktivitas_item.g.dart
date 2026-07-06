@@ -2,7 +2,9 @@
 
 part of 'aktivitas_item.dart';
 
+// **************************************************************************
 // JsonSerializableGenerator
+// **************************************************************************
 
 _AktivitasItem _$AktivitasItemFromJson(Map<String, dynamic> json) =>
     _AktivitasItem(
