@@ -186,12 +186,12 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
       child: SafeArea(
         bottom: false,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 12, 24, 14),
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
           child: Row(
             children: [
               Image.asset(
                 'assets/images/logos/logo.png',
-                height: 48,
+                height: 32,
                 fit: BoxFit.contain,
               ),
               const SizedBox(width: 10),
