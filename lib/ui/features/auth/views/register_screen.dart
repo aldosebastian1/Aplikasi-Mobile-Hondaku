@@ -184,16 +184,29 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       onPressed: authState.isLoading
                           ? null
                           : () async {
-                              if (_passwordController.text != _confirmPasswordController.text) {
+                              final name = _nameController.text.trim();
+                              final email = _emailController.text.trim();
+                              final password = _passwordController.text;
+                              final confirmPassword = _confirmPasswordController.text;
+
+                              if (name.isEmpty) {
+                                HondakuToast.showError(context, 'Nama lengkap tidak boleh kosong.');
+                                return;
+                              }
+                              if (email.isEmpty) {
+                                HondakuToast.showError(context, 'Email tidak boleh kosong.');
+                                return;
+                              }
+                              if (password.isEmpty) {
+                                HondakuToast.showError(context, 'Kata sandi tidak boleh kosong.');
+                                return;
+                              }
+                              if (password != confirmPassword) {
                                 HondakuToast.showError(context, 'Konfirmasi kata sandi tidak cocok.');
                                 return;
                               }
 
-                              await ref.read(authNotifierProvider.notifier).register(
-                                    _emailController.text.trim(),
-                                    _passwordController.text,
-                                    _nameController.text.trim(),
-                                  );
+                              await ref.read(authNotifierProvider.notifier).register(email, password, name);
 
                               if (context.mounted) {
                                 final authStateAfter = ref.read(authNotifierProvider);
