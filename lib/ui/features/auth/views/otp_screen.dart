@@ -107,7 +107,10 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                       ? null
                       : () async {
                           final String smsCode = _otpController.text.trim();
-                          if (smsCode.length != 6) return;
+                          if (smsCode.length != 6) {
+                            HondakuToast.showError(context, 'Kode OTP harus terdiri dari 6 digit.');
+                            return;
+                          }
                           
                           await ref.read(authNotifierProvider.notifier).verifyOtp(
                                 verificationId: widget.verificationId,
