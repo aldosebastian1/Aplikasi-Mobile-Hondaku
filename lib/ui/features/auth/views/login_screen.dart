@@ -169,10 +169,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         onPressed: authState.isLoading
                             ? null
                             : () async {
-                                await ref.read(authNotifierProvider.notifier).login(
-                                      _emailController.text.trim(),
-                                      _passwordController.text,
-                                    );
+                                final email = _emailController.text.trim();
+                                final password = _passwordController.text;
+                                
+                                if (email.isEmpty) {
+                                  HondakuToast.showError(context, 'Email tidak boleh kosong. Silakan masukkan email Anda.');
+                                  return;
+                                }
+                                if (password.isEmpty) {
+                                  HondakuToast.showError(context, 'Kata sandi tidak boleh kosong. Silakan masukkan kata sandi.');
+                                  return;
+                                }
+
+                                await ref.read(authNotifierProvider.notifier).login(email, password);
                                 if (context.mounted) {
                                   final authStateAfter = ref.read(authNotifierProvider);
                                   if (!authStateAfter.hasError) {
