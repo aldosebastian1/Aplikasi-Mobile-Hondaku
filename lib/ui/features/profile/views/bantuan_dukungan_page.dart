@@ -1,7 +1,8 @@
+import 'package:hondaku/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
-import '../view_models/profile_view_model.dart';
+
 import '../widgets/profile_theme.dart';
 
 // SUB-PAGE: HELP & SUPPORT (BANTUAN & DUKUNGAN)
@@ -68,11 +69,11 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
 
   @override
   Widget build(BuildContext context) {
-    final appSettings = ref.watch(appSettingsProvider);
+    final loc = AppLocalizations.of(context)!;
+
     const isDark = false;
     final theme = ProfileThemeColors(isDark);
-    final loc = ProfileLocalizations(appSettings.selectedLanguage);
-    final faqs = _filteredFaqs(loc.isEn);
+    final faqs = _filteredFaqs((Localizations.localeOf(context).languageCode == 'en'));
 
     return Scaffold(
       backgroundColor: theme.background,
@@ -85,7 +86,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          loc.helpSupport,
+          AppLocalizations.of(context)!.helpSupport,
           style: TextStyle(color: theme.textPrimary, fontSize: 16, fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
@@ -95,7 +96,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(loc.contactUs, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: theme.textPrimary)),
+            Text(AppLocalizations.of(context)!.contactUs, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: theme.textPrimary)),
             const SizedBox(height: 14),
             Row(
               children: [
@@ -126,7 +127,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(loc.popularFaq, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: theme.textPrimary)),
+                Text(AppLocalizations.of(context)!.popularFaq, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: theme.textPrimary)),
                 GestureDetector(
                   onTap: () {
                     showModalBottomSheet(
@@ -142,7 +143,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
                     );
                   },
                   child: Text(
-                    loc.isEn ? 'Submit Ticket' : 'Kirim Tiket',
+                    (Localizations.localeOf(context).languageCode == 'en') ? 'Submit Ticket' : 'Kirim Tiket',
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: theme.red),
                   ),
                 ),
@@ -162,7 +163,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
                 onChanged: (val) => setState(() => _searchQuery = val),
                 style: TextStyle(color: theme.textPrimary, fontSize: 14),
                 decoration: InputDecoration(
-                  hintText: loc.searchFaqHint,
+                  hintText: AppLocalizations.of(context)!.searchFaqHint,
                   hintStyle: TextStyle(color: theme.textSecondary.withValues(alpha: 0.5), fontSize: 14),
                   prefixIcon: Icon(Icons.search, size: 18, color: theme.textSecondary),
                   border: InputBorder.none,
@@ -176,7 +177,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 40),
                   child: Text(
-                    loc.isEn ? 'No matching questions' : 'Pertanyaan tidak ditemukan',
+                    (Localizations.localeOf(context).languageCode == 'en') ? 'No matching questions' : 'Pertanyaan tidak ditemukan',
                     style: TextStyle(color: theme.textSecondary),
                   ),
                 ),
@@ -192,8 +193,8 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
                     padding: const EdgeInsets.only(bottom: 10),
                     child: _buildFaqItem(
                       context,
-                      loc.isEn ? item['q_en']! : item['q_id']!,
-                      loc.isEn ? item['a_en']! : item['a_id']!,
+                      (Localizations.localeOf(context).languageCode == 'en') ? item['q_en']! : item['q_id']!,
+                      (Localizations.localeOf(context).languageCode == 'en') ? item['a_en']! : item['a_id']!,
                       theme,
                     ),
                   );
@@ -272,7 +273,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
     );
   }
 
-  void _showDialerMock(BuildContext context, String number, ProfileThemeColors theme, ProfileLocalizations loc) {
+  void _showDialerMock(BuildContext context, String number, ProfileThemeColors theme, AppLocalizations loc) {
     showDialog(
       context: context,
       builder: (context) {
@@ -300,7 +301,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
               ),
               const SizedBox(height: 16),
               Text(
-                loc.isEn ? 'Dialing...' : 'Menghubungi...',
+                (Localizations.localeOf(context).languageCode == 'en') ? 'Dialing...' : 'Menghubungi...',
                 style: const TextStyle(color: Colors.greenAccent, fontSize: 14, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 40),
@@ -323,13 +324,13 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
     );
   }
 
-  void _showWhatsAppChatMock(BuildContext context, ProfileThemeColors theme, ProfileLocalizations loc) {
+  void _showWhatsAppChatMock(BuildContext context, ProfileThemeColors theme, AppLocalizations loc) {
     final messageController = TextEditingController();
     final listScrollController = ScrollController();
     final List<Map<String, dynamic>> mockMessages = [
       {
         'sender': 'agent',
-        'text': loc.isEn
+        'text': (Localizations.localeOf(context).languageCode == 'en')
             ? 'Hello! Welcome to Hondaku Care Medan. How can we help you today?'
             : 'Halo! Selamat datang di Customer Care Hondaku Medan. Ada yang bisa kami bantu hari ini?',
         'time': 'Just now',
@@ -371,7 +372,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
                                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
                                 ),
                                 Text(
-                                  loc.isEn ? 'Online' : 'Aktif',
+                                  (Localizations.localeOf(context).languageCode == 'en') ? 'Online' : 'Aktif',
                                   style: const TextStyle(color: Colors.greenAccent, fontSize: 11),
                                 ),
                               ],
@@ -435,7 +436,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
                               controller: messageController,
                               style: TextStyle(color: theme.textPrimary, fontSize: 13),
                               decoration: InputDecoration(
-                                hintText: loc.isEn ? 'Type a message...' : 'Ketik pesan...',
+                                hintText: (Localizations.localeOf(context).languageCode == 'en') ? 'Type a message...' : 'Ketik pesan...',
                                 hintStyle: TextStyle(color: theme.textSecondary.withValues(alpha: 0.5), fontSize: 13),
                                 border: InputBorder.none,
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 12),
@@ -469,7 +470,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
                                     setChatState(() {
                                       mockMessages.add({
                                         'sender': 'agent',
-                                        'text': loc.isEn
+                                        'text': (Localizations.localeOf(context).languageCode == 'en')
                                             ? 'Thank you for contacting us. An consultant will connect with you shortly.'
                                             : 'Terima kasih telah menghubungi. Consultant kami akan segera membalas chat Anda.',
                                         'time': 'Just now',
@@ -507,7 +508,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
 
 class SupportTicketSheet extends StatefulWidget {
   final ProfileThemeColors theme;
-  final ProfileLocalizations loc;
+  final AppLocalizations loc;
 
   const SupportTicketSheet({
     super.key,
@@ -535,7 +536,7 @@ class _SupportTicketSheetState extends State<SupportTicketSheet> {
     if (desc.isEmpty) {
       HondakuToast.showError(
         context,
-        widget.loc.isEn ? 'Please describe your issue!' : 'Harap jelaskan kendala Anda!',
+        (Localizations.localeOf(context).languageCode == 'en') ? 'Please describe your issue!' : 'Harap jelaskan kendala Anda!',
       );
       return;
     }
@@ -557,13 +558,13 @@ class _SupportTicketSheetState extends State<SupportTicketSheet> {
                 const Icon(Icons.check_circle, color: Colors.green),
                 const SizedBox(width: 8),
                 Text(
-                  widget.loc.isEn ? 'Ticket Submitted' : 'Tiket Dikirim',
+                  (Localizations.localeOf(context).languageCode == 'en') ? 'Ticket Submitted' : 'Tiket Dikirim',
                   style: TextStyle(color: widget.theme.textPrimary, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
             content: Text(
-              widget.loc.isEn
+              (Localizations.localeOf(context).languageCode == 'en')
                   ? 'Your support ticket has been submitted. Our team will contact you within 24 hours.'
                   : 'Tiket bantuan Anda telah terkirim. Tim Customer Care kami akan segera menghubungi Anda dalam 24 jam.',
               style: TextStyle(color: widget.theme.textPrimary),
@@ -583,7 +584,6 @@ class _SupportTicketSheetState extends State<SupportTicketSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = widget.theme;
-    final loc = widget.loc;
 
     return Container(
       padding: EdgeInsets.fromLTRB(20, 20, 20, MediaQuery.of(context).viewInsets.bottom + 20),
@@ -595,7 +595,7 @@ class _SupportTicketSheetState extends State<SupportTicketSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                loc.ticketTitle,
+                AppLocalizations.of(context)!.ticketTitle,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: theme.textPrimary),
               ),
               if (!_isSubmitting)
@@ -615,7 +615,7 @@ class _SupportTicketSheetState extends State<SupportTicketSheet> {
             ),
           ] else ...[
             Text(
-              loc.ticketCategory,
+              AppLocalizations.of(context)!.ticketCategory,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: theme.textSecondary),
             ),
             const SizedBox(height: 8),
@@ -634,10 +634,10 @@ class _SupportTicketSheetState extends State<SupportTicketSheet> {
                   icon: Icon(Icons.keyboard_arrow_down, color: theme.textSecondary),
                   isExpanded: true,
                   items: [
-                    DropdownMenuItem(value: 'Booking', child: Text(loc.isEn ? 'Booking & Order' : 'Pemesanan & Booking')),
-                    DropdownMenuItem(value: 'Pembayaran', child: Text(loc.isEn ? 'Payments' : 'Pembayaran')),
-                    DropdownMenuItem(value: 'Pengiriman', child: Text(loc.isEn ? 'Unit Delivery' : 'Pengiriman Unit')),
-                    DropdownMenuItem(value: 'Lainnya', child: Text(loc.isEn ? 'Others' : 'Pertanyaan Lainnya')),
+                    DropdownMenuItem(value: 'Booking', child: Text((Localizations.localeOf(context).languageCode == 'en') ? 'Booking & Order' : 'Pemesanan & Booking')),
+                    DropdownMenuItem(value: 'Pembayaran', child: Text((Localizations.localeOf(context).languageCode == 'en') ? 'Payments' : 'Pembayaran')),
+                    DropdownMenuItem(value: 'Pengiriman', child: Text((Localizations.localeOf(context).languageCode == 'en') ? 'Unit Delivery' : 'Pengiriman Unit')),
+                    DropdownMenuItem(value: 'Lainnya', child: Text((Localizations.localeOf(context).languageCode == 'en') ? 'Others' : 'Pertanyaan Lainnya')),
                   ],
                   onChanged: (val) {
                     if (val != null) {
@@ -649,7 +649,7 @@ class _SupportTicketSheetState extends State<SupportTicketSheet> {
             ),
             const SizedBox(height: 16),
             Text(
-              loc.isEn ? 'Description' : 'Deskripsi Masalah',
+              (Localizations.localeOf(context).languageCode == 'en') ? 'Description' : 'Deskripsi Masalah',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: theme.textSecondary),
             ),
             const SizedBox(height: 8),
@@ -665,7 +665,7 @@ class _SupportTicketSheetState extends State<SupportTicketSheet> {
                 maxLines: 4,
                 style: TextStyle(fontSize: 14, color: theme.textPrimary),
                 decoration: InputDecoration(
-                  hintText: loc.ticketDescription,
+                  hintText: AppLocalizations.of(context)!.ticketDescription,
                   hintStyle: TextStyle(color: theme.textSecondary.withValues(alpha: 0.5)),
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(vertical: 12),
@@ -684,7 +684,7 @@ class _SupportTicketSheetState extends State<SupportTicketSheet> {
                   elevation: 0,
                 ),
                 child: Text(
-                  loc.submitTicket,
+                  AppLocalizations.of(context)!.submitTicket,
                   style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
                 ),
               ),
