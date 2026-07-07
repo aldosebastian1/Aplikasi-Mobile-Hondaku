@@ -14,7 +14,7 @@ Widget previewMotorcycleCard() {
     name: 'CBR250RR',
     subtitle: 'Total Control',
     price: 'Rp 62.800.000',
-    imageAsset: 'assets/images/products/matic/beat.webp',
+    imageAsset: 'assets/images/products/sport/cbr250rr.webp',
     description: 'Sensasi berkendara kelas dunia dengan performa mesin 250cc twin silinder.',
     categoryBadge: 'SPORT',
     engine: '250cc, 2-Cylinder',
