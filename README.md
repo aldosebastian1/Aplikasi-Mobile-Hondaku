@@ -1,10 +1,9 @@
 # 🏍️ Hondaku - The Future of Digital Dealership
 
 > [!IMPORTANT]
-> **Kredensial Akses (Demo)**
-> Untuk mencoba aplikasi, silakan gunakan akun berikut pada halaman Login:
-> - **Email:** `admin@gmail.com`
-> - **Password:** `admin123`
+> **Akses Aplikasi (Live Firebase Auth)**
+> Aplikasi ini kini telah terintegrasi penuh dengan **Firebase Authentication**.
+> Untuk masuk ke dalam aplikasi, silakan **Buat Akun Baru (Register)** langsung melalui halaman Register di dalam aplikasi, atau Anda bisa bereksperimen dengan mendaftarkan email sembarang untuk keperluan pengujian.
 
 **Hondaku** adalah aplikasi *mobile* berkinerja tinggi yang dirancang untuk merevolusi dan mendigitalisasi pengalaman pengguna dalam mengeksplorasi, mensimulasikan pembiayaan kredit, hingga melakukan pemesanan (booking) sepeda motor Honda secara langsung dari genggaman. 
 
