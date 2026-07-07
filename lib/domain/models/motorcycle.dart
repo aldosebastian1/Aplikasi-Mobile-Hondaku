@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'motorcycle.freezed.dart';
@@ -7,7 +6,7 @@ part 'motorcycle.g.dart';
 @freezed
 abstract class MotorcycleFeature with _$MotorcycleFeature {
   const factory MotorcycleFeature({
-    @JsonKey(includeFromJson: false, includeToJson: false) IconData? icon,
+    String? iconName,
     required String title,
     required String description,
   }) = _MotorcycleFeature;
