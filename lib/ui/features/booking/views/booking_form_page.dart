@@ -3,8 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/widgets/hondaku_toast.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../profile/view_models/profile_view_model.dart';
+import '../../../../data/providers.dart';
+import '../../../../domain/models/kecamatan.dart';
 import '../view_models/booking_view_model.dart';
-import '../../../../data/motorcycle_data.dart';
+import '../../../../domain/models/motorcycle.dart';
 import '../widgets/booking_product_card.dart';
 import '../widgets/booking_payment_card.dart';
 import '../widgets/booking_form_components.dart';
@@ -32,30 +35,27 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
 
   bool _isNavigating = false;
 
-  static const List<String> _kecamatanList = [
-    'Medan Kota',
-    'Medan Baru',
-    'Medan Petisah',
-    'Medan Sunggal',
-    'Medan Helvetia',
-    'Medan Johor',
-    'Medan Amplas',
-    'Medan Denai',
-    'Medan Tembung',
-    'Medan Timur',
-  ];
-
-  static const List<String> _kelurahanList = [
-    'Suka Maju',
-    'Suka Ramai',
-    'Pandau Hulu',
-    'Sei Agul',
-    'Pulo Brayan',
-  ];
-
   @override
   void initState() {
     super.initState();
+    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userProfile = ref.read(userProfileProvider);
+      
+      if (userProfile.nama != 'Pengguna Hondaku' && userProfile.nama != 'Guest' && userProfile.nama != 'Memuat...' && userProfile.nama != 'Error') {
+        _namaController.text = userProfile.nama;
+      }
+      if (userProfile.email != '-' && userProfile.email != '...' && userProfile.email != 'Error') {
+        _emailController.text = userProfile.email;
+      }
+      if (userProfile.phone != '-' && userProfile.phone != '...' && userProfile.phone != 'Error') {
+        _phoneController.text = userProfile.phone;
+      }
+      if (userProfile.nik != '-' && userProfile.nik != '...' && userProfile.nik != 'Error') {
+        _nikController.text = userProfile.nik;
+      }
+    });
+
     _namaController.addListener(() {
       ref.read(bookingViewModelProvider.notifier).updateNama(_namaController.text);
     });
@@ -99,6 +99,21 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
   Widget build(BuildContext context) {
     final bookingState = ref.watch(bookingViewModelProvider);
     final errorMessage = bookingState.errorMessage;
+    
+    final locationsAsync = ref.watch(locationsProvider);
+    final List<Kecamatan> locations = locationsAsync.value ?? [];
+    
+    final List<String> kecamatanNames = locations.map((e) => e.name).toList();
+    List<String> kelurahanNames = [];
+    if (_selectedKecamatan != null) {
+      final selectedKecObj = locations.cast<Kecamatan?>().firstWhere(
+        (e) => e?.name == _selectedKecamatan, 
+        orElse: () => null
+      );
+      if (selectedKecObj != null) {
+        kelurahanNames = selectedKecObj.kelurahan;
+      }
+    }
     
     final nameError = errorMessage?.contains("Nama") == true ? errorMessage : null;
     final nikError = errorMessage?.contains("NIK") == true ? errorMessage : null;
@@ -195,26 +210,55 @@ class _BookingFormPageState extends ConsumerState<BookingFormPage> {
                       title: 'Domisili Medan',
                     ),
                     const SizedBox(height: 14),
-                    const BookingLabel('Kecamatan'),
-                    const SizedBox(height: 6),
-                    BookingDropdown(
-                      value: _selectedKecamatan,
-                      hint: 'Pilih Kecamatan',
-                      semanticsLabel: 'Kecamatan',
-                      items: _kecamatanList,
-                      onChanged: (v) => ref.read(bookingViewModelProvider.notifier).updateKecamatan(v),
-                      errorText: kecamatanError,
-                    ),
-                    const SizedBox(height: 14),
-                    const BookingLabel('Kelurahan'),
-                    const SizedBox(height: 6),
-                    BookingDropdown(
-                      value: _selectedKelurahan,
-                      hint: 'Pilih Kelurahan',
-                      semanticsLabel: 'Kelurahan',
-                      items: _kelurahanList,
-                      onChanged: (v) => ref.read(bookingViewModelProvider.notifier).updateKelurahan(v),
-                      errorText: kelurahanError,
+                    locationsAsync.when(
+                      data: (_) => Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const BookingLabel('Kecamatan'),
+                                const SizedBox(height: 6),
+                                BookingDropdown(
+                                  value: _selectedKecamatan,
+                                  hint: 'Pilih Kecamatan',
+                                  semanticsLabel: 'Kecamatan',
+                                  items: kecamatanNames,
+                                  onChanged: (v) {
+                                    ref.read(bookingViewModelProvider.notifier).updateKecamatan(v);
+                                    ref.read(bookingViewModelProvider.notifier).updateKelurahan(null);
+                                  },
+                                  errorText: kecamatanError,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const BookingLabel('Kelurahan'),
+                                const SizedBox(height: 6),
+                                BookingDropdown(
+                                  value: _selectedKelurahan,
+                                  hint: 'Pilih Kelurahan',
+                                  semanticsLabel: 'Kelurahan',
+                                  items: kelurahanNames,
+                                  onChanged: (v) => ref.read(bookingViewModelProvider.notifier).updateKelurahan(v),
+                                  errorText: kelurahanError,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      loading: () => const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                      error: (err, stack) => const Text('Gagal memuat data wilayah', style: TextStyle(color: Colors.red)),
                     ),
                     const SizedBox(height: 14),
                     const BookingLabel('No. HP (WhatsApp Aktif)'),
