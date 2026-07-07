@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import '../domain/models/motorcycle.dart';
 export '../domain/models/motorcycle.dart';
 
@@ -7,7 +6,7 @@ export '../domain/models/motorcycle.dart';
 // Pusat Data Base List Mockup
 final List<Motorcycle> motorcycleDatabase = [
   const Motorcycle(
-    id: '1',
+    id: 'matic_beat',
     name: "BeAT",
     categoryBadge: "MATIC",
     subtitle: "Matic • 110cc",
@@ -21,19 +20,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "4,2 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.local_gas_station_outlined,
+        iconName: 'local_gas_station_outlined',
         title: "PGM-FI",
         description:
             "Teknologi injeksi yang membuat konsumsi bahan bakar lebih irit.",
       ),
       MotorcycleFeature(
-        icon: Icons.electric_bolt_outlined,
+        iconName: 'electric_bolt_outlined',
         title: "eSP Engine",
         description:
             "Mesin Enhanced Smart Power yang bertenaga dan ramah lingkungan.",
       ),
       MotorcycleFeature(
-        icon: Icons.security_outlined,
+        iconName: 'security_outlined',
         title: "Secure Key Shutter",
         description:
             "Sistem pengaman bermagnet untuk mencegah pencurian kendaraan.",
@@ -69,7 +68,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '2',
+    id: 'matic_beat_street',
     name: "BeAT Street",
     categoryBadge: "MATIC",
     subtitle: "Matic • 110cc",
@@ -82,19 +81,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "4,2 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.speed_outlined,
+        iconName: 'speed_outlined',
         title: "Digital Panel Meter",
         description:
             "Speedometer full digital yang modern dan informatif.",
       ),
       MotorcycleFeature(
-        icon: Icons.settings_input_component_outlined,
+        iconName: 'settings_input_component_outlined',
         title: "Naked Handlebar",
         description:
             "Stang model terbuka memberikan posisi berkendara lebih nyaman.",
       ),
       MotorcycleFeature(
-        icon: Icons.electric_bolt_outlined,
+        iconName: 'electric_bolt_outlined',
         title: "eSP Engine",
         description:
             "Mesin eSP yang bertenaga, irit, dan ramah lingkungan.",
@@ -130,7 +129,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '3',
+    id: 'matic_genio',
     name: "Genio",
     categoryBadge: "MATIC",
     subtitle: "Matic • 110cc",
@@ -143,19 +142,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "4,2 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.palette_outlined,
+        iconName: 'palette_outlined',
         title: "Fashionable Design",
         description:
             "Desain stylish dan modern yang cocok untuk anak muda.",
       ),
       MotorcycleFeature(
-        icon: Icons.electric_bolt_outlined,
+        iconName: 'electric_bolt_outlined',
         title: "eSP Engine",
         description:
             "Mesin Enhanced Smart Power yang irit, bertenaga, dan ramah lingkungan.",
       ),
       MotorcycleFeature(
-        icon: Icons.local_gas_station_outlined,
+        iconName: 'local_gas_station_outlined',
         title: "PGM-FI",
         description:
             "Teknologi injeksi modern untuk konsumsi bahan bakar yang lebih efisien.",
@@ -191,7 +190,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '4',
+    id: 'matic_scoopy',
     name: "Scoopy",
     categoryBadge: "MATIC",
     subtitle: "Matic • 110cc",
@@ -204,19 +203,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "4,2 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.vpn_key_outlined,
+        iconName: 'vpn_key_outlined',
         title: "Smart Key System",
         description:
             "Sistem kunci pintar tanpa anak kunci yang lebih aman dan praktis.",
       ),
       MotorcycleFeature(
-        icon: Icons.lightbulb_outline,
+        iconName: 'lightbulb_outline',
         title: "Full LED Lighting",
         description:
             "Lampu depan dan belakang LED yang terang dan hemat energi.",
       ),
       MotorcycleFeature(
-        icon: Icons.phone_android_outlined,
+        iconName: 'phone_android_outlined',
         title: "USB Charger",
         description:
             "Memudahkan pengisian daya smartphone selama perjalanan.",
@@ -252,7 +251,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '5',
+    id: 'matic_vario_125',
     name: "Vario 125",
     categoryBadge: "MATIC",
     subtitle: "Matic • 125cc",
@@ -265,19 +264,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "5,5 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.vpn_key_outlined,
+        iconName: 'vpn_key_outlined',
         title: "Smart Key System",
         description:
             "Sistem kunci pintar yang praktis dan meningkatkan keamanan kendaraan.",
       ),
       MotorcycleFeature(
-        icon: Icons.phone_android_outlined,
+        iconName: 'phone_android_outlined',
         title: "USB Charger",
         description:
             "Mengisi daya smartphone menjadi lebih mudah saat berkendara.",
       ),
       MotorcycleFeature(
-        icon: Icons.lightbulb_outline,
+        iconName: 'lightbulb_outline',
         title: "Full LED Lighting",
         description:
             "Pencahayaan lebih terang dengan tampilan modern.",
@@ -313,7 +312,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '6',
+    id: 'matic_vario_125_street',
     name: "Vario 125 Street",
     categoryBadge: "MATIC",
     subtitle: "Matic • 125cc",
@@ -326,19 +325,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "5,5 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.speed_outlined,
+        iconName: 'speed_outlined',
         title: "Full Digital Panel",
         description:
             "Panel meter digital modern dengan informasi berkendara lengkap.",
       ),
       MotorcycleFeature(
-        icon: Icons.vpn_key_outlined,
+        iconName: 'vpn_key_outlined',
         title: "Smart Key System",
         description:
             "Sistem kunci pintar yang aman dan praktis tanpa anak kunci.",
       ),
       MotorcycleFeature(
-        icon: Icons.phone_android_outlined,
+        iconName: 'phone_android_outlined',
         title: "USB Charger",
         description:
             "Mengisi daya smartphone lebih mudah selama perjalanan.",
@@ -374,7 +373,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '7',
+    id: 'matic_vario_160',
     name: "Vario 160",
     categoryBadge: "MATIC",
     subtitle: "Matic • 160cc",
@@ -388,19 +387,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "5,5 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.shield_outlined,
+        iconName: 'shield_outlined',
         title: "ABS System",
         description:
             "Sistem pengereman ABS memberikan keamanan lebih saat melakukan pengereman mendadak.",
       ),
       MotorcycleFeature(
-        icon: Icons.light_mode_outlined,
+        iconName: 'light_mode_outlined',
         title: "Full LED Lighting",
         description:
             "Lampu LED modern dengan pencahayaan yang lebih terang.",
       ),
       MotorcycleFeature(
-        icon: Icons.vpn_key_outlined,
+        iconName: 'vpn_key_outlined',
         title: "Honda Smart Key",
         description:
             "Sistem smart key tanpa anak kunci yang lebih aman dan praktis.",
@@ -436,7 +435,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '8',
+    id: 'matic_stylo_160',
     name: "Stylo 160",
     categoryBadge: "MATIC",
     subtitle: "Matic • 160cc",
@@ -449,19 +448,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "5,5 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.style_outlined,
+        iconName: 'style_outlined',
         title: "Premium Retro Design",
         description:
             "Desain klasik modern dengan sentuhan premium yang elegan.",
       ),
       MotorcycleFeature(
-        icon: Icons.vpn_key_outlined,
+        iconName: 'vpn_key_outlined',
         title: "Honda Smart Key",
         description:
             "Sistem smart key tanpa anak kunci yang praktis dan aman.",
       ),
       MotorcycleFeature(
-        icon: Icons.light_mode_outlined,
+        iconName: 'light_mode_outlined',
         title: "Full LED Lighting",
         description:
             "Lampu LED depan dan belakang dengan tampilan modern.",
@@ -497,7 +496,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '9',
+    id: 'matic_pcx160',
     name: "PCX160",
     categoryBadge: "MATIC",
     subtitle: "Matic • 160cc",
@@ -510,19 +509,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "8,1 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.vpn_key_outlined,
+        iconName: 'vpn_key_outlined',
         title: "Honda Smart Key",
         description:
             "Smart key system lengkap dengan alarm dan answer back system.",
       ),
       MotorcycleFeature(
-        icon: Icons.phone_android_outlined,
+        iconName: 'phone_android_outlined',
         title: "USB Charger",
         description:
             "USB charger type-C untuk mengisi daya smartphone selama perjalanan.",
       ),
       MotorcycleFeature(
-        icon: Icons.airline_seat_recline_normal_outlined,
+        iconName: 'airline_seat_recline_normal_outlined',
         title: "Comfort Seat",
         description:
             "Jok lebar dan ergonomis memberikan kenyamanan maksimal.",
@@ -558,7 +557,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '10',
+    id: 'matic_adv160',
     name: "ADV160",
     categoryBadge: "MATIC",
     subtitle: "Adventure • 160cc",
@@ -571,19 +570,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "8,1 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.landscape_outlined,
+        iconName: 'landscape_outlined',
         title: "Adjustable Windscreen",
         description:
             "Windscreen dapat diatur sesuai kebutuhan untuk kenyamanan berkendara.",
       ),
       MotorcycleFeature(
-        icon: Icons.shield_outlined,
+        iconName: 'shield_outlined',
         title: "ABS Brake System",
         description:
             "Pengereman lebih stabil dan aman pada berbagai kondisi jalan.",
       ),
       MotorcycleFeature(
-        icon: Icons.vpn_key_outlined,
+        iconName: 'vpn_key_outlined',
         title: "Honda Smart Key",
         description:
             "Smart key system lengkap dengan alarm dan answer back system.",
@@ -619,7 +618,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '11',
+    id: 'matic_forza',
     name: "Forza",
     categoryBadge: "MATIC",
     subtitle: "Premium Matic • 250cc",
@@ -632,19 +631,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "11,7 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.height_outlined,
+        iconName: 'height_outlined',
         title: "Electric Windscreen",
         description:
             "Windscreen elektrik yang dapat diatur sesuai kenyamanan pengendara.",
       ),
       MotorcycleFeature(
-        icon: Icons.vpn_key_outlined,
+        iconName: 'vpn_key_outlined',
         title: "Honda Smart Key",
         description:
             "Smart Key System lengkap dengan alarm dan answer back system.",
       ),
       MotorcycleFeature(
-        icon: Icons.work_outline,
+        iconName: 'work_outline',
         title: "Large Luggage Box",
         description:
             "Bagasi ekstra luas yang mampu menyimpan dua helm sekaligus.",
@@ -680,7 +679,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '12',
+    id: 'sport_cb150r_streetfire',
     name: "CB150R Streetfire",
     categoryBadge: "SPORT",
     subtitle: "Sport • 150cc",
@@ -693,19 +692,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "12 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.bolt_outlined,
+        iconName: 'bolt_outlined',
         title: "DOHC Engine",
         description:
             "Mesin DOHC 150cc memberikan performa tinggi dan akselerasi responsif.",
       ),
       MotorcycleFeature(
-        icon: Icons.light_mode_outlined,
+        iconName: 'light_mode_outlined',
         title: "Full LED Lighting",
         description:
             "Lampu depan dan belakang LED dengan desain modern.",
       ),
       MotorcycleFeature(
-        icon: Icons.speed_outlined,
+        iconName: 'speed_outlined',
         title: "Digital Panel Meter",
         description:
             "Panel instrumen full digital yang informatif dan mudah dibaca.",
@@ -741,7 +740,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '13',
+    id: 'sport_cbr150r',
     name: "CBR150R",
     categoryBadge: "SPORT",
     subtitle: "Sport • 150cc",
@@ -754,19 +753,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "12 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.sports_motorsports_outlined,
+        iconName: 'sports_motorsports_outlined',
         title: "Supersport Design",
         description:
             "Desain fairing aerodinamis bergaya motor balap Honda Racing.",
       ),
       MotorcycleFeature(
-        icon: Icons.speed_outlined,
+        iconName: 'speed_outlined',
         title: "Assist & Slipper Clutch",
         description:
             "Perpindahan gigi lebih ringan dan mengurangi engine brake saat downshift.",
       ),
       MotorcycleFeature(
-        icon: Icons.light_mode_outlined,
+        iconName: 'light_mode_outlined',
         title: "Full LED Lighting",
         description:
             "Sistem pencahayaan LED penuh yang modern dan terang.",
@@ -802,7 +801,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '14',
+    id: 'cub_supra_x_125',
     name: "Supra X 125",
     categoryBadge: "CUB",
     subtitle: "Cub • 125cc",
@@ -815,19 +814,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "4,0 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.local_gas_station_outlined,
+        iconName: 'local_gas_station_outlined',
         title: "PGM-FI",
         description:
             "Teknologi injeksi Honda yang membuat konsumsi bahan bakar lebih hemat.",
       ),
       MotorcycleFeature(
-        icon: Icons.build_outlined,
+        iconName: 'build_outlined',
         title: "Reliable Engine",
         description:
             "Mesin tangguh dengan perawatan mudah dan umur pakai panjang.",
       ),
       MotorcycleFeature(
-        icon: Icons.light_mode_outlined,
+        iconName: 'light_mode_outlined',
         title: "Modern Headlamp",
         description:
             "Lampu depan modern dengan pencahayaan yang optimal.",
@@ -863,7 +862,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '15',
+    id: 'cub_sonic_150r',
     name: "Sonic 150R",
     categoryBadge: "CUB",
     subtitle: "Cub • 150cc",
@@ -876,19 +875,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "4,0 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.sports_motorsports_outlined,
+        iconName: 'sports_motorsports_outlined',
         title: "DOHC Engine",
         description:
             "Mesin DOHC 150cc memberikan akselerasi yang responsif dan bertenaga.",
       ),
       MotorcycleFeature(
-        icon: Icons.speed_outlined,
+        iconName: 'speed_outlined',
         title: "Digital Panel Meter",
         description:
             "Panel instrumen digital dengan informasi berkendara yang lengkap.",
       ),
       MotorcycleFeature(
-        icon: Icons.light_mode_outlined,
+        iconName: 'light_mode_outlined',
         title: "LED Headlight",
         description:
             "Lampu depan LED modern dengan pencahayaan lebih terang.",
@@ -924,7 +923,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '16',
+    id: 'off road_crf150l',
     name: "CRF150L",
     categoryBadge: "OFF ROAD",
     subtitle: "Off Road • 150cc",
@@ -937,19 +936,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "7,2 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.terrain_outlined,
+        iconName: 'terrain_outlined',
         title: "Long Travel Suspension",
         description:
             "Suspensi depan dan belakang dengan travel panjang untuk kenyamanan di medan ekstrem.",
       ),
       MotorcycleFeature(
-        icon: Icons.landscape_outlined,
+        iconName: 'landscape_outlined',
         title: "Dual Purpose Tire",
         description:
             "Ban dual purpose yang memberikan traksi maksimal di jalan maupun off-road.",
       ),
       MotorcycleFeature(
-        icon: Icons.sports_motorsports_outlined,
+        iconName: 'sports_motorsports_outlined',
         title: "Pro-Link Suspension",
         description:
             "Suspensi belakang Pro-Link memberikan kestabilan saat melintasi berbagai medan.",
@@ -985,7 +984,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '17',
+    id: 'off road_crf250_rally',
     name: "CRF250 Rally",
     categoryBadge: "OFF ROAD",
     subtitle: "Adventure • 250cc",
@@ -998,19 +997,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "12,8 L",
     features: [
       MotorcycleFeature(
-        icon: Icons.landscape_outlined,
+        iconName: 'landscape_outlined',
         title: "Rally Design",
         description:
             "Desain khas motor rally dengan windshield tinggi dan bodi adventure.",
       ),
       MotorcycleFeature(
-        icon: Icons.settings_input_component_outlined,
+        iconName: 'settings_input_component_outlined',
         title: "Long Travel Suspension",
         description:
             "Suspensi Showa depan dan belakang memberikan kenyamanan di berbagai medan.",
       ),
       MotorcycleFeature(
-        icon: Icons.explore_outlined,
+        iconName: 'explore_outlined',
         title: "Adventure Ready",
         description:
             "Ground clearance tinggi dan posisi berkendara ergonomis untuk perjalanan jauh.",
@@ -1046,7 +1045,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '18',
+    id: 'ev_honda_em1_e',
     name: "Honda EM1 e:",
     categoryBadge: "EV",
     subtitle: "Electric Vehicle",
@@ -1059,19 +1058,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "Baterai",
     features: [
       MotorcycleFeature(
-        icon: Icons.electric_bolt_outlined,
+        iconName: 'electric_bolt_outlined',
         title: "Honda Mobile Power Pack e:",
         description:
             "Baterai lithium-ion yang dapat ditukar dengan mudah dan praktis.",
       ),
       MotorcycleFeature(
-        icon: Icons.light_mode_outlined,
+        iconName: 'light_mode_outlined',
         title: "Full LED Lighting",
         description:
             "Sistem pencahayaan LED di seluruh lampu untuk penerangan maksimal.",
       ),
       MotorcycleFeature(
-        icon: Icons.speed_outlined,
+        iconName: 'speed_outlined',
         title: "Digital Panel Meter",
         description:
             "Panel meter digital yang informatif menampilkan indikator baterai dan kecepatan.",
@@ -1104,7 +1103,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '19',
+    id: 'ev_honda_cuv_e',
     name: "Honda CUV e:",
     categoryBadge: "EV",
     subtitle: "Electric Vehicle",
@@ -1117,19 +1116,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "Dual Baterai",
     features: [
       MotorcycleFeature(
-        icon: Icons.electric_bolt_outlined,
+        iconName: 'electric_bolt_outlined',
         title: "Dual Mobile Power Pack",
         description:
             "Dilengkapi dua baterai yang memberikan jarak tempuh lebih jauh.",
       ),
       MotorcycleFeature(
-        icon: Icons.phone_android_outlined,
+        iconName: 'phone_android_outlined',
         title: "RoadSync Duo",
         description:
             "Konektivitas canggih dengan smartphone untuk navigasi dan informasi kendaraan.",
       ),
       MotorcycleFeature(
-        icon: Icons.speed_outlined,
+        iconName: 'speed_outlined',
         title: "Riding Mode",
         description:
             "Berbagai pilihan mode berkendara sesuai dengan kebutuhan.",
@@ -1162,7 +1161,7 @@ final List<Motorcycle> motorcycleDatabase = [
     },
   ),
   const Motorcycle(
-    id: '20',
+    id: 'ev_honda_icon_e',
     name: "Honda ICON e:",
     categoryBadge: "EV",
     subtitle: "Electric Vehicle",
@@ -1175,19 +1174,19 @@ final List<Motorcycle> motorcycleDatabase = [
     fuelCapacity: "Baterai",
     features: [
       MotorcycleFeature(
-        icon: Icons.design_services_outlined,
+        iconName: 'design_services_outlined',
         title: "Compact Design",
         description:
             "Desain yang ringan dan ramping memudahkan bermanuver di jalanan.",
       ),
       MotorcycleFeature(
-        icon: Icons.lightbulb_outline,
+        iconName: 'lightbulb_outline',
         title: "LED Lighting",
         description:
             "Lampu LED depan dan belakang modern yang terang dan hemat energi.",
       ),
       MotorcycleFeature(
-        icon: Icons.battery_charging_full_outlined,
+        iconName: 'battery_charging_full_outlined',
         title: "Direct Charging",
         description:
             "Pengisian daya baterai yang mudah langsung ke kendaraan.",
@@ -1218,5 +1217,194 @@ final List<Motorcycle> motorcycleDatabase = [
       'Berat Kosong': '89 kg',
       'Kapasitas Tangki': '-',
     },
+  ),  const Motorcycle(
+    id: 'cub_ct125',
+    name: 'CT125',
+    categoryBadge: 'CUB',
+    subtitle: 'Trekking Cub',
+    description: 'Motor bebek trekking ikonik dengan desain klasik tangguh untuk bertualang di alam maupun jalanan kota.',
+    price: 'Rp 81.400.000',
+    imageAsset: 'assets/images/products/cub/ct125.webp',
+    engine: '125 cc',
+    maxPower: '6,5 kW',
+    fuelCapacity: '5 L',
+    features: [
+      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
+      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+    ],
+    specsMesin: {'Tipe': '4-Langkah, SOHC, Pendingin Udara'},
+    specsRangka: {'Tipe Rangka': 'Teleskopik'},
+    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+  ),
+  const Motorcycle(
+    id: 'cub_supra_gtr_150',
+    name: 'Supra GTR 150',
+    categoryBadge: 'CUB',
+    subtitle: 'Sport Cub',
+    description: 'Bebek sport yang memberikan sensasi melesat kencang dengan performa mesin DOHC 6 Kecepatan.',
+    price: 'Rp 25.180.000',
+    imageAsset: 'assets/images/products/cub/gtr_150.webp',
+    engine: '149,16 cc',
+    maxPower: '12,0 kW',
+    fuelCapacity: '5 L',
+    features: [
+      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
+      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+    ],
+    specsMesin: {'Tipe': '4-Langkah, DOHC, 4 Katup'},
+    specsRangka: {'Tipe Rangka': 'Teleskopik'},
+    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+  ),
+  const Motorcycle(
+    id: 'cub_revo',
+    name: 'Revo',
+    categoryBadge: 'CUB',
+    subtitle: 'Bebek Irit',
+    description: 'Bebek legendaris tangguh dan super irit dengan teknologi PGM-FI yang ramah di kantong.',
+    price: 'Rp 16.020.000',
+    imageAsset: 'assets/images/products/cub/revo.webp',
+    engine: '109,17 cc',
+    maxPower: '6,56 kW',
+    fuelCapacity: '5 L',
+    features: [
+      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
+      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+    ],
+    specsMesin: {'Tipe': '4-Langkah, SOHC, Pendingin Udara'},
+    specsRangka: {'Tipe Rangka': 'Teleskopik'},
+    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+  ),
+  const Motorcycle(
+    id: 'cub_super_cub_c125',
+    name: 'Super Cub C125',
+    categoryBadge: 'CUB',
+    subtitle: 'Premium Cub',
+    description: 'Desain orisinal Super Cub dengan sentuhan premium modern untuk gaya hidup ikonik dan berkelas.',
+    price: 'Rp 77.160.000',
+    imageAsset: 'assets/images/products/cub/supercub_c125.webp',
+    engine: '124 cc',
+    maxPower: '7,2 kW',
+    fuelCapacity: '5 L',
+    features: [
+      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
+      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+    ],
+    specsMesin: {'Tipe': '4-Langkah, SOHC, eSP'},
+    specsRangka: {'Tipe Rangka': 'Teleskopik'},
+    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+  ),
+  const Motorcycle(
+    id: 'sport_cb150_verza',
+    name: 'CB150 Verza',
+    categoryBadge: 'SPORT',
+    subtitle: 'Naked Sport',
+    description: 'Motor naked sport andalan yang tangguh, irit, dan nyaman untuk mobilitas tinggi sehari-hari.',
+    price: 'Rp 20.945.000',
+    imageAsset: 'assets/images/products/sport/cb150verza.webp',
+    engine: '149,15 cc',
+    maxPower: '9,59 kW',
+    fuelCapacity: '5 L',
+    features: [
+      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
+      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+    ],
+    specsMesin: {'Tipe': '4-Langkah, SOHC, Pendingin Udara'},
+    specsRangka: {'Tipe Rangka': 'Teleskopik'},
+    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+  ),
+  const Motorcycle(
+    id: 'sport_cb150x',
+    name: 'CB150X',
+    categoryBadge: 'SPORT',
+    subtitle: 'Adventure Sport',
+    description: 'Motor sport adventure touring 150cc pertama di Indonesia, siap taklukkan berbagai jalanan.',
+    price: 'Rp 33.910.000',
+    imageAsset: 'assets/images/products/sport/cb150x.webp',
+    engine: '149,16 cc',
+    maxPower: '11,5 kW',
+    fuelCapacity: '5 L',
+    features: [
+      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
+      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+    ],
+    specsMesin: {'Tipe': '4-Langkah, DOHC 4 Katup'},
+    specsRangka: {'Tipe Rangka': 'Teleskopik'},
+    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+  ),
+  const Motorcycle(
+    id: 'sport_cbr250rr',
+    name: 'CBR250RR',
+    categoryBadge: 'SPORT',
+    subtitle: 'Supersport',
+    description: 'Motor supersport revolusioner berbekal mesin 2-silinder bertenaga buas untuk total control sejati.',
+    price: 'Rp 63.456.000',
+    imageAsset: 'assets/images/products/sport/cbr250rr.webp',
+    engine: '249,7 cc',
+    maxPower: '31 kW',
+    fuelCapacity: '5 L',
+    features: [
+      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
+      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+    ],
+    specsMesin: {'Tipe': '4-Stroke, 8-Valve, Parallel Twin Cylinder'},
+    specsRangka: {'Tipe Rangka': 'Teleskopik'},
+    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+  ),
+  const Motorcycle(
+    id: 'sport_crf250l',
+    name: 'CRF250L',
+    categoryBadge: 'SPORT',
+    subtitle: 'Off-road',
+    description: 'Dirt bike sejati dengan suspensi Inverted Showa untuk performa off-road dan on-road tiada tanding.',
+    price: 'Rp 79.900.000',
+    imageAsset: 'assets/images/products/sport/crf250l.webp',
+    engine: '249 cc',
+    maxPower: '18,9 kW',
+    fuelCapacity: '5 L',
+    features: [
+      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
+      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+    ],
+    specsMesin: {'Tipe': '4-Langkah, DOHC, 4 Katup'},
+    specsRangka: {'Tipe Rangka': 'Teleskopik'},
+    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+  ),
+  const Motorcycle(
+    id: 'sport_monkey',
+    name: 'Monkey',
+    categoryBadge: 'SPORT',
+    subtitle: 'Ikonik',
+    description: 'Tampil beda dengan desain mungil dan ikonik yang mengundang senyum di setiap perjalanan.',
+    price: 'Rp 82.970.000',
+    imageAsset: 'assets/images/products/sport/monkey.webp',
+    engine: '124 cc',
+    maxPower: '6,9 kW',
+    fuelCapacity: '5 L',
+    features: [
+      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
+      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+    ],
+    specsMesin: {'Tipe': '4-Langkah, SOHC, eSP'},
+    specsRangka: {'Tipe Rangka': 'Teleskopik'},
+    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+  ),
+  const Motorcycle(
+    id: 'sport_st125_dax',
+    name: 'ST125 Dax',
+    categoryBadge: 'SPORT',
+    subtitle: 'Leisure',
+    description: 'Bentuk unik dan nyentrik, motor rekreasi ST125 Dax siap jadikan akhir pekan Anda lebih berwarna.',
+    price: 'Rp 81.750.000',
+    imageAsset: 'assets/images/products/sport/st125.webp',
+    engine: '124 cc',
+    maxPower: '6,6 kW',
+    fuelCapacity: '5 L',
+    features: [
+      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
+      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+    ],
+    specsMesin: {'Tipe': '4-Langkah, SOHC, eSP'},
+    specsRangka: {'Tipe Rangka': 'Teleskopik'},
+    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
   ),
 ];
