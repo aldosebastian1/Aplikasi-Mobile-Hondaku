@@ -19,7 +19,7 @@ void main() async {
     );
     await GoogleSignIn.instance.initialize();
   } catch (e) {
-    debugPrint("⚠️ Initialization Error: $e");
+    debugPrint("⚠️ Initialization Error");
     // We still want to run the app even if Firebase fails,
     // to prevent the user from being stuck on a white screen.
   }
