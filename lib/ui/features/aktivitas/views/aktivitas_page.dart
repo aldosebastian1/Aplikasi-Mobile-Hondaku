@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hondaku/ui/core/widgets/error_state_widget.dart';
 import 'package:hondaku/ui/core/widgets/motorcycle_skeleton_list.dart';
 import '../../../../domain/models/aktivitas_item.dart';
-import '../../../core/theme.dart';
 import '../../../core/widgets/hondaku_avatar.dart';
 import '../view_models/aktivitas_view_model.dart';
 
@@ -224,6 +223,7 @@ class _AktivitasPageState extends State<AktivitasPage>
     return RefreshIndicator(
       onRefresh: () async {
         await Future.delayed(const Duration(milliseconds: 800));
+        // ignore: unused_result
         ref.refresh(aktivitasListProvider);
       },
       color: _red,

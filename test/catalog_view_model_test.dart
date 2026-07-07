@@ -83,19 +83,19 @@ void main() {
     addTearDown(container.dispose);
 
     // Default: no filter, no sort (returns all 3)
-    var result = container.read(filteredCatalogMotorsProvider);
+    var result = container.read(filteredCatalogMotorsProvider(mockMotors));
     expect(result.length, 3);
 
     // Set category to MATIC
     container.read(catalogFilterProvider.notifier).setCategory('MATIC');
-    result = container.read(filteredCatalogMotorsProvider);
+    result = container.read(filteredCatalogMotorsProvider(mockMotors));
     expect(result.length, 2);
     expect(result.any((m) => m.name == 'Honda CBR150R'), false);
 
     // Clear category, Sort by Price (Lowest First) -> selectedFilter = 1
     container.read(catalogFilterProvider.notifier).setCategory('');
     container.read(catalogFilterProvider.notifier).setFilter(1);
-    result = container.read(filteredCatalogMotorsProvider);
+    result = container.read(filteredCatalogMotorsProvider(mockMotors));
     expect(result.length, 3);
     // 18jt, 27jt, 37jt
     expect(result[0].name, 'Honda Beat');
@@ -104,7 +104,7 @@ void main() {
 
     // Sort by Price (Highest First) -> selectedFilter = 2
     container.read(catalogFilterProvider.notifier).setFilter(2);
-    result = container.read(filteredCatalogMotorsProvider);
+    result = container.read(filteredCatalogMotorsProvider(mockMotors));
     // 37jt, 27jt, 18jt
     expect(result[0].name, 'Honda CBR150R');
     expect(result[1].name, 'Honda Vario 160');

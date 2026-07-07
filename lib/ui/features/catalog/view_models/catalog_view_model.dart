@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../domain/models/motorcycle.dart';
-import '../../home/view_models/home_view_model.dart';
 
 class CatalogFilterState {
   final int selectedFilter;
