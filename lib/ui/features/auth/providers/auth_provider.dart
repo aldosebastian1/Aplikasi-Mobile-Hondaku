@@ -8,6 +8,7 @@ import '../../../../data/repositories/firebase_auth_repository_impl.dart';
 import '../../../../data/providers.dart';
 import '../../../../domain/models/user_profile.dart';
 import '../../../../domain/repositories/user_repository.dart';
+import '../../../../core/utils/error_handler.dart';
 
 // Provides the auth state directly from Firebase
 final authStateProvider = StreamProvider<User?>((ref) {
@@ -138,7 +139,7 @@ class AuthNotifier extends AsyncNotifier<void> {
       initials = 'PH';
     }
 
-    final newProfile = UserProfile(
+    final newProfile = UserProfile.create(
       nama: displayName,
       username: email.isNotEmpty ? email.split('@').first : user.uid.substring(0, 5),
       email: email,
@@ -171,7 +172,7 @@ class AuthNotifier extends AsyncNotifier<void> {
         },
         verificationFailed: (FirebaseAuthException e) {
           state = AsyncValue.error(e, StackTrace.current);
-          onError(e.message ?? 'Gagal mengirim OTP');
+          onError(AppErrorHandler.getMessage(e));
         },
         codeSent: (String verificationId, int? resendToken) {
           state = const AsyncValue.data(null); // Reset state to non-loading
