@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MotorcycleFeature {
 
-@JsonKey(includeFromJson: false, includeToJson: false) IconData? get icon; String get title; String get description;
+ String? get iconName; String get title; String get description;
 /// Create a copy of MotorcycleFeature
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $MotorcycleFeatureCopyWith<MotorcycleFeature> get copyWith => _$MotorcycleFeatur
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MotorcycleFeature&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MotorcycleFeature&&(identical(other.iconName, iconName) || other.iconName == iconName)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,icon,title,description);
+int get hashCode => Object.hash(runtimeType,iconName,title,description);
 
 @override
 String toString() {
-  return 'MotorcycleFeature(icon: $icon, title: $title, description: $description)';
+  return 'MotorcycleFeature(iconName: $iconName, title: $title, description: $description)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $MotorcycleFeatureCopyWith<$Res>  {
   factory $MotorcycleFeatureCopyWith(MotorcycleFeature value, $Res Function(MotorcycleFeature) _then) = _$MotorcycleFeatureCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(includeFromJson: false, includeToJson: false) IconData? icon, String title, String description
+ String? iconName, String title, String description
 });
 
 
@@ -65,10 +65,10 @@ class _$MotorcycleFeatureCopyWithImpl<$Res>
 
 /// Create a copy of MotorcycleFeature
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? icon = freezed,Object? title = null,Object? description = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? iconName = freezed,Object? title = null,Object? description = null,}) {
   return _then(_self.copyWith(
-icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
-as IconData?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+iconName: freezed == iconName ? _self.iconName : iconName // ignore: cast_nullable_to_non_nullable
+as String?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -155,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(includeFromJson: false, includeToJson: false)  IconData? icon,  String title,  String description)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? iconName,  String title,  String description)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MotorcycleFeature() when $default != null:
-return $default(_that.icon,_that.title,_that.description);case _:
+return $default(_that.iconName,_that.title,_that.description);case _:
   return orElse();
 
 }
@@ -176,10 +176,10 @@ return $default(_that.icon,_that.title,_that.description);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(includeFromJson: false, includeToJson: false)  IconData? icon,  String title,  String description)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? iconName,  String title,  String description)  $default,) {final _that = this;
 switch (_that) {
 case _MotorcycleFeature():
-return $default(_that.icon,_that.title,_that.description);case _:
+return $default(_that.iconName,_that.title,_that.description);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +196,10 @@ return $default(_that.icon,_that.title,_that.description);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(includeFromJson: false, includeToJson: false)  IconData? icon,  String title,  String description)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? iconName,  String title,  String description)?  $default,) {final _that = this;
 switch (_that) {
 case _MotorcycleFeature() when $default != null:
-return $default(_that.icon,_that.title,_that.description);case _:
+return $default(_that.iconName,_that.title,_that.description);case _:
   return null;
 
 }
@@ -211,10 +211,10 @@ return $default(_that.icon,_that.title,_that.description);case _:
 @JsonSerializable()
 
 class _MotorcycleFeature implements MotorcycleFeature {
-  const _MotorcycleFeature({@JsonKey(includeFromJson: false, includeToJson: false) this.icon, required this.title, required this.description});
+  const _MotorcycleFeature({this.iconName, required this.title, required this.description});
   factory _MotorcycleFeature.fromJson(Map<String, dynamic> json) => _$MotorcycleFeatureFromJson(json);
 
-@override@JsonKey(includeFromJson: false, includeToJson: false) final  IconData? icon;
+@override final  String? iconName;
 @override final  String title;
 @override final  String description;
 
@@ -231,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MotorcycleFeature&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MotorcycleFeature&&(identical(other.iconName, iconName) || other.iconName == iconName)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,icon,title,description);
+int get hashCode => Object.hash(runtimeType,iconName,title,description);
 
 @override
 String toString() {
-  return 'MotorcycleFeature(icon: $icon, title: $title, description: $description)';
+  return 'MotorcycleFeature(iconName: $iconName, title: $title, description: $description)';
 }
 
 
@@ -251,7 +251,7 @@ abstract mixin class _$MotorcycleFeatureCopyWith<$Res> implements $MotorcycleFea
   factory _$MotorcycleFeatureCopyWith(_MotorcycleFeature value, $Res Function(_MotorcycleFeature) _then) = __$MotorcycleFeatureCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(includeFromJson: false, includeToJson: false) IconData? icon, String title, String description
+ String? iconName, String title, String description
 });
 
 
@@ -268,10 +268,10 @@ class __$MotorcycleFeatureCopyWithImpl<$Res>
 
 /// Create a copy of MotorcycleFeature
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? icon = freezed,Object? title = null,Object? description = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? iconName = freezed,Object? title = null,Object? description = null,}) {
   return _then(_MotorcycleFeature(
-icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
-as IconData?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+iconName: freezed == iconName ? _self.iconName : iconName // ignore: cast_nullable_to_non_nullable
+as String?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,
   ));

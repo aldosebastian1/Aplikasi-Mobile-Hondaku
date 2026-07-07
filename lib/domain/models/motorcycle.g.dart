@@ -8,12 +8,14 @@ part of 'motorcycle.dart';
 
 _MotorcycleFeature _$MotorcycleFeatureFromJson(Map<String, dynamic> json) =>
     _MotorcycleFeature(
+      iconName: json['iconName'] as String?,
       title: json['title'] as String,
       description: json['description'] as String,
     );
 
 Map<String, dynamic> _$MotorcycleFeatureToJson(_MotorcycleFeature instance) =>
     <String, dynamic>{
+      'iconName': instance.iconName,
       'title': instance.title,
       'description': instance.description,
     };
