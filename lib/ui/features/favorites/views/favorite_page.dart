@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hondaku/core/utils/error_handler.dart';
 import '../providers/favorite_provider.dart';
-import '../../../../data/motorcycle_data.dart';
 import '../../../core/widgets/motorcycle_card_widget.dart';
+import '../../../../data/providers.dart'; // import motorcyclesProvider
 
 class FavoritePage extends ConsumerWidget {
   const FavoritePage({super.key});
@@ -11,11 +12,7 @@ class FavoritePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final favoriteIds = ref.watch(favoriteProvider);
-
-    // Map IDs to actual Motorcycle objects (for demo purposes we map from the static list)
-    final List<Motorcycle> favoriteMotors = motorcycleDatabase
-        .where((motor) => favoriteIds.contains(motor.id))
-        .toList();
+    final motorcyclesAsync = ref.watch(motorcyclesProvider);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
@@ -35,8 +32,16 @@ class FavoritePage extends ConsumerWidget {
           child: Container(color: const Color(0xFFE9E9E9), height: 1),
         ),
       ),
-      body: favoriteMotors.isEmpty
-          ? Center(
+      body: motorcyclesAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator(color: Color(0xFFC40000))),
+        error: (err, stack) => Center(child: Text(AppErrorHandler.getMessage(err))),
+        data: (allMotorcycles) {
+          final favoriteMotors = allMotorcycles
+              .where((motor) => favoriteIds.contains(motor.id))
+              .toList();
+
+          if (favoriteMotors.isEmpty) {
+            return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -73,20 +78,24 @@ class FavoritePage extends ConsumerWidget {
                   ),
                 ],
               ),
-            )
-          : ListView.separated(
-              padding: const EdgeInsets.all(16),
-              itemCount: favoriteMotors.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 16),
-              itemBuilder: (context, index) {
-                final motor = favoriteMotors[index];
-                return MotorcycleCardWidget(
-                  motor: motor,
-                  isCompact: true,
-                  parentIndex: 0,
-                );
-              },
-            ),
+            );
+          }
+
+          return ListView.separated(
+            padding: const EdgeInsets.all(16),
+            itemCount: favoriteMotors.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 16),
+            itemBuilder: (context, index) {
+              final motor = favoriteMotors[index];
+              return MotorcycleCardWidget(
+                motor: motor,
+                isCompact: true,
+                parentIndex: 0,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
