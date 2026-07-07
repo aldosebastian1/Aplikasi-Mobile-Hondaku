@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sqflite/sqflite.dart';
 import '../../domain/models/garage_item.dart';
 import '../../domain/repositories/garage_repository.dart';
-import '../local/database_helper.dart';
 
 class GarageRepositoryImpl implements GarageRepository {
   final FirebaseFirestore _firestore;
@@ -17,13 +15,7 @@ class GarageRepositoryImpl implements GarageRepository {
   }
 
   Future<void> _initStream() async {
-    // 1. Muat dari lokal (selalu tersedia meski tanpa login)
-    final db = await DatabaseHelper.instance.database;
-    final localData = await db.query('garage');
-    final items = localData.map((e) => GarageItem.fromJson(e)).toList();
-    _controller.add(items);
-
-    // 2. Jika login, dengarkan pembaruan dari Firestore
+    // Hanya mendengarkan pembaruan dari Firestore jika user login
     if (uid != null && uid!.isNotEmpty) {
       _firestoreSub = _firestore
           .collection('users')
@@ -34,6 +26,9 @@ class GarageRepositoryImpl implements GarageRepository {
         final remoteItems = snapshot.docs.map((doc) => GarageItem.fromJson(doc.data())).toList();
         _controller.add(remoteItems);
       });
+    } else {
+      // Jika tidak login, kembalikan list kosong
+      _controller.add([]);
     }
   }
 
@@ -44,19 +39,7 @@ class GarageRepositoryImpl implements GarageRepository {
 
   @override
   Future<void> addVehicle(GarageItem item) async {
-    // 1. Simpan ke lokal (berhasil tanpa login)
-    final db = await DatabaseHelper.instance.database;
-    await db.insert(
-      'garage', 
-      item.toJson(), 
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-
-    // Update stream lokal
-    final localData = await db.query('garage');
-    _controller.add(localData.map((e) => GarageItem.fromJson(e)).toList());
-
-    // 2. Simpan ke Firebase (opsional/sync)
+    // Simpan ke Firebase saja
     if (uid != null && uid!.isNotEmpty) {
       try {
         await _firestore
@@ -66,8 +49,10 @@ class GarageRepositoryImpl implements GarageRepository {
             .doc(item.id)
             .set(item.toJson());
       } catch (e) {
-        // Abaikan error jaringan/izin Firebase
+        throw Exception('Gagal menyimpan data kendaraan. Silakan periksa koneksi internet Anda.');
       }
+    } else {
+      throw Exception('Anda harus login untuk menyimpan kendaraan.');
     }
   }
 
