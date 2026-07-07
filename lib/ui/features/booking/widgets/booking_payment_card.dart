@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../data/motorcycle_data.dart';
+import '../../../../domain/models/motorcycle.dart';
 
 class BookingPaymentCard extends StatelessWidget {
   final Motorcycle motor;
