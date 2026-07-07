@@ -141,6 +141,6 @@ class BookingViewModel extends Notifier<BookingFormState> {
   }
 }
 
-final bookingViewModelProvider = NotifierProvider<BookingViewModel, BookingFormState>(() {
+final bookingViewModelProvider = NotifierProvider.autoDispose<BookingViewModel, BookingFormState>(() {
   return BookingViewModel();
 });
