@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hondaku/ui/core/widgets/error_state_widget.dart';
+import 'package:hondaku/ui/core/widgets/motorcycle_skeleton_list.dart';
 import '../../../../domain/models/aktivitas_item.dart';
+import '../../../core/theme.dart';
 import '../../../core/widgets/hondaku_avatar.dart';
 import '../view_models/aktivitas_view_model.dart';
 
@@ -184,21 +187,30 @@ class _AktivitasPageState extends State<AktivitasPage>
           Expanded(
             child: Consumer(
               builder: (context, ref, _) {
-                final allItems = ref.watch(aktivitasViewModelProvider);
-                final cash = allItems
-                    .where((e) => e.tipe == TipeTransaksi.cash)
-                    .toList(growable: false);
-                final kredit = allItems
-                    .where((e) => e.tipe == TipeTransaksi.kredit)
-                    .toList(growable: false);
+                final aktivitasAsync = ref.watch(aktivitasListProvider);
+                
+                return aktivitasAsync.when(
+                  loading: () => const MotorcycleSkeletonList(count: 4, isCompact: false, isSliver: false),
+                  error: (error, stack) => ErrorStateWidget(
+                    onRetry: () => ref.refresh(aktivitasListProvider),
+                  ),
+                  data: (allItems) {
+                    final cash = allItems
+                        .where((e) => e.tipe == TipeTransaksi.cash)
+                        .toList(growable: false);
+                    final kredit = allItems
+                        .where((e) => e.tipe == TipeTransaksi.kredit)
+                        .toList(growable: false);
 
-                return TabBarView(
-                  controller: _tabController,
-                  children: [
-                    _buildList(ref, allItems),
-                    _buildList(ref, cash),
-                    _buildList(ref, kredit),
-                  ],
+                    return TabBarView(
+                      controller: _tabController,
+                      children: [
+                        _buildList(ref, allItems),
+                        _buildList(ref, cash),
+                        _buildList(ref, kredit),
+                      ],
+                    );
+                  },
                 );
               },
             ),
@@ -212,7 +224,7 @@ class _AktivitasPageState extends State<AktivitasPage>
     return RefreshIndicator(
       onRefresh: () async {
         await Future.delayed(const Duration(milliseconds: 800));
-        final _ = ref.refresh(aktivitasViewModelProvider);
+        ref.refresh(aktivitasListProvider);
       },
       color: _red,
       backgroundColor: Colors.white,
