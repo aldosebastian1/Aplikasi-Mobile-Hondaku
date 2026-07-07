@@ -32,12 +32,6 @@ class KreditState {
 }
 
 class KreditViewModel extends Notifier<KreditState> {
-  static const Map<String, double> leasingRate = {
-    'FIF Group': 0.115,
-    'Adira Finance': 0.118,
-    'MUF': 0.120,
-  };
-
   @override
   KreditState build() {
     return const KreditState();
@@ -59,11 +53,10 @@ class KreditViewModel extends Notifier<KreditState> {
     state = state.copyWith(selectedLeasing: leasing);
   }
 
-  double hitungAngsuran(String leasing) {
+  double hitungAngsuran(double rate) {
     final tenor = state.selectedTenor;
     if (tenor <= 0) return 0.0;
     
-    final rate = leasingRate[leasing] ?? 0.115;
     final pokok = state.pokokPinjaman;
     final bungaTotal = pokok * rate * (tenor / 12);
     return (pokok + bungaTotal) / tenor;
