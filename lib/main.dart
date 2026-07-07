@@ -10,7 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'firebase_options.dart';
 import 'ui/features/profile/view_models/profile_view_model.dart';
-import 'scripts/seed_data.dart';
+// import 'scripts/seed_data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,9 +20,9 @@ void main() async {
     );
     await GoogleSignIn.instance.initialize();
 
-    await seedFirestoreDatabase().then((_) {
-      debugPrint("✅ MIGRASI OTOMATIS SELESAI");
-    });
+    // await seedFirestoreDatabase().then((_) {
+    //   debugPrint("✅ MIGRASI OTOMATIS SELESAI");
+    // });
   } catch (e) {
     debugPrint("⚠️ Initialization Error: $e");
     // We still want to run the app even if Firebase fails,
