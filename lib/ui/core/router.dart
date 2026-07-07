@@ -28,7 +28,7 @@ import '../features/kredit/views/upload_dokumen_kredit_page.dart';
 import '../features/kredit/views/konfirmasi_pengajuan_page.dart';
 import '../../domain/models/motorcycle.dart';
 import '../../domain/models/aktivitas_item.dart';
-import '../../data/bank_data.dart';
+import '../../domain/models/bank_option.dart';
 import 'error_page.dart';
 
 final goRouter = GoRouter(
