@@ -1,38 +1,18 @@
-import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-@immutable
-class PaymentMethodItem {
-  final String id;
-  final String title;
-  final String subtitle;
-  final String logoPath;
-  final bool isDefault;
-  final String type; // e.g., 'VA', 'CARD', 'EWALLET'
+part 'payment_method_item.freezed.dart';
+part 'payment_method_item.g.dart';
 
-  const PaymentMethodItem({
-    required this.id,
-    required this.title,
-    required this.subtitle,
-    required this.logoPath,
-    required this.isDefault,
-    required this.type,
-  });
+@freezed
+abstract class PaymentMethodItem with _$PaymentMethodItem {
+  const factory PaymentMethodItem({
+    required String id,
+    required String title,
+    required String subtitle,
+    required String logoPath,
+    @Default(false) bool isDefault,
+    required String type, // e.g., 'VA', 'CARD', 'EWALLET'
+  }) = _PaymentMethodItem;
 
-  PaymentMethodItem copyWith({
-    String? id,
-    String? title,
-    String? subtitle,
-    String? logoPath,
-    bool? isDefault,
-    String? type,
-  }) {
-    return PaymentMethodItem(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      subtitle: subtitle ?? this.subtitle,
-      logoPath: logoPath ?? this.logoPath,
-      isDefault: isDefault ?? this.isDefault,
-      type: type ?? this.type,
-    );
-  }
+  factory PaymentMethodItem.fromJson(Map<String, dynamic> json) => _$PaymentMethodItemFromJson(json);
 }
