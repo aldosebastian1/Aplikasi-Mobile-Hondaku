@@ -6,6 +6,7 @@ part 'bank_option.g.dart';
 @freezed
 abstract class BankOption with _$BankOption {
   const factory BankOption({
+    required String id,
     required String name,
     required String logoPath,
   }) = _BankOption;
