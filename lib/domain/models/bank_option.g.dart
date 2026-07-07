@@ -7,9 +7,14 @@ part of 'bank_option.dart';
 // **************************************************************************
 
 _BankOption _$BankOptionFromJson(Map<String, dynamic> json) => _BankOption(
+  id: json['id'] as String,
   name: json['name'] as String,
   logoPath: json['logoPath'] as String,
 );
 
 Map<String, dynamic> _$BankOptionToJson(_BankOption instance) =>
-    <String, dynamic>{'name': instance.name, 'logoPath': instance.logoPath};
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'logoPath': instance.logoPath,
+    };

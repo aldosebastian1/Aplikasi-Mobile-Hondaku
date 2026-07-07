@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BankOption {
 
- String get name; String get logoPath;
+ String get id; String get name; String get logoPath;
 /// Create a copy of BankOption
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $BankOptionCopyWith<BankOption> get copyWith => _$BankOptionCopyWithImpl<BankOpt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BankOption&&(identical(other.name, name) || other.name == name)&&(identical(other.logoPath, logoPath) || other.logoPath == logoPath));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BankOption&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.logoPath, logoPath) || other.logoPath == logoPath));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,logoPath);
+int get hashCode => Object.hash(runtimeType,id,name,logoPath);
 
 @override
 String toString() {
-  return 'BankOption(name: $name, logoPath: $logoPath)';
+  return 'BankOption(id: $id, name: $name, logoPath: $logoPath)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $BankOptionCopyWith<$Res>  {
   factory $BankOptionCopyWith(BankOption value, $Res Function(BankOption) _then) = _$BankOptionCopyWithImpl;
 @useResult
 $Res call({
- String name, String logoPath
+ String id, String name, String logoPath
 });
 
 
@@ -65,9 +65,10 @@ class _$BankOptionCopyWithImpl<$Res>
 
 /// Create a copy of BankOption
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? logoPath = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? logoPath = null,}) {
   return _then(_self.copyWith(
-name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,logoPath: null == logoPath ? _self.logoPath : logoPath // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String logoPath)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String logoPath)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BankOption() when $default != null:
-return $default(_that.name,_that.logoPath);case _:
+return $default(_that.id,_that.name,_that.logoPath);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.name,_that.logoPath);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String logoPath)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String logoPath)  $default,) {final _that = this;
 switch (_that) {
 case _BankOption():
-return $default(_that.name,_that.logoPath);case _:
+return $default(_that.id,_that.name,_that.logoPath);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +196,10 @@ return $default(_that.name,_that.logoPath);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String logoPath)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String logoPath)?  $default,) {final _that = this;
 switch (_that) {
 case _BankOption() when $default != null:
-return $default(_that.name,_that.logoPath);case _:
+return $default(_that.id,_that.name,_that.logoPath);case _:
   return null;
 
 }
@@ -210,9 +211,10 @@ return $default(_that.name,_that.logoPath);case _:
 @JsonSerializable()
 
 class _BankOption implements BankOption {
-  const _BankOption({required this.name, required this.logoPath});
+  const _BankOption({required this.id, required this.name, required this.logoPath});
   factory _BankOption.fromJson(Map<String, dynamic> json) => _$BankOptionFromJson(json);
 
+@override final  String id;
 @override final  String name;
 @override final  String logoPath;
 
@@ -229,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BankOption&&(identical(other.name, name) || other.name == name)&&(identical(other.logoPath, logoPath) || other.logoPath == logoPath));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BankOption&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.logoPath, logoPath) || other.logoPath == logoPath));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,logoPath);
+int get hashCode => Object.hash(runtimeType,id,name,logoPath);
 
 @override
 String toString() {
-  return 'BankOption(name: $name, logoPath: $logoPath)';
+  return 'BankOption(id: $id, name: $name, logoPath: $logoPath)';
 }
 
 
@@ -249,7 +251,7 @@ abstract mixin class _$BankOptionCopyWith<$Res> implements $BankOptionCopyWith<$
   factory _$BankOptionCopyWith(_BankOption value, $Res Function(_BankOption) _then) = __$BankOptionCopyWithImpl;
 @override @useResult
 $Res call({
- String name, String logoPath
+ String id, String name, String logoPath
 });
 
 
@@ -266,9 +268,10 @@ class __$BankOptionCopyWithImpl<$Res>
 
 /// Create a copy of BankOption
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? logoPath = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? logoPath = null,}) {
   return _then(_BankOption(
-name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,logoPath: null == logoPath ? _self.logoPath : logoPath // ignore: cast_nullable_to_non_nullable
 as String,
   ));
