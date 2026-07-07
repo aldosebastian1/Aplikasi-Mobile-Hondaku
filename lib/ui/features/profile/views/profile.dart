@@ -1,3 +1,4 @@
+import 'package:hondaku/l10n/app_localizations.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,7 +21,8 @@ class ProfilePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appSettings = ref.watch(appSettingsProvider);
+    final loc = AppLocalizations.of(context)!;
+
     final profileData = ref.watch(userProfileProvider);
     final allItems = ref.watch(aktivitasViewModelProvider);
     final activeOrders = allItems
@@ -30,7 +32,6 @@ class ProfilePage extends ConsumerWidget {
     final myVehicle = garageItemsAsync.value?.firstOrNull;
 
     const isDark = false;
-    final loc = ProfileLocalizations(appSettings.selectedLanguage);
     final theme = ProfileThemeColors(isDark);
 
     return Scaffold(
@@ -78,7 +79,7 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildHeader(ProfileThemeColors theme, ProfileLocalizations loc) {
+  Widget _buildHeader(ProfileThemeColors theme, AppLocalizations loc) {
     return Container(
       decoration: BoxDecoration(
         color: theme.surface,
@@ -135,7 +136,7 @@ class ProfilePage extends ConsumerWidget {
     BuildContext context,
     ProfileThemeColors theme,
     UserProfile profile,
-    ProfileLocalizations loc,
+    AppLocalizations loc,
     WidgetRef ref,
   ) {
     return Column(
@@ -204,7 +205,7 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildActiveOrderCard(BuildContext context, ProfileThemeColors theme, AktivitasItem order, ProfileLocalizations loc) {
+  Widget _buildActiveOrderCard(BuildContext context, ProfileThemeColors theme, AktivitasItem order, AppLocalizations loc) {
     String statusText = '';
     double progressFactor = 0.1;
     Color statusBgColor = theme.isDark ? const Color(0xFF3E2D12) : const Color(0xFFFFF2DF);
@@ -212,29 +213,29 @@ class ProfilePage extends ConsumerWidget {
 
     switch (order.status) {
       case StatusAktivitas.bookingBerhasil:
-        statusText = loc.isEn ? 'BOOKING SUCCESSFUL' : 'BOOKING BERHASIL';
+        statusText = (Localizations.localeOf(context).languageCode == 'en') ? 'BOOKING SUCCESSFUL' : 'BOOKING BERHASIL';
         progressFactor = 0.20;
         break;
       case StatusAktivitas.verifikasiSales:
-        statusText = loc.isEn ? 'SALES VERIFICATION' : 'VERIFIKASI SALES';
+        statusText = (Localizations.localeOf(context).languageCode == 'en') ? 'SALES VERIFICATION' : 'VERIFIKASI SALES';
         progressFactor = 0.40;
         break;
       case StatusAktivitas.persiapanUnit:
-        statusText = loc.isEn ? 'PREPARING UNIT' : 'PERSIAPAN UNIT';
+        statusText = (Localizations.localeOf(context).languageCode == 'en') ? 'PREPARING UNIT' : 'PERSIAPAN UNIT';
         progressFactor = 0.60;
         break;
       case StatusAktivitas.pengiriman:
-        statusText = loc.isEn ? 'DELIVERY' : 'PENGIRIMAN';
+        statusText = (Localizations.localeOf(context).languageCode == 'en') ? 'DELIVERY' : 'PENGIRIMAN';
         progressFactor = 0.80;
         break;
       case StatusAktivitas.selesai:
-        statusText = loc.isEn ? 'FINISHED' : 'SELESAI';
+        statusText = (Localizations.localeOf(context).languageCode == 'en') ? 'FINISHED' : 'SELESAI';
         progressFactor = 1.0;
         statusBgColor = theme.isDark ? const Color(0xFF143E24) : const Color(0xFFE5F6ED);
         statusTextColor = theme.isDark ? const Color(0xFF55C78A) : const Color(0xFF2B8F5C);
         break;
       case StatusAktivitas.ditolak:
-        statusText = loc.isEn ? 'REJECTED' : 'DITOLAK';
+        statusText = (Localizations.localeOf(context).languageCode == 'en') ? 'REJECTED' : 'DITOLAK';
         progressFactor = 1.0;
         statusBgColor = theme.isDark ? const Color(0xFF3F191D) : const Color(0xFFFDECEE);
         statusTextColor = theme.isDark ? const Color(0xFFFF6B76) : const Color(0xFFD32F2F);
@@ -271,7 +272,7 @@ class ProfilePage extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        loc.activeOrder,
+                        AppLocalizations.of(context)!.activeOrder,
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w900,
@@ -377,10 +378,10 @@ class ProfilePage extends ConsumerWidget {
                   Expanded(
                     child: Text(
                       order.status == StatusAktivitas.ditolak
-                          ? (loc.isEn ? 'Order Cancelled' : 'Pesanan Dibatalkan')
+                          ? ((Localizations.localeOf(context).languageCode == 'en') ? 'Order Cancelled' : 'Pesanan Dibatalkan')
                           : order.status == StatusAktivitas.bookingBerhasil
-                          ? (loc.isEn ? 'Waiting for Payment' : 'Menunggu Pembayaran')
-                          : (loc.isEn ? 'Delivery Estimate:\n2-3 Days' : 'Estimasi Pengiriman:\n2-3 Hari'),
+                          ? ((Localizations.localeOf(context).languageCode == 'en') ? 'Waiting for Payment' : 'Menunggu Pembayaran')
+                          : ((Localizations.localeOf(context).languageCode == 'en') ? 'Delivery Estimate:\n2-3 Days' : 'Estimasi Pengiriman:\n2-3 Hari'),
                       style: TextStyle(
                         fontSize: 14,
                         height: 1.15,
@@ -444,7 +445,7 @@ class ProfilePage extends ConsumerWidget {
                       ),
                     ),
                     child: Text(
-                      loc.isEn ? 'Order Detail' : 'Detail Pesanan',
+                      (Localizations.localeOf(context).languageCode == 'en') ? 'Order Detail' : 'Detail Pesanan',
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -465,7 +466,7 @@ class ProfilePage extends ConsumerWidget {
     BuildContext context,
     ProfileThemeColors theme,
     GarageItem? item,
-    ProfileLocalizations loc,
+    AppLocalizations loc,
   ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -473,7 +474,7 @@ class ProfilePage extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            loc.myGarage,
+            AppLocalizations.of(context)!.myGarage,
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w800,
@@ -529,7 +530,7 @@ class ProfilePage extends ConsumerWidget {
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            item != null ? item.name : loc.emptyGarage,
+                            item != null ? item.name : AppLocalizations.of(context)!.emptyGarage,
                             style: TextStyle(
                               fontSize: 20,
                               height: 1.1,
@@ -540,7 +541,7 @@ class ProfilePage extends ConsumerWidget {
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            item != null ? item.type : loc.startExploring,
+                            item != null ? item.type : AppLocalizations.of(context)!.startExploring,
                             style: TextStyle(
                               fontSize: 13,
                               color: theme.textSecondary,
@@ -604,7 +605,7 @@ class ProfilePage extends ConsumerWidget {
     BuildContext context,
     ProfileThemeColors theme,
     GarageItem item,
-    ProfileLocalizations loc,
+    AppLocalizations loc,
   ) {
     showModalBottomSheet(
       context: context,
@@ -637,7 +638,7 @@ class ProfilePage extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      loc.isEn ? 'Digital Service & Warranty Book' : 'Buku Servis & Garansi Digital',
+                      (Localizations.localeOf(context).languageCode == 'en') ? 'Digital Service & Warranty Book' : 'Buku Servis & Garansi Digital',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
@@ -701,7 +702,7 @@ class ProfilePage extends ConsumerWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                loc.isEn ? 'Vehicle Specifications' : 'Informasi Kendaraan',
+                (Localizations.localeOf(context).languageCode == 'en') ? 'Vehicle Specifications' : 'Informasi Kendaraan',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
@@ -710,18 +711,18 @@ class ProfilePage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              _buildSpecRow(theme, loc.isEn ? 'Plate Number' : 'Nomor Polisi', 'BK 1234 AAB'),
-              _buildSpecRow(theme, loc.isEn ? 'Chassis Number' : 'Nomor Rangka', 'MH1JM811xKxxxxxxx'),
-              _buildSpecRow(theme, loc.isEn ? 'Engine Number' : 'Nomor Mesin', 'JM81E1xxxxxx'),
+              _buildSpecRow(theme, (Localizations.localeOf(context).languageCode == 'en') ? 'Plate Number' : 'Nomor Polisi', 'BK 1234 AAB'),
+              _buildSpecRow(theme, (Localizations.localeOf(context).languageCode == 'en') ? 'Chassis Number' : 'Nomor Rangka', 'MH1JM811xKxxxxxxx'),
+              _buildSpecRow(theme, (Localizations.localeOf(context).languageCode == 'en') ? 'Engine Number' : 'Nomor Mesin', 'JM81E1xxxxxx'),
               _buildSpecRow(
                 theme,
-                loc.isEn ? 'Warranty Period' : 'Masa Garansi',
-                loc.isEn ? 'Active (Until June 2029)' : 'Aktif (s.d Juni 2029)',
+                (Localizations.localeOf(context).languageCode == 'en') ? 'Warranty Period' : 'Masa Garansi',
+                (Localizations.localeOf(context).languageCode == 'en') ? 'Active (Until June 2029)' : 'Aktif (s.d Juni 2029)',
                 valueColor: Colors.green,
               ),
               const SizedBox(height: 24),
               Text(
-                loc.isEn ? 'Periodic Service Coupon (KPB)' : 'Kupon Perawatan Berkala (KPB)',
+                (Localizations.localeOf(context).languageCode == 'en') ? 'Periodic Service Coupon (KPB)' : 'Kupon Perawatan Berkala (KPB)',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
@@ -732,22 +733,22 @@ class ProfilePage extends ConsumerWidget {
               const SizedBox(height: 16),
               _buildKpbTimelineItem(
                 theme,
-                loc.isEn ? 'KPB 1 (1,000 km / 2 Months)' : 'KPB 1 (1.000 km / 2 Bulan)',
-                loc.isEn ? 'Completed on June 20, 2026' : 'Selesai pada 20 Juni 2026',
+                (Localizations.localeOf(context).languageCode == 'en') ? 'KPB 1 (1,000 km / 2 Months)' : 'KPB 1 (1.000 km / 2 Bulan)',
+                (Localizations.localeOf(context).languageCode == 'en') ? 'Completed on June 20, 2026' : 'Selesai pada 20 Juni 2026',
                 isCompleted: true,
                 isLast: false,
               ),
               _buildKpbTimelineItem(
                 theme,
-                loc.isEn ? 'KPB 2 (4,000 km / 4 Months)' : 'KPB 2 (4.000 km / 4 Bulan)',
-                loc.isEn ? 'Available (Recommended: Sept 2026)' : 'Tersedia (Saran: Sept 2026)',
+                (Localizations.localeOf(context).languageCode == 'en') ? 'KPB 2 (4,000 km / 4 Months)' : 'KPB 2 (4.000 km / 4 Bulan)',
+                (Localizations.localeOf(context).languageCode == 'en') ? 'Available (Recommended: Sept 2026)' : 'Tersedia (Saran: Sept 2026)',
                 isActive: true,
                 isLast: false,
               ),
               _buildKpbTimelineItem(
                 theme,
-                loc.isEn ? 'KPB 3 (8,000 km / 8 Months)' : 'KPB 3 (8.000 km / 8 Bulan)',
-                loc.isEn ? 'Not yet active' : 'Belum aktif',
+                (Localizations.localeOf(context).languageCode == 'en') ? 'KPB 3 (8,000 km / 8 Months)' : 'KPB 3 (8.000 km / 8 Bulan)',
+                (Localizations.localeOf(context).languageCode == 'en') ? 'Not yet active' : 'Belum aktif',
                 isLast: true,
               ),
               const SizedBox(height: 28),
@@ -759,7 +760,7 @@ class ProfilePage extends ConsumerWidget {
                     Navigator.pop(context);
                     HondakuToast.showInfo(
                       context,
-                      loc.isEn ? 'Service booking feature is coming soon!' : 'Fitur booking servis segera hadir!',
+                      (Localizations.localeOf(context).languageCode == 'en') ? 'Service booking feature is coming soon!' : 'Fitur booking servis segera hadir!',
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -770,7 +771,7 @@ class ProfilePage extends ConsumerWidget {
                     elevation: 0,
                   ),
                   child: Text(
-                    loc.isEn ? 'Book Service Now' : 'Booking Servis Sekarang',
+                    (Localizations.localeOf(context).languageCode == 'en') ? 'Book Service Now' : 'Booking Servis Sekarang',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
@@ -889,7 +890,7 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildMenuSection(ProfileThemeColors theme, ProfileLocalizations loc) {
+  Widget _buildMenuSection(ProfileThemeColors theme, AppLocalizations loc) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24),
       padding: const EdgeInsets.symmetric(vertical: 4),
@@ -941,7 +942,7 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildLogoutButton(BuildContext context, ProfileThemeColors theme, ProfileLocalizations loc, WidgetRef ref) {
+  Widget _buildLogoutButton(BuildContext context, ProfileThemeColors theme, AppLocalizations loc, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: SizedBox(
@@ -963,7 +964,7 @@ class ProfilePage extends ConsumerWidget {
           ),
           icon: Icon(Icons.logout, color: theme.red, size: 20),
           label: Text(
-            loc.logout,
+            AppLocalizations.of(context)!.logout,
             style: TextStyle(
               color: theme.red,
               fontSize: 17,
@@ -975,7 +976,7 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  static void showAvatarPicker(BuildContext context, ProfileThemeColors theme, ProfileLocalizations loc, WidgetRef ref) {
+  static void showAvatarPicker(BuildContext context, ProfileThemeColors theme, AppLocalizations loc, WidgetRef ref) {
     showModalBottomSheet(
       context: context,
       backgroundColor: theme.surface,
@@ -994,7 +995,7 @@ class ProfilePage extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      loc.isEn ? 'Change Profile Photo' : 'Ubah Foto Profil',
+                      (Localizations.localeOf(context).languageCode == 'en') ? 'Change Profile Photo' : 'Ubah Foto Profil',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -1020,11 +1021,11 @@ class ProfilePage extends ConsumerWidget {
                     child: Icon(Icons.photo_library, color: theme.red),
                   ),
                   title: Text(
-                    loc.isEn ? 'Choose from Gallery' : 'Pilih dari Galeri',
+                    (Localizations.localeOf(context).languageCode == 'en') ? 'Choose from Gallery' : 'Pilih dari Galeri',
                     style: TextStyle(fontWeight: FontWeight.bold, color: theme.textPrimary),
                   ),
                   subtitle: Text(
-                    loc.isEn ? 'Simulate image selection & upload' : 'Simulasikan unggah foto dari Galeri',
+                    (Localizations.localeOf(context).languageCode == 'en') ? 'Simulate image selection & upload' : 'Simulasikan unggah foto dari Galeri',
                     style: TextStyle(fontSize: 12, color: theme.textSecondary),
                   ),
                   onTap: () {
@@ -1045,11 +1046,11 @@ class ProfilePage extends ConsumerWidget {
                     child: const Icon(Icons.image, color: Colors.blue),
                   ),
                   title: Text(
-                    loc.isEn ? 'Default Avatar' : 'Avatar Default',
+                    (Localizations.localeOf(context).languageCode == 'en') ? 'Default Avatar' : 'Avatar Default',
                     style: TextStyle(fontWeight: FontWeight.bold, color: theme.textPrimary),
                   ),
                   subtitle: Text(
-                    loc.isEn ? 'Use default app avatar profile' : 'Gunakan avatar default Hondaku',
+                    (Localizations.localeOf(context).languageCode == 'en') ? 'Use default app avatar profile' : 'Gunakan avatar default Hondaku',
                     style: TextStyle(fontSize: 12, color: theme.textSecondary),
                   ),
                   onTap: () {
@@ -1066,13 +1067,13 @@ class ProfilePage extends ConsumerWidget {
                     );
                     HondakuToast.showSuccess(
                       context,
-                      loc.isEn ? 'Changed to default avatar' : 'Avatar diubah ke default',
+                      (Localizations.localeOf(context).languageCode == 'en') ? 'Changed to default avatar' : 'Avatar diubah ke default',
                     );
                   },
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  loc.isEn ? 'Or Choose Custom Color Initial' : 'Atau Pilih Inisial Warna',
+                  (Localizations.localeOf(context).languageCode == 'en') ? 'Or Choose Custom Color Initial' : 'Atau Pilih Inisial Warna',
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
@@ -1135,15 +1136,13 @@ class ProfilePage extends ConsumerWidget {
   }
 
   static void _showGalleryUploadSimulation(BuildContext context, WidgetRef ref) {
-    final appSettings = ref.read(appSettingsProvider);
+    
     const isDark = false;
     final theme = ProfileThemeColors(isDark);
-    final loc = ProfileLocalizations(appSettings.selectedLanguage);
-
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => GalleryUploadDialog(theme: theme, loc: loc),
+      builder: (context) => GalleryUploadDialog(theme: theme, loc: AppLocalizations.of(context)!),
     );
   }
 }
@@ -1154,7 +1153,7 @@ class ProfilePage extends ConsumerWidget {
 
 class GalleryUploadDialog extends ConsumerStatefulWidget {
   final ProfileThemeColors theme;
-  final ProfileLocalizations loc;
+  final AppLocalizations loc;
 
   const GalleryUploadDialog({
     super.key,
@@ -1193,7 +1192,7 @@ class _GalleryUploadDialogState extends ConsumerState<GalleryUploadDialog> {
             Navigator.pop(context);
             HondakuToast.showSuccess(
               context,
-              widget.loc.isEn ? 'Avatar uploaded successfully!' : 'Avatar berhasil diunggah!',
+              (Localizations.localeOf(context).languageCode == 'en') ? 'Avatar uploaded successfully!' : 'Avatar berhasil diunggah!',
             );
           }
         });
@@ -1211,11 +1210,12 @@ class _GalleryUploadDialogState extends ConsumerState<GalleryUploadDialog> {
 
   @override
   Widget build(BuildContext context) {
+
     return AlertDialog(
       backgroundColor: widget.theme.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Text(
-        widget.loc.isEn ? 'Simulating Upload' : 'Simulasi Unggah',
+        (Localizations.localeOf(context).languageCode == 'en') ? 'Simulating Upload' : 'Simulasi Unggah',
         style: TextStyle(color: widget.theme.textPrimary, fontWeight: FontWeight.bold),
       ),
       content: Column(
@@ -1237,7 +1237,7 @@ class _GalleryUploadDialogState extends ConsumerState<GalleryUploadDialog> {
           ),
           const SizedBox(height: 8),
           Text(
-            widget.loc.isEn ? 'Reading file and uploading...' : 'Membaca file dan mengunggah...',
+            (Localizations.localeOf(context).languageCode == 'en') ? 'Reading file and uploading...' : 'Membaca file dan mengunggah...',
             style: TextStyle(color: widget.theme.textSecondary, fontSize: 13),
           ),
         ],
@@ -1265,6 +1265,7 @@ class _MenuTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
