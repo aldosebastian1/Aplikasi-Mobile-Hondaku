@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../view_models/booking_view_model.dart';
-import '../../../../data/motorcycle_data.dart';
+import '../../../../domain/models/motorcycle.dart';
 
 class CheckoutPaymentMethodPage extends ConsumerStatefulWidget {
   final Motorcycle motor;
