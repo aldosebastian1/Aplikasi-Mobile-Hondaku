@@ -37,8 +37,7 @@ double _parsePrice(String priceString) {
   return double.tryParse(cleanString) ?? 0.0;
 }
 
-final filteredCatalogMotorsProvider = Provider<List<Motorcycle>>((ref) {
-  final motors = ref.watch(homeMotorcyclesProvider).value ?? const [];
+final filteredCatalogMotorsProvider = Provider.family<List<Motorcycle>, List<Motorcycle>>((ref, motors) {
   final filterState = ref.watch(catalogFilterProvider);
   
   Iterable<Motorcycle> list = motors;
