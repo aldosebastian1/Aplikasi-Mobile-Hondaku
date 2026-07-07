@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../domain/models/user_profile.dart';
 import '../../../../domain/models/payment_method_item.dart';
 import '../../../../domain/models/app_settings.dart';
@@ -9,6 +10,7 @@ export '../../../../domain/models/user_profile.dart';
 export '../../../../domain/models/payment_method_item.dart';
 export '../../../../domain/models/app_settings.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../../../data/providers.dart';
@@ -23,7 +25,7 @@ class UserProfileNotifier extends Notifier<UserProfile> {
     return userAsync.when(
       data: (User? user) {
         if (user == null) {
-          return UserProfile(
+          return UserProfile.create(
             nama: 'Guest',
             username: 'guest',
             email: '-',
@@ -49,7 +51,7 @@ class UserProfileNotifier extends Notifier<UserProfile> {
           initials = 'PH';
         }
         
-        final basicProfile = UserProfile(
+        final basicProfile = UserProfile.create(
           nama: name,
           username: email.split('@').first,
           email: email,
@@ -67,7 +69,7 @@ class UserProfileNotifier extends Notifier<UserProfile> {
 
         return basicProfile;
       },
-      loading: () => UserProfile(
+      loading: () => UserProfile.create(
         nama: 'Memuat...',
         username: 'loading',
         email: '...',
@@ -76,7 +78,7 @@ class UserProfileNotifier extends Notifier<UserProfile> {
         avatarPath: 'assets/images/profile.png',
         isCustomAvatar: false,
       ),
-      error: (error, stackTrace) => UserProfile(
+      error: (error, stackTrace) => UserProfile.create(
         nama: 'Error',
         username: 'error',
         email: 'error',
@@ -115,9 +117,9 @@ class UserProfileNotifier extends Notifier<UserProfile> {
       email: email,
       phone: phone,
       nik: nik,
-      avatarPath: avatarPath,
-      isCustomAvatar: isCustomAvatar,
-      avatarBgColor: avatarBgColor,
+      avatarPath: avatarPath ?? state.avatarPath,
+      isCustomAvatar: isCustomAvatar ?? state.isCustomAvatar,
+      avatarBgColor: avatarBgColor ?? state.avatarBgColor,
       initials: initials,
     );
 
@@ -159,57 +161,126 @@ final userProfileProvider = NotifierProvider<UserProfileNotifier, UserProfile>((
 class PaymentMethodsNotifier extends Notifier<List<PaymentMethodItem>> {
   @override
   List<PaymentMethodItem> build() {
-    return const [
-      PaymentMethodItem(
-        id: 'PM-001',
-        title: 'BCA Virtual Account',
-        subtitle: 'Bank BCA • Utama',
-        logoPath: 'assets/payments/bca.png',
-        isDefault: true,
-        type: 'VA',
-      ),
-      PaymentMethodItem(
-        id: 'PM-002',
-        title: 'Mandiri Virtual Account',
-        subtitle: 'Bank Mandiri',
-        logoPath: 'assets/payments/mandiri.png',
-        isDefault: false,
-        type: 'VA',
-      ),
-    ];
+    final userAsync = ref.watch(authStateProvider);
+    
+    return userAsync.when(
+      data: (user) {
+        if (user == null) return [];
+        Future.microtask(() => _fetchFromFirestore(user.uid));
+        return [];
+      },
+      loading: () => [],
+      error: (_, _) => [],
+    );
   }
 
-  void setDefaultPayment(String id) {
-    state = state.map((item) {
+  Future<void> _fetchFromFirestore(String uid) async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('payment_methods')
+          .get();
+          
+      final methods = snapshot.docs.map((doc) {
+        final data = doc.data();
+        data['id'] = doc.id;
+        return PaymentMethodItem.fromJson(data);
+      }).toList();
+      
+      final currentUser = ref.read(authStateProvider).value;
+      if (currentUser?.uid == uid) {
+        state = methods;
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  Future<void> setDefaultPayment(String id) async {
+    final user = ref.read(authStateProvider).value;
+    if (user == null) return;
+
+    final updatedState = state.map((item) {
       return item.copyWith(
         isDefault: item.id == id,
         subtitle: item.id == id
-            ? '${item.title.split(' ')[0]} • Utama'
-            : item.title.split(' ')[0],
+            ? '${item.title.split(' ')[0]} â€¢ Utama'
+            : item.title.split(' ')[0].replaceAll(' â€¢ Utama', ''),
       );
     }).toList();
+    
+    state = updatedState;
+
+    try {
+      final batch = FirebaseFirestore.instance.batch();
+      final coll = FirebaseFirestore.instance.collection('users').doc(user.uid).collection('payment_methods');
+      
+      for (var item in updatedState) {
+        batch.update(coll.doc(item.id), {'isDefault': item.isDefault, 'subtitle': item.subtitle});
+      }
+      await batch.commit();
+    } catch (e) {
+      // ignore
+    }
   }
 
-  void addPaymentMethod(PaymentMethodItem item) {
+  Future<void> addPaymentMethod(PaymentMethodItem item) async {
+    final user = ref.read(authStateProvider).value;
+    if (user == null) return;
+
     var current = state;
     if (item.isDefault) {
       current = current.map((e) => e.copyWith(
         isDefault: false,
-        subtitle: e.title.split(' ')[0],
+        subtitle: e.title.split(' ')[0].replaceAll(' â€¢ Utama', ''),
       )).toList();
     }
-    state = [...current, item];
+    
+    final updatedState = [...current, item];
+    state = updatedState;
+
+    try {
+      final coll = FirebaseFirestore.instance.collection('users').doc(user.uid).collection('payment_methods');
+      final batch = FirebaseFirestore.instance.batch();
+      
+      if (item.isDefault) {
+        for (var oldItem in current) {
+          batch.update(coll.doc(oldItem.id), {'isDefault': oldItem.isDefault, 'subtitle': oldItem.subtitle});
+        }
+      }
+      batch.set(coll.doc(item.id), item.toJson());
+      await batch.commit();
+    } catch (e) {
+      // ignore
+    }
   }
 
-  void removePaymentMethod(String id) {
+  Future<void> removePaymentMethod(String id) async {
+    final user = ref.read(authStateProvider).value;
+    if (user == null) return;
+
     final current = state.where((e) => e.id != id).toList();
     if (current.isNotEmpty && !current.any((e) => e.isDefault)) {
       current[0] = current[0].copyWith(
         isDefault: true,
-        subtitle: '${current[0].title.split(' ')[0]} • Utama',
+        subtitle: '${current[0].title.split(' ')[0]} â€¢ Utama',
       );
     }
     state = current;
+
+    try {
+      final coll = FirebaseFirestore.instance.collection('users').doc(user.uid).collection('payment_methods');
+      final batch = FirebaseFirestore.instance.batch();
+      
+      batch.delete(coll.doc(id));
+      if (current.isNotEmpty && current[0].isDefault) {
+        batch.update(coll.doc(current[0].id), {'isDefault': current[0].isDefault, 'subtitle': current[0].subtitle});
+      }
+      await batch.commit();
+    } catch (e) {
+      // ignore
+    }
   }
 }
 
@@ -218,8 +289,13 @@ final paymentMethodsProvider = NotifierProvider<PaymentMethodsNotifier, List<Pay
 });
 
 class AppSettingsNotifier extends Notifier<AppSettings> {
+  static const _notifKey = 'app_notif_enabled';
+  static const _biometricKey = 'app_biometric_enabled';
+  static const _langKey = 'app_selected_language';
+
   @override
   AppSettings build() {
+    Future.microtask(_loadSettings);
     return const AppSettings(
       notifEnabled: true,
       biometricEnabled: false,
@@ -227,16 +303,43 @@ class AppSettingsNotifier extends Notifier<AppSettings> {
     );
   }
 
-  void updateSettings({
+  Future<void> _loadSettings() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final notif = prefs.getBool(_notifKey) ?? true;
+      final biometric = prefs.getBool(_biometricKey) ?? false;
+      final lang = prefs.getString(_langKey) ?? 'Bahasa Indonesia';
+
+      state = AppSettings(
+        notifEnabled: notif,
+        biometricEnabled: biometric,
+        selectedLanguage: lang,
+      );
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  Future<void> updateSettings({
     bool? notifEnabled,
     bool? biometricEnabled,
     String? selectedLanguage,
-  }) {
-    state = state.copyWith(
-      notifEnabled: notifEnabled,
-      biometricEnabled: biometricEnabled,
-      selectedLanguage: selectedLanguage,
+  }) async {
+    final newState = state.copyWith(
+      notifEnabled: notifEnabled ?? state.notifEnabled,
+      biometricEnabled: biometricEnabled ?? state.biometricEnabled,
+      selectedLanguage: selectedLanguage ?? state.selectedLanguage,
     );
+    state = newState;
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      if (notifEnabled != null) await prefs.setBool(_notifKey, notifEnabled);
+      if (biometricEnabled != null) await prefs.setBool(_biometricKey, biometricEnabled);
+      if (selectedLanguage != null) await prefs.setString(_langKey, selectedLanguage);
+    } catch (e) {
+      // ignore
+    }
   }
 }
 
