@@ -1,26 +1,15 @@
-import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-@immutable
-class AppSettings {
-  final bool notifEnabled;
-  final bool biometricEnabled;
-  final String selectedLanguage;
+part 'app_settings.freezed.dart';
+part 'app_settings.g.dart';
 
-  const AppSettings({
-    required this.notifEnabled,
-    required this.biometricEnabled,
-    required this.selectedLanguage,
-  });
+@freezed
+abstract class AppSettings with _$AppSettings {
+  const factory AppSettings({
+    required bool notifEnabled,
+    required bool biometricEnabled,
+    required String selectedLanguage,
+  }) = _AppSettings;
 
-  AppSettings copyWith({
-    bool? notifEnabled,
-    bool? biometricEnabled,
-    String? selectedLanguage,
-  }) {
-    return AppSettings(
-      notifEnabled: notifEnabled ?? this.notifEnabled,
-      biometricEnabled: biometricEnabled ?? this.biometricEnabled,
-      selectedLanguage: selectedLanguage ?? this.selectedLanguage,
-    );
-  }
+  factory AppSettings.fromJson(Map<String, dynamic> json) => _$AppSettingsFromJson(json);
 }
