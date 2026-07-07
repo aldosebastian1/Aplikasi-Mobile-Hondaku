@@ -1,5 +1,5 @@
-import '../domain/models/bank_option.dart';
-export '../domain/models/bank_option.dart';
+import 'package:hondaku/domain/models/bank_option.dart';
+export 'package:hondaku/domain/models/bank_option.dart';
 
 final List<BankOption> bankOptions = [
   const BankOption(

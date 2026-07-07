@@ -1,5 +1,5 @@
-import '../domain/models/leasing_parameter.dart';
-export '../domain/models/leasing_parameter.dart';
+import 'package:hondaku/domain/models/leasing_parameter.dart';
+export 'package:hondaku/domain/models/leasing_parameter.dart';
 
 final List<LeasingParameter> leasingOptions = [
   const LeasingParameter(

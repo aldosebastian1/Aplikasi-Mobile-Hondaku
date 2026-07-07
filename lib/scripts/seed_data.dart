@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hondaku/data/motorcycle_data.dart';
-import 'package:hondaku/data/bank_data.dart';
-import 'package:hondaku/data/home_slider_data.dart';
-import 'package:hondaku/data/leasing_data.dart';
-import 'package:hondaku/data/location_data.dart';
+import 'package:hondaku/scripts/mock_data/master_motorcycle_data.dart';
+import 'package:hondaku/scripts/mock_data/master_bank_data.dart';
+import 'package:hondaku/scripts/mock_data/master_home_slider_data.dart';
+import 'package:hondaku/scripts/mock_data/master_leasing_data.dart';
+import 'package:hondaku/scripts/mock_data/master_location_data.dart';
 import 'dart:developer' as developer;
 
 Future<void> seedFirestoreDatabase() async {

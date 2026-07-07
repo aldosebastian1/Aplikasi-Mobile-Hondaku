@@ -1,4 +1,4 @@
-import '../domain/models/hero_banner.dart';
+import 'package:hondaku/domain/models/hero_banner.dart';
 
 // Data Sentral untuk Home Hero Slider (Promo & Berita)
 // Semua item, baik itu promosi maupun berita, menggunakan model yang sama (HeroBanner)

@@ -1,5 +1,5 @@
-import '../domain/models/motorcycle.dart';
-export '../domain/models/motorcycle.dart';
+import 'package:hondaku/domain/models/motorcycle.dart';
+export 'package:hondaku/domain/models/motorcycle.dart';
 
 
 

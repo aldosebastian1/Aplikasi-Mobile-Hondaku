@@ -1,4 +1,4 @@
-import '../domain/models/kecamatan.dart';
+import 'package:hondaku/domain/models/kecamatan.dart';
 
 final List<Kecamatan> locationDatabase = [
   const Kecamatan(
