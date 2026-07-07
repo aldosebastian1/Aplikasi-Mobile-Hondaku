@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../domain/models/motorcycle.dart';
 import '../../../../domain/models/bank_option.dart';
+import 'package:hondaku/core/utils/error_handler.dart';
+
 import '../../../../data/providers.dart';
 import '../../aktivitas/view_models/aktivitas_view_model.dart';
 import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
@@ -510,7 +512,7 @@ class _PembayaranBookingPageState extends ConsumerState<PembayaranBookingPage> {
       error: (err, stack) => Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 24),
-          child: Text('Gagal memuat bank: $err'),
+          child: Text(AppErrorHandler.getMessage(err)),
         ),
       ),
     );
