@@ -197,6 +197,7 @@ class BookingDropdown extends StatelessWidget {
       child: DropdownButtonFormField<String>(
         initialValue: value,
         isExpanded: true,
+        isDense: true,
         hint: Text(
           hint,
           style: const TextStyle(fontSize: 14, color: Color(0xFF707070)),
@@ -209,8 +210,17 @@ class BookingDropdown extends StatelessWidget {
           ),
         ),
         style: const TextStyle(fontSize: 14, color: Colors.black),
+        dropdownColor: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        menuMaxHeight: 350,
         items: items
-            .map((e) => DropdownMenuItem<String>(value: e, child: Text(e)))
+            .map((e) => DropdownMenuItem<String>(
+                  value: e,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Text(e),
+                  ),
+                ))
             .toList(),
         onChanged: onChanged,
         decoration: InputDecoration(
@@ -276,26 +286,31 @@ class BookingPhoneField extends StatelessWidget {
           filled: true,
           fillColor: Colors.white,
           contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-          prefixIcon: Container(
-            margin: const EdgeInsets.only(right: 8),
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            decoration: const BoxDecoration(
-              border: Border(
-                right: BorderSide(color: Color(0xFFE0E0E0), width: 1.2),
-              ),
-            ),
-            child: const Text(
-              '+62',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.only(left: 14, right: 12),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  '+62',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Container(
+                  height: 24,
+                  width: 1.2,
+                  color: const Color(0xFFE0E0E0),
+                ),
+              ],
             ),
           ),
           prefixIconConstraints: const BoxConstraints(
-            minWidth: 58,
-            minHeight: 48,
+            minWidth: 0,
+            minHeight: 0,
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
