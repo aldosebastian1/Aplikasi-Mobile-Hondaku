@@ -2,6 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../../core/widgets/error_state_widget.dart';
+import '../../../core/widgets/motorcycle_skeleton_list.dart';
+
 import '../../../../domain/models/motorcycle.dart';
 import '../view_models/home_view_model.dart';
 import '../../../core/widgets/hondaku_avatar.dart';
@@ -42,9 +46,7 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
     ]);
   }
 
-  List<Motorcycle> get _filteredMotors {
-    final database =
-        ref.watch(homeMotorcyclesProvider).value ?? const [];
+  List<Motorcycle> _getFilteredMotors(List<Motorcycle> database) {
     List<Motorcycle> motors = database;
 
     // Filter by category (if selected)
@@ -65,24 +67,21 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
 
   @override
   Widget build(BuildContext context) {
+    final motorcyclesAsync = ref.watch(homeMotorcyclesProvider);
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-      body: SafeArea(
-        top: false,
-        child: Column(
-          children: [
-            _buildHeader(),
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: _handleRefresh,
-                color: _red,
-                backgroundColor: Colors.white,
-                child: CustomScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(
-                    parent: BouncingScrollPhysics(),
-                  ),
-                  slivers: [
-                    SliverToBoxAdapter(
+      body: RefreshIndicator(
+        onRefresh: _handleRefresh,
+        color: _red,
+        backgroundColor: Colors.white,
+        edgeOffset: 0,
+        child: CustomScrollView(
+          physics: const AlwaysScrollableScrollPhysics(
+            parent: BouncingScrollPhysics(),
+          ),
+          slivers: [
+            _buildSliverHeader(),
+            SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                         child: HomeSearchBar(
@@ -128,107 +127,119 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
                         child: _buildRekomendasiHeader(),
                       ),
                     ),
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      sliver: _filteredMotors.isEmpty
-                          ? SliverToBoxAdapter(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 40),
-                                child: Center(
-                                  child: Column(
-                                    children: [
-                                      Icon(
-                                        Icons.search_off_rounded,
-                                        size: 64,
-                                        color: Colors.grey.shade300,
+                    motorcyclesAsync.when(
+                      loading: () => const SliverPadding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        sliver: MotorcycleSkeletonList(count: 5),
+                      ),
+                      error: (error, stack) => SliverToBoxAdapter(
+                        child: ErrorStateWidget(
+                          onRetry: () => ref.refresh(homeMotorcyclesProvider.future),
+                        ),
+                      ),
+                      data: (database) {
+                        final filteredMotors = _getFilteredMotors(database);
+                        return SliverPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          sliver: filteredMotors.isEmpty
+                              ? SliverToBoxAdapter(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 40),
+                                    child: Center(
+                                      child: Column(
+                                        children: [
+                                          Icon(
+                                            Icons.search_off_rounded,
+                                            size: 64,
+                                            color: Colors.grey.shade300,
+                                          ),
+                                          const SizedBox(height: 16),
+                                          Text(
+                                            AppLocalizations.of(context)!.motorNotFound(_searchQuery),
+                                            style: TextStyle(
+                                              color: Colors.grey.shade600,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      const SizedBox(height: 16),
-                                      Text(
-                                        AppLocalizations.of(context)!.motorNotFound(_searchQuery),
-                                        style: TextStyle(
-                                          color: Colors.grey.shade600,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                    ],
+                                    ),
+                                  ),
+                                )
+                              : SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                    (_, i) => MotorcycleCardWidget(
+                                      motor: filteredMotors[i],
+                                      isCompact: true,
+                                      parentIndex: 0,
+                                    ),
+                                    childCount: filteredMotors.length,
                                   ),
                                 ),
-                              ),
-                            )
-                          : SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (_, i) => MotorcycleCardWidget(
-                                  motor: _filteredMotors[i],
-                                  isCompact: true,
-                                  parentIndex: 0,
-                                ),
-                                childCount: _filteredMotors.length,
-                              ),
-                            ),
+                        );
+                      },
                     ),
                     const SliverToBoxAdapter(child: SizedBox(height: 24)),
                   ],
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );
   }
 
-  Widget _buildHeader() {
-    return Container(
-      decoration: const BoxDecoration(
-        color: _surface,
-        border: Border(bottom: BorderSide(color: Color(0xFFE9E9E9))),
-      ),
-      child: SafeArea(
-        bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
-          child: Row(
-            children: [
-              Image.asset(
-                'assets/images/logos/logo.png',
-                height: 32,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(width: 10),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 5,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.grey.shade200),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.location_on, size: 12, color: Color(0xFFC40000)),
-                    const SizedBox(width: 4),
-                    Text(
-                      AppLocalizations.of(context)!.otrMedan,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF222222),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Spacer(),
-              GestureDetector(
-                onTap: widget.onProfileClick,
-                child: const HondakuAvatar(radius: 20, fontSize: 12),
-              ),
-            ],
-          ),
+  Widget _buildSliverHeader() {
+    return SliverAppBar(
+      pinned: true,
+      floating: true,
+      backgroundColor: _surface,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(1.0),
+        child: Container(
+          color: const Color(0xFFE9E9E9),
+          height: 1.0,
         ),
+      ),
+      title: Row(
+        children: [
+          Image.asset(
+            'assets/images/logos/logo.png',
+            height: 32,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(width: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 5,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.grey.shade200),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.location_on, size: 12, color: Color(0xFFC40000)),
+                const SizedBox(width: 4),
+                Text(
+                  AppLocalizations.of(context)!.otrMedan,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF222222),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Spacer(),
+          GestureDetector(
+            onTap: widget.onProfileClick,
+            child: const HondakuAvatar(radius: 20, fontSize: 12),
+          ),
+        ],
       ),
     );
   }
