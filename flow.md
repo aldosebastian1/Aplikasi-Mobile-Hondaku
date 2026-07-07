@@ -39,7 +39,7 @@ Struktur file telah dikelompokkan ke dalam folder arsitektur bersih (*Clean Arch
 > Bagian ini dihasilkan otomatis oleh `tool/sync_app_flow.dart`.
 > Jangan edit manual di antara marker START/END karena akan ditimpa saat sinkronisasi.
 
-**Generated at:** 2026-07-06 16:21:00.213681
+**Generated at:** 2026-07-07 19:54:58.988543
 **Detected nodes:** 24
 **Detected transitions:** 49
 
@@ -104,11 +104,11 @@ flowchart TD
 - BookingBerhasilPage -> HalamanHome (context.go) [lib/ui/features/booking/views/booking_berhasil_page.dart:28]
 - BookingBerhasilPage -> HalamanHome (context.go) [lib/ui/features/booking/views/booking_berhasil_page.dart:246]
 - BookingBerhasilPage -> HalamanHome (context.go) [lib/ui/features/booking/views/booking_berhasil_page.dart:38]
-- BookingFormPage -> RingkasanPembayaranPage (context.push) [lib/ui/features/booking/views/booking_form_page.dart:375]
+- BookingFormPage -> RingkasanPembayaranPage (context.push) [lib/ui/features/booking/views/booking_form_page.dart:419]
 - CheckoutPaymentMethodPage -> BookingFormPage (context.push) [lib/ui/features/booking/views/checkout_payment_method_page.dart:548]
 - CheckoutPaymentMethodPage -> SimulasiKreditPage (context.push) [lib/ui/features/booking/views/checkout_payment_method_page.dart:544]
 - ErrorPage -> HalamanHome (context.go) [lib/ui/core/error_page.dart:55]
-- FavoritePage -> CatalogPage (context.go) [lib/ui/features/favorites/views/favorite_page.dart:64]
+- FavoritePage -> CatalogPage (context.go) [lib/ui/features/favorites/views/favorite_page.dart:69]
 - HalamanHome -> CatalogPage (context.go) [lib/ui/features/home/views/home_page.dart:265]
 - KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:51]
 - KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:41]
@@ -121,13 +121,13 @@ flowchart TD
 - LoginScreen -> RegisterScreen (context.go) [lib/ui/features/auth/views/login_screen.dart:332]
 - MotorcycleCardWidget -> CheckoutPaymentMethodPage (context.push) [lib/ui/core/widgets/motorcycle_card_widget.dart:211]
 - MotorcycleCardWidget -> ProductDetailScreen (context.push) [lib/ui/core/widgets/motorcycle_card_widget.dart:183]
-- OnboardingScreen -> LoginScreen (context.go) [lib/ui/features/auth/views/onboarding_screen.dart:49]
+- OnboardingScreen -> LoginScreen (context.go) [lib/ui/features/auth/views/onboarding_screen.dart:48]
 - OtpScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/otp_screen.dart:124]
-- PembayaranBookingPage -> BookingBerhasilPage (context.pushReplacement) [lib/ui/features/booking/views/pembayaran_booking_page.dart:616]
-- ProductDetailScreen -> CheckoutPaymentMethodPage (context.push) [lib/ui/features/catalog/views/product_detail_screen.dart:415]
-- ProfilePage -> LoginScreen (context.go) [lib/ui/features/profile/views/profile.dart:954]
-- ProfilePage -> StatusPesananPage (context.push) [lib/ui/features/profile/views/profile.dart:246]
-- ProfilePage -> StatusPesananPage (context.push) [lib/ui/features/profile/views/profile.dart:437]
+- PembayaranBookingPage -> BookingBerhasilPage (context.pushReplacement) [lib/ui/features/booking/views/pembayaran_booking_page.dart:618]
+- ProductDetailScreen -> CheckoutPaymentMethodPage (context.push) [lib/ui/features/catalog/views/product_detail_screen.dart:468]
+- ProfilePage -> LoginScreen (context.go) [lib/ui/features/profile/views/profile.dart:955]
+- ProfilePage -> StatusPesananPage (context.push) [lib/ui/features/profile/views/profile.dart:247]
+- ProfilePage -> StatusPesananPage (context.push) [lib/ui/features/profile/views/profile.dart:438]
 - RegisterScreen -> HalamanHome (context.push) [lib/ui/features/auth/views/register_screen.dart:326]
 - RegisterScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/register_screen.dart:309]
 - RegisterScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/register_screen.dart:288]
@@ -140,7 +140,7 @@ flowchart TD
 - Router -> ProfilePage (context.go) [lib/ui/core/router.dart:103]
 - Router -> ProfilePage (context.go) [lib/ui/core/router.dart:93]
 - Router -> ProfilePage (context.go) [lib/ui/core/router.dart:83]
-- SimulasiKreditPage -> UploadDokumenKreditPage (context.push) [lib/ui/features/kredit/views/simulasi_kredit_page.dart:416]
+- SimulasiKreditPage -> UploadDokumenKreditPage (context.push) [lib/ui/features/kredit/views/simulasi_kredit_page.dart:422]
 - SplashScreen -> HalamanHome (context.go) [lib/ui/features/auth/views/splash_screen.dart:56]
 - SplashScreen -> LoginScreen (context.go) [lib/ui/features/auth/views/splash_screen.dart:62]
 - SplashScreen -> LoginScreen (context.go) [lib/ui/features/auth/views/splash_screen.dart:58]
