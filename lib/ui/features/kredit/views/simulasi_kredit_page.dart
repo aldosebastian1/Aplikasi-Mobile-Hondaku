@@ -3,7 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../view_models/kredit_view_model.dart';
-import '../../../../data/motorcycle_data.dart';
+import '../../../../domain/models/motorcycle.dart';
+import '../../../../data/providers.dart';
 import 'package:hondaku/l10n/app_localizations.dart';
 
 class SimulasiKreditPage extends ConsumerStatefulWidget {
@@ -18,18 +19,7 @@ class _SimulasiKreditPageState extends ConsumerState<SimulasiKreditPage> {
   static const double minDpPersen = 0.10;
   static const double maxDpPersen = 0.75;
 
-  // Rate tahunan per leasing (sederhana untuk simulasi)
-  static const Map<String, double> leasingRate = {
-    'FIF Group': 0.115,
-    'Adira Finance': 0.118,
-    'MUF': 0.120,
-  };
 
-  static const Map<String, String> leasingSubtitle = {
-    'FIF Group': 'Proses cepat, Syarat mudah',
-    'Adira Finance': 'Bunga kompetitif',
-    'MUF': 'Layanan terpadu Mandiri',
-  };
 
   final List<int> _tenorList = [11, 23, 35];
 
@@ -48,8 +38,8 @@ class _SimulasiKreditPageState extends ConsumerState<SimulasiKreditPage> {
   String? get _selectedLeasing => ref.watch(kreditViewModelProvider).selectedLeasing;
   double get _dpNominal => ref.watch(kreditViewModelProvider).dpNominal;
 
-  double _hitungAngsuran(String leasing) {
-    return ref.read(kreditViewModelProvider.notifier).hitungAngsuran(leasing);
+  double _hitungAngsuran(double rate) {
+    return ref.read(kreditViewModelProvider.notifier).hitungAngsuran(rate);
   }
 
   String _formatRupiah(double value) => NumberFormat.currency(
@@ -315,6 +305,8 @@ class _SimulasiKreditPageState extends ConsumerState<SimulasiKreditPage> {
   }
 
   Widget _buildLeasingSection() {
+    final leasingParamsAsync = ref.watch(leasingParametersProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -323,84 +315,92 @@ class _SimulasiKreditPageState extends ConsumerState<SimulasiKreditPage> {
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
         const SizedBox(height: 8),
-        ...leasingRate.keys.map((leasing) {
-          final angsuran = _hitungAngsuran(leasing);
-          final isSelected = _selectedLeasing == leasing;
-          return GestureDetector(
-            onTap: () => ref.read(kreditViewModelProvider.notifier).updateLeasing(leasing),
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: isSelected
-                      ? const Color(0xFFC40000)
-                      : Colors.transparent,
-                  width: 1.5,
-                ),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
+        leasingParamsAsync.when(
+          data: (leasingList) {
+            return Column(
+              children: leasingList.map((leasing) {
+                final angsuran = _hitungAngsuran(leasing.rateTahunan);
+                final isSelected = _selectedLeasing == leasing.name;
+                return GestureDetector(
+                  onTap: () => ref.read(kreditViewModelProvider.notifier).updateLeasing(leasing.name),
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: const Color(0xFFE0E0E0), width: 1.0),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: isSelected
+                            ? const Color(0xFFC40000)
+                            : Colors.transparent,
+                        width: 1.5,
+                      ),
                     ),
-                    child: const Icon(
-                      Icons.account_balance,
-                      size: 20,
-                      color: Color(0xFFC40000),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
                       children: [
-                        Text(
-                          leasing,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: const Color(0xFFE0E0E0), width: 1.0),
+                          ),
+                          child: const Icon(
+                            Icons.account_balance,
+                            size: 20,
+                            color: Color(0xFFC40000),
                           ),
                         ),
-                        Text(
-                          leasingSubtitle[leasing]!,
-                          style: const TextStyle(
-                            fontSize: 11,
-                            color: Colors.grey,
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                leasing.name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Text(
+                                leasing.subtitle,
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
                           ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            const Text(
+                              'Angsuran/bln',
+                              style: TextStyle(fontSize: 10, color: Colors.grey),
+                            ),
+                            Text(
+                              _formatRupiah(angsuran),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Color(0xFFC40000),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const Text(
-                        'Angsuran/bln',
-                        style: TextStyle(fontSize: 10, color: Colors.grey),
-                      ),
-                      Text(
-                        _formatRupiah(angsuran),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          color: Color(0xFFC40000),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        }),
+                );
+              }).toList(),
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stack) => Center(child: Text('Error: $error')),
+        ),
       ],
     );
   }
@@ -412,13 +412,19 @@ class _SimulasiKreditPageState extends ConsumerState<SimulasiKreditPage> {
         onPressed: _selectedLeasing == null
             ? null
             : () {
+                final leasingList = ref.read(leasingParametersProvider).value ?? [];
+                final selectedLeasingObj = leasingList.firstWhere(
+                  (e) => e.name == _selectedLeasing, 
+                  orElse: () => leasingList.first
+                );
+                final rate = selectedLeasingObj.rateTahunan;
                 final leasing = _selectedLeasing!;
                 context.push(
                   '/upload-dokumen-kredit',
                   extra: {
                     'namaMotor': widget.motor.name,
                     'selectedLeasing': leasing,
-                    'angsuran': _hitungAngsuran(leasing),
+                    'angsuran': _hitungAngsuran(rate),
                     'tenor': _selectedTenor,
                     'dpNominal': _dpNominal,
                     'hargaOTR': hargaOTR,
