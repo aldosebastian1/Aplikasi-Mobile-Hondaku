@@ -39,7 +39,7 @@ Struktur file telah dikelompokkan ke dalam folder arsitektur bersih (*Clean Arch
 > Bagian ini dihasilkan otomatis oleh `tool/sync_app_flow.dart`.
 > Jangan edit manual di antara marker START/END karena akan ditimpa saat sinkronisasi.
 
-**Generated at:** 2026-07-07 21:38:07.251425
+**Generated at:** 2026-07-07 21:54:38.299975
 **Detected nodes:** 24
 **Detected transitions:** 49
 
@@ -98,8 +98,8 @@ flowchart TD
 
 ### Detected Transitions
 
-- AktivitasPage -> CatalogPage (context.go) [lib/ui/features/aktivitas/views/aktivitas_page.dart:277]
-- AktivitasPage -> StatusPesananPage (context.push) [lib/ui/features/aktivitas/views/aktivitas_page.dart:328]
+- AktivitasPage -> CatalogPage (context.go) [lib/ui/features/aktivitas/views/aktivitas_page.dart:289]
+- AktivitasPage -> StatusPesananPage (context.push) [lib/ui/features/aktivitas/views/aktivitas_page.dart:340]
 - BookingBerhasilPage -> AktivitasPage (context.go) [lib/ui/features/booking/views/booking_berhasil_page.dart:220]
 - BookingBerhasilPage -> HalamanHome (context.go) [lib/ui/features/booking/views/booking_berhasil_page.dart:28]
 - BookingBerhasilPage -> HalamanHome (context.go) [lib/ui/features/booking/views/booking_berhasil_page.dart:246]
@@ -109,7 +109,7 @@ flowchart TD
 - CheckoutPaymentMethodPage -> SimulasiKreditPage (context.push) [lib/ui/features/booking/views/checkout_payment_method_page.dart:544]
 - ErrorPage -> HalamanHome (context.go) [lib/ui/core/error_page.dart:55]
 - FavoritePage -> CatalogPage (context.go) [lib/ui/features/favorites/views/favorite_page.dart:69]
-- HalamanHome -> CatalogPage (context.go) [lib/ui/features/home/views/home_page.dart:265]
+- HalamanHome -> CatalogPage (context.go) [lib/ui/features/home/views/home_page.dart:276]
 - KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:51]
 - KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:41]
 - KonfirmasiPengajuanPage -> HalamanHome (context.go) [lib/ui/features/kredit/views/konfirmasi_pengajuan_page.dart:292]
