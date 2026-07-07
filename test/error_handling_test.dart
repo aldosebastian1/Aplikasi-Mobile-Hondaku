@@ -66,11 +66,11 @@ void main() {
       
       // Set tenor to 0
       model.updateTenor(0);
-      expect(model.hitungAngsuran('FIF Group'), 0.0);
+      expect(model.hitungAngsuran(0.115), 0.0);
 
       // Set tenor to negative
       model.updateTenor(-5);
-      expect(model.hitungAngsuran('FIF Group'), 0.0);
+      expect(model.hitungAngsuran(0.115), 0.0);
     });
   });
 
