@@ -1,3 +1,4 @@
+import 'package:hondaku/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
@@ -11,10 +12,10 @@ class MetodePembayaranPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appSettings = ref.watch(appSettingsProvider);
+    
     const isDark = false;
     final theme = ProfileThemeColors(isDark);
-    final loc = ProfileLocalizations(appSettings.selectedLanguage);
+    final loc = AppLocalizations.of(context)!;
     final methodsList = ref.watch(paymentMethodsProvider);
 
     return Scaffold(
@@ -48,7 +49,7 @@ class MetodePembayaranPage extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 40),
                   child: Text(
-                    loc.isEn ? 'No payment methods saved' : 'Belum ada metode pembayaran tersimpan',
+                    (Localizations.localeOf(context).languageCode == 'en') ? 'No payment methods saved' : 'Belum ada metode pembayaran tersimpan',
                     style: TextStyle(color: theme.textSecondary),
                   ),
                 ),
@@ -107,7 +108,7 @@ class MetodePembayaranPage extends ConsumerWidget {
     WidgetRef ref,
     PaymentMethodItem item,
     ProfileThemeColors theme,
-    ProfileLocalizations loc,
+    AppLocalizations loc,
   ) {
     return Container(
       decoration: BoxDecoration(
@@ -135,7 +136,7 @@ class MetodePembayaranPage extends ConsumerWidget {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: theme.textPrimary),
         ),
         subtitle: Text(
-          item.isDefault ? (loc.isEn ? 'Primary Payment Method' : 'Metode Utama') : item.subtitle,
+          item.isDefault ? ((Localizations.localeOf(context).languageCode == 'en') ? 'Primary Payment Method' : 'Metode Utama') : item.subtitle,
           style: TextStyle(fontSize: 12, color: item.isDefault ? theme.red : theme.textSecondary),
         ),
         trailing: item.isDefault
@@ -158,7 +159,7 @@ class MetodePembayaranPage extends ConsumerWidget {
     WidgetRef ref,
     PaymentMethodItem item,
     ProfileThemeColors theme,
-    ProfileLocalizations loc,
+    AppLocalizations loc,
   ) {
     showModalBottomSheet(
       context: context,
@@ -187,7 +188,7 @@ class MetodePembayaranPage extends ConsumerWidget {
                   Navigator.pop(context);
                   HondakuToast.showSuccess(
                     context,
-                    loc.isEn ? 'Primary payment method updated!' : 'Metode pembayaran utama diperbarui!',
+                    (Localizations.localeOf(context).languageCode == 'en') ? 'Primary payment method updated!' : 'Metode pembayaran utama diperbarui!',
                   );
                 },
               ),
@@ -199,7 +200,7 @@ class MetodePembayaranPage extends ConsumerWidget {
                   Navigator.pop(context);
                   HondakuToast.showSuccess(
                     context,
-                    loc.isEn ? 'Payment method deleted!' : 'Metode pembayaran dihapus!',
+                    (Localizations.localeOf(context).languageCode == 'en') ? 'Payment method deleted!' : 'Metode pembayaran dihapus!',
                   );
                 },
               ),
@@ -215,7 +216,7 @@ class MetodePembayaranPage extends ConsumerWidget {
 
 class AddPaymentMethodSheet extends ConsumerStatefulWidget {
   final ProfileThemeColors theme;
-  final ProfileLocalizations loc;
+  final AppLocalizations loc;
 
   const AddPaymentMethodSheet({
     super.key,
@@ -241,17 +242,17 @@ class _AddPaymentMethodSheetState extends ConsumerState<AddPaymentMethodSheet> {
 
   void _submit() {
     final number = _numberController.text.trim();
-    final loc = widget.loc;
+    
     if (number.isEmpty) {
-      _showErr(loc.isEn ? 'Account or Card number is required!' : 'Nomor kartu/VA wajib diisi!');
+      _showErr((Localizations.localeOf(context).languageCode == 'en') ? 'Account or Card number is required!' : 'Nomor kartu/VA wajib diisi!');
       return;
     }
     if (_selectedType == 'VA' && number.length < 8) {
-      _showErr(loc.isEn ? 'Virtual Account number is too short!' : 'Nomor Virtual Account terlalu pendek!');
+      _showErr((Localizations.localeOf(context).languageCode == 'en') ? 'Virtual Account number is too short!' : 'Nomor Virtual Account terlalu pendek!');
       return;
     }
     if (_selectedType == 'CARD' && number.length < 15) {
-      _showErr(loc.isEn ? 'Credit Card number is invalid!' : 'Nomor kartu kredit tidak valid!');
+      _showErr((Localizations.localeOf(context).languageCode == 'en') ? 'Credit Card number is invalid!' : 'Nomor kartu kredit tidak valid!');
       return;
     }
 
@@ -284,7 +285,7 @@ class _AddPaymentMethodSheetState extends ConsumerState<AddPaymentMethodSheet> {
     Navigator.pop(context);
     HondakuToast.showSuccess(
       context,
-      loc.isEn ? 'New payment method added!' : 'Metode pembayaran berhasil ditambahkan!',
+      (Localizations.localeOf(context).languageCode == 'en') ? 'New payment method added!' : 'Metode pembayaran berhasil ditambahkan!',
     );
   }
 
@@ -295,7 +296,8 @@ class _AddPaymentMethodSheetState extends ConsumerState<AddPaymentMethodSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = widget.theme;
-    final loc = widget.loc;
+    final loc = AppLocalizations.of(context)!;
+    
 
     return Container(
       padding: EdgeInsets.fromLTRB(20, 20, 20, MediaQuery.of(context).viewInsets.bottom + 20),
@@ -325,14 +327,14 @@ class _AddPaymentMethodSheetState extends ConsumerState<AddPaymentMethodSheet> {
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: _buildTypeCard('CARD', loc.isEn ? 'Credit Card' : 'Kartu Kredit', Icons.credit_card),
+                  child: _buildTypeCard('CARD', (Localizations.localeOf(context).languageCode == 'en') ? 'Credit Card' : 'Kartu Kredit', Icons.credit_card),
                 ),
               ],
             ),
             const SizedBox(height: 20),
             if (_selectedType == 'VA') ...[
               Text(
-                loc.isEn ? 'Select Bank' : 'Pilih Bank',
+                (Localizations.localeOf(context).languageCode == 'en') ? 'Select Bank' : 'Pilih Bank',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: theme.textSecondary),
               ),
               const SizedBox(height: 8),
@@ -365,12 +367,12 @@ class _AddPaymentMethodSheetState extends ConsumerState<AddPaymentMethodSheet> {
               ),
               const SizedBox(height: 16),
               Text(
-                loc.isEn ? 'Virtual Account Number' : 'Nomor Virtual Account',
+                (Localizations.localeOf(context).languageCode == 'en') ? 'Virtual Account Number' : 'Nomor Virtual Account',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: theme.textSecondary),
               ),
             ] else ...[
               Text(
-                loc.isEn ? 'Card Number' : 'Nomor Kartu',
+                (Localizations.localeOf(context).languageCode == 'en') ? 'Card Number' : 'Nomor Kartu',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: theme.textSecondary),
               ),
             ],
@@ -400,7 +402,7 @@ class _AddPaymentMethodSheetState extends ConsumerState<AddPaymentMethodSheet> {
               contentPadding: EdgeInsets.zero,
               activeThumbColor: theme.red,
               title: Text(
-                loc.isEn ? 'Set as primary payment method' : 'Jadikan metode pembayaran utama',
+                (Localizations.localeOf(context).languageCode == 'en') ? 'Set as primary payment method' : 'Jadikan metode pembayaran utama',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: theme.textPrimary),
               ),
               value: _isDefault,
@@ -418,7 +420,7 @@ class _AddPaymentMethodSheetState extends ConsumerState<AddPaymentMethodSheet> {
                   elevation: 0,
                 ),
                 child: Text(
-                  loc.isEn ? 'Save Payment' : 'Simpan Metode',
+                  (Localizations.localeOf(context).languageCode == 'en') ? 'Save Payment' : 'Simpan Metode',
                   style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
                 ),
               ),
