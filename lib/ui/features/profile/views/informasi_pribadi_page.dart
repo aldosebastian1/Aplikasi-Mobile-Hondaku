@@ -1,3 +1,4 @@
+import 'package:hondaku/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../ui/core/widgets/hondaku_avatar.dart';
@@ -41,7 +42,7 @@ class _InformasiPribadiPageState extends ConsumerState<InformasiPribadiPage> {
     super.dispose();
   }
 
-  void _saveProfile(ProfileLocalizations loc) {
+  void _saveProfile(AppLocalizations loc) {
     final nama = _namaController.text.trim();
     final username = _usernameController.text.trim();
     final email = _emailController.text.trim();
@@ -49,23 +50,23 @@ class _InformasiPribadiPageState extends ConsumerState<InformasiPribadiPage> {
     final nik = _nikController.text.trim();
 
     if (nama.isEmpty) {
-      _showError(loc.isEn ? 'Name cannot be empty!' : 'Nama tidak boleh kosong!');
+      _showError((Localizations.localeOf(context).languageCode == 'en') ? 'Name cannot be empty!' : 'Nama tidak boleh kosong!');
       return;
     }
     if (username.isEmpty) {
-      _showError(loc.isEn ? 'Username cannot be empty!' : 'Username tidak boleh kosong!');
+      _showError((Localizations.localeOf(context).languageCode == 'en') ? 'Username cannot be empty!' : 'Username tidak boleh kosong!');
       return;
     }
     if (email.isEmpty || !email.contains('@')) {
-      _showError(loc.isEn ? 'Please enter a valid email!' : 'Harap masukkan email yang valid!');
+      _showError((Localizations.localeOf(context).languageCode == 'en') ? 'Please enter a valid email!' : 'Harap masukkan email yang valid!');
       return;
     }
     if (phone.isEmpty || phone.length < 9) {
-      _showError(loc.isEn ? 'Please enter a valid phone number!' : 'Harap masukkan nomor HP yang valid!');
+      _showError((Localizations.localeOf(context).languageCode == 'en') ? 'Please enter a valid phone number!' : 'Harap masukkan nomor HP yang valid!');
       return;
     }
     if (nik.length != 16) {
-      _showError(loc.isEn ? 'NIK must be 16 digits!' : 'NIK harus berukuran 16 digit!');
+      _showError((Localizations.localeOf(context).languageCode == 'en') ? 'NIK must be 16 digits!' : 'NIK harus berukuran 16 digit!');
       return;
     }
 
@@ -91,11 +92,9 @@ class _InformasiPribadiPageState extends ConsumerState<InformasiPribadiPage> {
 
   @override
   Widget build(BuildContext context) {
-    final settingsVal = ref.watch(appSettingsProvider);
+    final loc = AppLocalizations.of(context)!;
     const isDark = false;
     final theme = ProfileThemeColors(isDark);
-    final loc = ProfileLocalizations(settingsVal.selectedLanguage);
-
     return Scaffold(
       backgroundColor: theme.background,
       appBar: AppBar(
