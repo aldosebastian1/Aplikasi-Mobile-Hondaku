@@ -10,7 +10,6 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  static const Color _red = Color(0xFFC40000);
   static const Color _surface = Colors.white;
 
   final PageController _pageController = PageController();
