@@ -22,7 +22,7 @@ class FavoriteNotifier extends Notifier<List<String>> {
 
   Future<void> _loadFavorites() async {
     final favorites = await _repository.getFavorites();
-    state = favorites.map((e) => e['id'] as String).toList();
+    state = favorites;
   }
 
   Future<void> toggleFavorite(Motorcycle motor) async {
