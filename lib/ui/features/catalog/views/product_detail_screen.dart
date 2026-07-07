@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../data/motorcycle_data.dart';
+import '../../../../domain/models/motorcycle.dart';
 import '../../../core/hondaku_app.dart';
 import '../../../core/widgets/hondaku_toast.dart';
 import '../widgets/specs_section_widget.dart';
@@ -307,7 +307,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             (feature) => Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: _featureItem(
-                feature.icon ?? Icons.star_border,
+                _getIconFromString(feature.iconName),
                 feature.title,
                 feature.description,
               ),
@@ -317,6 +317,59 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         ],
       ),
     );
+  }
+
+  IconData _getIconFromString(String? iconName) {
+    switch (iconName) {
+      case 'local_gas_station_outlined':
+        return Icons.local_gas_station_outlined;
+      case 'electric_bolt_outlined':
+        return Icons.electric_bolt_outlined;
+      case 'security_outlined':
+        return Icons.security_outlined;
+      case 'speed_outlined':
+        return Icons.speed_outlined;
+      case 'settings_input_component_outlined':
+        return Icons.settings_input_component_outlined;
+      case 'palette_outlined':
+        return Icons.palette_outlined;
+      case 'vpn_key_outlined':
+        return Icons.vpn_key_outlined;
+      case 'lightbulb_outline':
+        return Icons.lightbulb_outline;
+      case 'phone_android_outlined':
+        return Icons.phone_android_outlined;
+      case 'shield_outlined':
+        return Icons.shield_outlined;
+      case 'light_mode_outlined':
+        return Icons.light_mode_outlined;
+      case 'style_outlined':
+        return Icons.style_outlined;
+      case 'airline_seat_recline_normal_outlined':
+        return Icons.airline_seat_recline_normal_outlined;
+      case 'landscape_outlined':
+        return Icons.landscape_outlined;
+      case 'height_outlined':
+        return Icons.height_outlined;
+      case 'work_outline':
+        return Icons.work_outline;
+      case 'bolt_outlined':
+        return Icons.bolt_outlined;
+      case 'sports_motorsports_outlined':
+        return Icons.sports_motorsports_outlined;
+      case 'build_outlined':
+        return Icons.build_outlined;
+      case 'terrain_outlined':
+        return Icons.terrain_outlined;
+      case 'explore_outlined':
+        return Icons.explore_outlined;
+      case 'design_services_outlined':
+        return Icons.design_services_outlined;
+      case 'battery_charging_full_outlined':
+        return Icons.battery_charging_full_outlined;
+      default:
+        return Icons.star_border;
+    }
   }
 
   Widget _featureItem(IconData icon, String title, String description) {
