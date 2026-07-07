@@ -1,3 +1,4 @@
+import 'package:hondaku/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
@@ -12,10 +13,9 @@ class PengaturanPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appSettings = ref.watch(appSettingsProvider);
+    final loc = AppLocalizations.of(context)!;
     const isDark = false;
     final theme = ProfileThemeColors(isDark);
-    final loc = ProfileLocalizations(appSettings.selectedLanguage);
-
     return Scaffold(
       backgroundColor: theme.background,
       appBar: AppBar(
@@ -59,8 +59,8 @@ class PengaturanPage extends ConsumerWidget {
               HondakuToast.showSuccess(
                 context,
                 v
-                    ? (loc.isEn ? 'Biometric login enabled!' : 'Login biometrik diaktifkan!')
-                    : (loc.isEn ? 'Biometric login disabled!' : 'Login biometrik dinonaktifkan!'),
+                    ? ((Localizations.localeOf(context).languageCode == 'en') ? 'Biometric login enabled!' : 'Login biometrik diaktifkan!')
+                    : ((Localizations.localeOf(context).languageCode == 'en') ? 'Biometric login disabled!' : 'Login biometrik dinonaktifkan!'),
               );
             },
             theme: theme,
