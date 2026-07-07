@@ -4,6 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../data/providers.dart';
 import '../../../../domain/models/aktivitas_item.dart';
 
+final aktivitasListProvider = StreamProvider<List<AktivitasItem>>((ref) {
+  return ref.watch(aktivitasRepositoryProvider).watchAktivitasList();
+});
+
 class AktivitasViewModel extends Notifier<List<AktivitasItem>> {
   StreamSubscription<List<AktivitasItem>>? _subscription;
 
