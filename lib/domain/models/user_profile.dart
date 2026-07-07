@@ -1,29 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-@immutable
-class UserProfile {
-  final String nama;
-  final String username;
-  final String email;
-  final String phone;
-  final String nik;
-  final String avatarPath;
-  final bool isCustomAvatar;
-  final Color avatarBgColor;
-  final String initials;
+part 'user_profile.freezed.dart';
+part 'user_profile.g.dart';
 
-  UserProfile({
-    required this.nama,
-    required this.username,
-    required this.email,
-    required this.phone,
-    required this.nik,
-    required this.avatarPath,
-    this.isCustomAvatar = true, // Default to true (using initials) like modern apps
+class ColorConverter implements JsonConverter<Color, int> {
+  const ColorConverter();
+
+  @override
+  Color fromJson(int json) => Color(json);
+
+  @override
+  int toJson(Color object) => object.toARGB32();
+}
+
+@freezed
+abstract class UserProfile with _$UserProfile {
+  const UserProfile._();
+
+  const factory UserProfile({
+    @Default('Pengguna Hondaku') String nama,
+    @Default('') String username,
+    @Default('') String email,
+    @Default('-') String phone,
+    @Default('-') String nik,
+    @Default('assets/images/profile.png') String avatarPath,
+    @Default(true) bool isCustomAvatar,
+    @ColorConverter() required Color avatarBgColor,
+    required String initials,
+  }) = _UserProfile;
+
+  factory UserProfile.create({
+    required String nama,
+    required String username,
+    required String email,
+    required String phone,
+    required String nik,
+    required String avatarPath,
+    bool isCustomAvatar = true,
     Color? avatarBgColor,
     String? initials,
-  })  : avatarBgColor = avatarBgColor ?? _getAvatarColor(nama),
-        initials = initials ?? _getInitials(nama);
+  }) {
+    return UserProfile(
+      nama: nama,
+      username: username,
+      email: email,
+      phone: phone,
+      nik: nik,
+      avatarPath: avatarPath,
+      isCustomAvatar: isCustomAvatar,
+      avatarBgColor: avatarBgColor ?? _getAvatarColor(nama),
+      initials: initials ?? _getInitials(nama),
+    );
+  }
+
+  factory UserProfile.fromJson(Map<String, dynamic> json) =>
+      _$UserProfileFromJson(json);
 
   static String _getInitials(String name) {
     if (name.isEmpty) return 'U';
@@ -55,57 +87,5 @@ class UserProfile {
       hash = name.codeUnitAt(i) + ((hash << 5) - hash);
     }
     return colors[hash.abs() % colors.length];
-  }
-
-  UserProfile copyWith({
-    String? nama,
-    String? username,
-    String? email,
-    String? phone,
-    String? nik,
-    String? avatarPath,
-    bool? isCustomAvatar,
-    Color? avatarBgColor,
-    String? initials,
-  }) {
-    return UserProfile(
-      nama: nama ?? this.nama,
-      username: username ?? this.username,
-      email: email ?? this.email,
-      phone: phone ?? this.phone,
-      nik: nik ?? this.nik,
-      avatarPath: avatarPath ?? this.avatarPath,
-      isCustomAvatar: isCustomAvatar ?? this.isCustomAvatar,
-      avatarBgColor: avatarBgColor ?? this.avatarBgColor,
-      initials: initials ?? this.initials,
-    );
-  }
-
-  factory UserProfile.fromJson(Map<String, dynamic> json) {
-    return UserProfile(
-      nama: json['nama'] as String? ?? 'Pengguna Hondaku',
-      username: json['username'] as String? ?? '',
-      email: json['email'] as String? ?? '',
-      phone: json['phone'] as String? ?? '-',
-      nik: json['nik'] as String? ?? '-',
-      avatarPath: json['avatarPath'] as String? ?? 'assets/images/profile.png',
-      isCustomAvatar: json['isCustomAvatar'] as bool? ?? true,
-      initials: json['initials'] as String?,
-      avatarBgColor: json['avatarBgColor'] != null ? Color(json['avatarBgColor'] as int) : null,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'nama': nama,
-      'username': username,
-      'email': email,
-      'phone': phone,
-      'nik': nik,
-      'avatarPath': avatarPath,
-      'isCustomAvatar': isCustomAvatar,
-      'initials': initials,
-      'avatarBgColor': avatarBgColor.toARGB32(),
-    };
   }
 }
