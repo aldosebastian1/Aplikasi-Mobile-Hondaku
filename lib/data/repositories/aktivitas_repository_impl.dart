@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sqflite/sqflite.dart';
 import '../../domain/models/aktivitas_item.dart';
 import '../../domain/models/garage_item.dart';
 import '../../domain/repositories/aktivitas_repository.dart';
 import '../../domain/repositories/garage_repository.dart';
-import '../local/database_helper.dart';
 
 class AktivitasRepositoryImpl implements AktivitasRepository {
   final FirebaseFirestore _firestore;
@@ -21,16 +19,11 @@ class AktivitasRepositoryImpl implements AktivitasRepository {
   }
 
   Future<void> _initStream() async {
-    // 1. Muat dari lokal (selalu tersedia)
-    final db = await DatabaseHelper.instance.database;
-    final localData = await db.query('aktivitas', orderBy: 'tanggal DESC');
-    final items = localData.map((e) => AktivitasItem.fromJson(e)).toList();
-    _controller.add(items);
-    _startTimersForItems(items);
-
-    // 2. Jika login, dengarkan Firestore
+    // Jika login, dengarkan Firestore
     if (uid != null && uid!.isNotEmpty) {
       _listenToFirestore();
+    } else {
+      _controller.add([]);
     }
   }
 
@@ -68,9 +61,23 @@ class AktivitasRepositoryImpl implements AktivitasRepository {
 
   @override
   Future<List<AktivitasItem>> getAktivitasList() async {
-    final db = await DatabaseHelper.instance.database;
-    final localData = await db.query('aktivitas', orderBy: 'tanggal DESC');
-    return localData.map((e) => AktivitasItem.fromJson(e)).toList();
+    if (uid == null || uid!.isEmpty) return [];
+    
+    final snapshot = await _firestore
+        .collection('users')
+        .doc(uid)
+        .collection('aktivitas')
+        .orderBy('tanggal', descending: true)
+        .get();
+        
+    return snapshot.docs.map((doc) {
+      final data = doc.data();
+      data['id'] = doc.id;
+      if (data['tanggal'] is Timestamp) {
+        data['tanggal'] = (data['tanggal'] as Timestamp).toDate().toIso8601String();
+      }
+      return AktivitasItem.fromJson(data);
+    }).toList();
   }
 
   @override
@@ -80,24 +87,10 @@ class AktivitasRepositoryImpl implements AktivitasRepository {
 
   @override
   Future<void> upsertAktivitas(AktivitasItem item) async {
-    // 1. Simpan ke SQLite
-    final db = await DatabaseHelper.instance.database;
-    final jsonItem = item.toJson();
-    await db.insert(
-      'aktivitas', 
-      jsonItem,
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-
-    // Update stream lokal
-    final localData = await db.query('aktivitas', orderBy: 'tanggal DESC');
-    final items = localData.map((e) => AktivitasItem.fromJson(e)).toList();
-    _controller.add(items);
-    _startTimersForItems(items);
-
-    // 2. Simpan ke Firebase
+    // Simpan ke Firebase
     if (uid != null && uid!.isNotEmpty) {
       try {
+        final jsonItem = item.toJson();
         final json = Map<String, dynamic>.from(jsonItem);
         json['tanggal'] = Timestamp.fromDate(item.tanggal);
         await _firestore
@@ -107,8 +100,10 @@ class AktivitasRepositoryImpl implements AktivitasRepository {
             .doc(item.id)
             .set(json, SetOptions(merge: true));
       } catch (e) {
-        // Abaikan error jaringan
+        throw Exception('Gagal menyimpan aktivitas ke server. Silakan coba lagi.');
       }
+    } else {
+      throw Exception('Anda harus login untuk menyimpan aktivitas.');
     }
   }
 
@@ -153,11 +148,10 @@ class AktivitasRepositoryImpl implements AktivitasRepository {
             );
             await garageRepository!.addVehicle(garageItem);
           } catch (e) {
-            // Silently ignore if it fails to add
+            // Abaikan
           }
         }
       } else {
-        // Update local reference to continue correctly
         item = updatedItem;
       }
     });
