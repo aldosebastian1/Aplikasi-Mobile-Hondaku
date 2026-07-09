@@ -14,6 +14,7 @@ import '../features/profile/views/informasi_pribadi_page.dart';
 import '../features/profile/views/metode_pembayaran_page.dart';
 import '../features/profile/views/bantuan_dukungan_page.dart';
 import '../features/profile/views/pengaturan_page.dart';
+import '../features/profile/views/static_content_page.dart';
 import '../features/favorites/views/favorite_page.dart';
 import '../features/catalog/views/product_detail_screen.dart';
 import '../features/booking/views/booking_form_page.dart';
@@ -131,6 +132,14 @@ final goRouter = GoRouter(
                 GoRoute(
                   path: 'favorites',
                   builder: (context, state) => const FavoritePage(),
+                ),
+                GoRoute(
+                  path: 'terms',
+                  builder: (context, state) => const StaticContentPage(title: 'Syarat & Ketentuan'),
+                ),
+                GoRoute(
+                  path: 'privacy',
+                  builder: (context, state) => const StaticContentPage(title: 'Kebijakan Privasi'),
                 ),
               ],
             ),
