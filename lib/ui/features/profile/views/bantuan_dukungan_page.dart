@@ -274,50 +274,149 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
   }
 
   void _showDialerMock(BuildContext context, String number, ProfileThemeColors theme, AppLocalizations loc) {
-    showDialog(
+    showGeneralDialog(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: const Color(0xFF1E1E24),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 20),
-              CircleAvatar(
-                radius: 40,
-                backgroundColor: theme.red,
-                child: const Icon(Icons.support_agent, color: Colors.white, size: 40),
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Hondaku Care',
-                style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                number,
-                style: TextStyle(color: Colors.grey.shade400, fontSize: 16),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                (Localizations.localeOf(context).languageCode == 'en') ? 'Dialing...' : 'Menghubungi...',
-                style: const TextStyle(color: Colors.greenAccent, fontSize: 14, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 40),
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.call_end, color: Colors.white, size: 28),
+      barrierDismissible: true,
+      barrierLabel: 'Dismiss',
+      barrierColor: Colors.black.withOpacity(0.7),
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Center(
+          child: Material(
+            color: Colors.transparent,
+            child: Container(
+              width: 300,
+              padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 24),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF2A2D34), Color(0xFF1E1E24)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
+                borderRadius: BorderRadius.circular(32),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.5),
+                    blurRadius: 30,
+                    offset: const Offset(0, 15),
+                  ),
+                ],
               ),
-            ],
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Animated or static clean avatar
+                  Container(
+                    width: 90,
+                    height: 90,
+                    decoration: BoxDecoration(
+                      color: theme.red.withOpacity(0.15),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Container(
+                        width: 70,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          color: theme.red,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: theme.red.withOpacity(0.5),
+                              blurRadius: 16,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
+                        ),
+                        child: const Icon(Icons.support_agent, color: Colors.white, size: 36),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Hondaku Care',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    number,
+                    style: TextStyle(
+                      color: Colors.grey.shade400,
+                      fontSize: 16,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF00C853).withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(
+                          width: 14,
+                          height: 14,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF00C853)),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          (Localizations.localeOf(context).languageCode == 'en') ? 'Dialing...' : 'Menghubungi...',
+                          style: const TextStyle(
+                            color: Color(0xFF00C853),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 36),
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    customBorder: const CircleBorder(),
+                    child: Container(
+                      width: 64,
+                      height: 64,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFF3B30),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFFFF3B30).withOpacity(0.4),
+                            blurRadius: 16,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: const Icon(Icons.call_end, color: Colors.white, size: 32),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: ScaleTransition(
+            scale: Tween<double>(begin: 0.85, end: 1.0).animate(CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOutBack,
+            )),
+            child: child,
           ),
         );
       },
