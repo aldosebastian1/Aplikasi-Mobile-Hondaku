@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/widgets/error_state_widget.dart';
 import '../../../core/widgets/motorcycle_skeleton_list.dart';
+import '../../../core/widgets/custom_refresh_indicator.dart';
 
 import '../../../../domain/models/motorcycle.dart';
 import '../view_models/home_view_model.dart';
@@ -29,13 +30,10 @@ class HalamanHome extends ConsumerStatefulWidget {
 class _HalamanHomeState extends ConsumerState<HalamanHome> {
   static const _red = HondakuTheme.red;
   static const _surface = Colors.white;
-  final TextEditingController _searchController = TextEditingController();
-  String _searchQuery = '';
   String _selectedCategory = '';
 
   @override
   void dispose() {
-    _searchController.dispose();
     super.dispose();
   }
 
@@ -56,13 +54,8 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
           .toList();
     }
 
-    // Filter by search query
-    if (_searchQuery.isEmpty) return motors;
-    return motors.where((m) {
-      return m.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          m.categoryBadge.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          m.subtitle.toLowerCase().contains(_searchQuery.toLowerCase());
-    }).toList();
+    // Limit to 5 recommended items
+    return motors.take(5).toList();
   }
 
   @override
@@ -70,11 +63,8 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
     final motorcyclesAsync = ref.watch(homeMotorcyclesProvider);
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-      body: RefreshIndicator(
+      body: CustomRefreshIndicator(
         onRefresh: _handleRefresh,
-        color: _red,
-        backgroundColor: Colors.white,
-        edgeOffset: 0,
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(
             parent: BouncingScrollPhysics(),
@@ -82,25 +72,15 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
           slivers: [
             _buildSliverHeader(),
             SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                        child: HomeSearchBar(
-                          controller: _searchController,
-                          searchQuery: _searchQuery,
-                          onChanged: (val) {
-                            setState(() {
-                              _searchQuery = val;
-                            });
-                          },
-                          onClear: () {
-                            _searchController.clear();
-                            setState(() {
-                              _searchQuery = '';
-                            });
-                          },
-                        ),
-                      ),
-                    ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                child: HomeSearchBar(
+                  onTap: () {
+                    context.go('/catalog');
+                  },
+                ),
+              ),
+            ),
                     const SliverToBoxAdapter(
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(16, 24, 16, 0),
@@ -155,7 +135,7 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
                                           ),
                                           const SizedBox(height: 16),
                                           Text(
-                                            AppLocalizations.of(context)!.motorNotFound(_searchQuery),
+                                            AppLocalizations.of(context)!.motorNotFound(_selectedCategory),
                                             style: TextStyle(
                                               color: Colors.grey.shade600,
                                               fontSize: 15,
@@ -204,7 +184,7 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
         children: [
           Image.asset(
             'assets/images/logos/logo.png',
-            height: 32,
+            height: 44,
             fit: BoxFit.contain,
           ),
           const SizedBox(width: 10),
