@@ -25,14 +25,19 @@ class HondakuToast {
     late OverlayEntry entry;
 
     entry = OverlayEntry(
-      builder: (context) => Material(
-        type: MaterialType.transparency,
-        child: _HondakuToastWidget(
-          message: message,
-          type: type,
-          onDismiss: () {
-            entry.remove();
-          },
+      builder: (context) => Positioned(
+        top: 0,
+        left: 0,
+        right: 0,
+        child: Material(
+          type: MaterialType.transparency,
+          child: _HondakuToastWidget(
+            message: message,
+            type: type,
+            onDismiss: () {
+              entry.remove();
+            },
+          ),
         ),
       ),
     );
