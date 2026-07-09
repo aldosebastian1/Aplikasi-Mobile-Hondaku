@@ -24,23 +24,19 @@ class ProfilePage extends ConsumerWidget {
     final loc = AppLocalizations.of(context)!;
 
     final profileData = ref.watch(userProfileProvider);
-    final allItems = ref.watch(aktivitasViewModelProvider);
-    final activeOrders = allItems
-        .where((i) => i.status != StatusAktivitas.selesai && i.status != StatusAktivitas.ditolak)
-        .toList();
+    final aktivitasAsync = ref.watch(aktivitasListProvider);
     final garageItemsAsync = ref.watch(garageViewModelProvider);
-    final myVehicle = garageItemsAsync.value?.firstOrNull;
 
     const isDark = false;
     final theme = ProfileThemeColors(isDark);
 
     return Scaffold(
       backgroundColor: theme.background,
+      appBar: _buildHeader(theme, loc),
       body: SafeArea(
         top: false,
         child: Column(
           children: [
-            _buildHeader(theme, loc),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -48,14 +44,50 @@ class ProfilePage extends ConsumerWidget {
                     const SizedBox(height: 26),
                     _buildProfileHero(context, theme, profileData, loc, ref),
                     const SizedBox(height: 32),
-                    if (activeOrders.isNotEmpty) ...[
-                      _buildActiveOrderCard(context, theme, activeOrders.first, loc),
-                      const SizedBox(height: 20),
-                    ],
-                    if (myVehicle != null) ...[
-                      _buildGarageSection(context, theme, myVehicle, loc),
-                      const SizedBox(height: 24),
-                    ],
+                    aktivitasAsync.when(
+                      data: (items) {
+                        final activeOrders = items
+                            .where((i) => i.status != StatusAktivitas.selesai && i.status != StatusAktivitas.ditolak)
+                            .toList();
+                        if (activeOrders.isNotEmpty) {
+                          return Column(
+                            children: [
+                              _buildActiveOrderCard(context, theme, activeOrders.first, loc),
+                              const SizedBox(height: 20),
+                            ],
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                      loading: () => Column(
+                        children: [
+                          _buildActiveOrderSkeleton(theme),
+                          const SizedBox(height: 20),
+                        ],
+                      ),
+                      error: (err, stack) => const SizedBox.shrink(),
+                    ),
+                    garageItemsAsync.when(
+                      data: (items) {
+                        final vehicle = items.firstOrNull;
+                        if (vehicle != null) {
+                          return Column(
+                            children: [
+                              _buildGarageSection(context, theme, vehicle, loc),
+                              const SizedBox(height: 24),
+                            ],
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                      loading: () => Column(
+                        children: [
+                          _buildGarageSkeleton(context, theme),
+                          const SizedBox(height: 24),
+                        ],
+                      ),
+                      error: (err, stack) => const SizedBox.shrink(),
+                    ),
                     _buildMenuSection(theme, loc),
                     const SizedBox(height: 14),
                     _buildLogoutButton(context, theme, loc, ref),
@@ -79,55 +111,55 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildHeader(ProfileThemeColors theme, AppLocalizations loc) {
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.surface,
-        border: Border(bottom: BorderSide(color: theme.border)),
-      ),
-      child: SafeArea(
-        bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 12, 24, 14),
-          child: Row(
-            children: [
-              Image.asset(
-                'assets/images/logos/logo.png',
-                height: 48,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(width: 10),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 5,
-                ),
-                decoration: BoxDecoration(
-                  color: theme.isDark ? const Color(0xFF252525) : Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: theme.isDark ? const Color(0xFF333333) : Colors.grey.shade200),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.location_on, size: 12, color: theme.red),
-                    const SizedBox(width: 4),
-                    Text(
-                      'OTR MEDAN',
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: theme.textPrimary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Spacer(),
-              const HondakuAvatar(radius: 20, fontSize: 12),
-            ],
-          ),
+  PreferredSizeWidget _buildHeader(ProfileThemeColors theme, AppLocalizations loc) {
+    return AppBar(
+      backgroundColor: theme.surface,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(1.0),
+        child: Container(
+          color: theme.border,
+          height: 1.0,
         ),
+      ),
+      title: Row(
+        children: [
+          Image.asset(
+            'assets/images/logos/logo.png',
+            height: 44,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(width: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 5,
+            ),
+            decoration: BoxDecoration(
+              color: theme.isDark ? const Color(0xFF252525) : Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: theme.isDark ? const Color(0xFF333333) : Colors.grey.shade200),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.location_on, size: 12, color: theme.red),
+                const SizedBox(width: 4),
+                Text(
+                  loc.otrMedan,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: theme.textPrimary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Spacer(),
+          const HondakuAvatar(radius: 20, fontSize: 12),
+        ],
       ),
     );
   }
@@ -202,6 +234,65 @@ class ProfilePage extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildActiveOrderSkeleton(ProfileThemeColors theme) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+      decoration: BoxDecoration(
+        color: theme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: theme.cardBorder),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: theme.isDark ? 0.3 : 0.04),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(height: 16, width: 100, color: Colors.grey.shade200),
+                    const SizedBox(height: 8),
+                    Container(height: 24, width: 150, color: Colors.grey.shade200),
+                    const SizedBox(height: 12),
+                    Container(height: 14, width: 120, color: Colors.grey.shade200),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              Container(
+                width: 72,
+                height: 72,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Container(
+            height: 48,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -462,6 +553,67 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
+  Widget _buildGarageSkeleton(BuildContext context, ProfileThemeColors theme) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.myGarage,
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w800,
+              color: theme.textPrimary,
+              letterSpacing: -0.5,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Container(
+            height: 164,
+            decoration: BoxDecoration(
+              color: theme.surface,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.grey.shade100),
+            ),
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 50,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(height: 20, width: 80, color: Colors.grey.shade200),
+                      const SizedBox(height: 12),
+                      Container(height: 24, width: 120, color: Colors.grey.shade200),
+                      const SizedBox(height: 8),
+                      Container(height: 16, width: 100, color: Colors.grey.shade200),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 50,
+                  child: Center(
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildGarageSection(
     BuildContext context,
     ProfileThemeColors theme,
@@ -557,15 +709,8 @@ class ProfilePage extends ConsumerWidget {
                   Expanded(
                     flex: 50,
                     child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: theme.isDark
-                              ? [const Color(0xFF111111), const Color(0xFF1E0A0A)]
-                              : [const Color(0xFF1A1A1A), const Color(0xFF2D0B0B)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: const BorderRadius.only(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
                           topRight: Radius.circular(16),
                           bottomRight: Radius.circular(16),
                         ),
@@ -937,6 +1082,19 @@ class ProfilePage extends ConsumerWidget {
             path: '/profile/settings',
             theme: theme,
           ),
+          _MenuTile(
+            icon: Icons.description_outlined,
+            title: 'Syarat & Ketentuan',
+            path: '/profile/terms',
+            theme: theme,
+          ),
+          _MenuTile(
+            icon: Icons.shield_outlined,
+            title: 'Kebijakan Privasi',
+            path: '/profile/privacy',
+            theme: theme,
+            isLast: true,
+          ),
         ],
       ),
     );
@@ -1256,12 +1414,14 @@ class _MenuTile extends StatelessWidget {
     required this.title,
     required this.path,
     required this.theme,
+    this.isLast = false,
   });
 
   final IconData icon;
   final String title;
   final String path;
   final ProfileThemeColors theme;
+  final bool isLast;
 
   @override
   Widget build(BuildContext context) {
@@ -1270,7 +1430,7 @@ class _MenuTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
         decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: theme.border)),
+          border: isLast ? null : Border(bottom: BorderSide(color: theme.border)),
         ),
         child: ListTile(
           onTap: () => context.push(path),
