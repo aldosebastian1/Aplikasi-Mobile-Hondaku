@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../home/view_models/home_view_model.dart';
 import '../view_models/catalog_view_model.dart';
 import '../../../core/widgets/error_state_widget.dart';
+import '../../../core/widgets/custom_refresh_indicator.dart';
 import '../../../core/widgets/motorcycle_skeleton_list.dart';
 import '../../../core/widgets/hondaku_avatar.dart';
 import '../../../core/theme.dart';
@@ -150,11 +151,8 @@ class _CatalogPageState extends ConsumerState<CatalogPage> {
     final motorcyclesAsync = ref.watch(homeMotorcyclesProvider);
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-      body: RefreshIndicator(
+      body: CustomRefreshIndicator(
         onRefresh: _handleRefresh,
-        color: _red,
-        backgroundColor: Colors.white,
-        edgeOffset: 0,
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(
             parent: BouncingScrollPhysics(),
@@ -253,7 +251,7 @@ class _CatalogPageState extends ConsumerState<CatalogPage> {
         children: [
           Image.asset(
             'assets/images/logos/logo.png',
-            height: 32,
+            height: 44,
             fit: BoxFit.contain,
           ),
           const SizedBox(width: 10),
