@@ -10,7 +10,7 @@ class HomeCategorySelector extends StatelessWidget {
     {'icon': Icons.motorcycle, 'label': 'MATIC'},
     {'icon': Icons.sports_motorsports, 'label': 'SPORT'},
     {'icon': Icons.electric_moped, 'label': 'CUB'},
-    {'icon': Icons.electric_bolt, 'label': 'ELECTRIC'},
+    {'icon': Icons.electric_bolt, 'label': 'EV'},
   ];
 
   const HomeCategorySelector({
