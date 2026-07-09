@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../domain/models/aktivitas_item.dart';
+import '../view_models/review_view_model.dart';
+import '../../../../domain/models/review.dart';
 
-class KonfirmasiPesananPage extends StatefulWidget {
+class KonfirmasiPesananPage extends ConsumerStatefulWidget {
   final AktivitasItem item;
 
   const KonfirmasiPesananPage({super.key, required this.item});
 
   @override
-  State<KonfirmasiPesananPage> createState() => _KonfirmasiPesananPageState();
+  ConsumerState<KonfirmasiPesananPage> createState() => _KonfirmasiPesananPageState();
 }
 
-class _KonfirmasiPesananPageState extends State<KonfirmasiPesananPage> {
+class _KonfirmasiPesananPageState extends ConsumerState<KonfirmasiPesananPage> {
   static const _red = Color(0xFFC40000);
   int _rating = 0;
   final TextEditingController _feedbackController = TextEditingController();
@@ -24,7 +27,12 @@ class _KonfirmasiPesananPageState extends State<KonfirmasiPesananPage> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
+    final reviewAsync = ref.watch(getReviewProvider(widget.item.id));
+    final submittedReview = reviewAsync.value;
+    final hasReviewed = submittedReview != null;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
@@ -63,9 +71,9 @@ class _KonfirmasiPesananPageState extends State<KonfirmasiPesananPage> {
             const SizedBox(height: 24),
             _buildKelengkapanUnit(),
             const SizedBox(height: 24),
-            _buildBeriPenilaian(),
+            _buildBeriPenilaian(submittedReview),
             const SizedBox(height: 40),
-            _buildBottomButton(),
+            _buildBottomButton(hasReviewed),
             const SizedBox(height: 24),
           ],
         ),
@@ -220,7 +228,64 @@ class _KonfirmasiPesananPageState extends State<KonfirmasiPesananPage> {
     );
   }
 
-  Widget _buildBeriPenilaian() {
+  Widget _buildBeriPenilaian(Review? submittedReview) {
+    if (submittedReview != null) {
+      return Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Ulasan Anda', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 12),
+                Row(
+                  children: List.generate(5, (index) {
+                    final isFilled = index < submittedReview.rating;
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 4),
+                      child: Icon(
+                        Icons.star,
+                        color: isFilled ? Colors.amber : const Color(0xFFE0E0E0),
+                        size: 24,
+                      ),
+                    );
+                  }),
+                ),
+                if (submittedReview.komentar.isNotEmpty) ...[
+                  const SizedBox(height: 16),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF9F9F9),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.red.shade50),
+                    ),
+                    child: Text(
+                      submittedReview.komentar,
+                      style: const TextStyle(fontSize: 13, color: Colors.black87),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          Positioned(
+            top: 10,
+            right: 20,
+            child: Icon(Icons.thumb_up_alt, color: Colors.green.shade400, size: 40),
+          ),
+        ],
+      );
+    }
+
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -291,7 +356,37 @@ class _KonfirmasiPesananPageState extends State<KonfirmasiPesananPage> {
     );
   }
 
-  Widget _buildBottomButton() {
+  Widget _buildBottomButton(bool hasReviewed) {
+    if (hasReviewed) {
+      return SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  context.go('/home');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _red,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  elevation: 0,
+                ),
+                child: const Text('Kembali ke Halaman Utama', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final submitState = ref.watch(reviewViewModelProvider);
+    final isLoading = submitState.isLoading;
+
     return SafeArea(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -299,13 +394,25 @@ class _KonfirmasiPesananPageState extends State<KonfirmasiPesananPage> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {
-                final message = _rating > 0
-                    ? 'Terima kasih atas penilaian $_rating bintang! Pesanan Anda telah selesai dikonfirmasi.'
-                    : 'Terima kasih! Pesanan Anda telah selesai dikonfirmasi.';
+              onPressed: isLoading ? null : () async {
+                if (_rating == 0) {
+                  HondakuToast.showInfo(context, 'Mohon berikan penilaian bintang terlebih dahulu');
+                  return;
+                }
+                
+                final success = await ref.read(reviewViewModelProvider.notifier).submitReview(
+                      pesananId: widget.item.id,
+                      motorId: widget.item.namaMotor,
+                      namaMotor: widget.item.namaMotor,
+                      rating: _rating,
+                      komentar: _feedbackController.text,
+                    );
 
-                HondakuToast.showSuccess(context, message);
-                context.go('/home');
+                if (success && mounted) {
+                  HondakuToast.showSuccess(context, 'Terima kasih atas penilaian $_rating bintang! Pesanan Anda telah selesai dikonfirmasi.');
+                } else if (!success && mounted) {
+                  HondakuToast.showError(context, 'Gagal mengirimkan ulasan, periksa koneksi internet Anda atau coba lagi.');
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: _red,
@@ -315,7 +422,13 @@ class _KonfirmasiPesananPageState extends State<KonfirmasiPesananPage> {
                 ),
                 elevation: 0,
               ),
-              child: const Text('Selesaikan Pesanan', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+              child: isLoading
+                  ? const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                    )
+                  : const Text('Selesaikan Pesanan', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
             ),
           ),
           const SizedBox(height: 12),
