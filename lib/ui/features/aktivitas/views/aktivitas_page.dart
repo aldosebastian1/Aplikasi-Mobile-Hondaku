@@ -6,6 +6,7 @@ import 'package:hondaku/ui/core/widgets/motorcycle_skeleton_list.dart';
 import '../../../../domain/models/aktivitas_item.dart';
 import '../../../core/widgets/hondaku_avatar.dart';
 import '../view_models/aktivitas_view_model.dart';
+import '../../../core/widgets/custom_refresh_indicator.dart';
 
 
 class AktivitasPage extends StatefulWidget {
@@ -95,55 +96,55 @@ class _AktivitasPageState extends State<AktivitasPage>
     }
   }
 
-  Widget _buildHeader() {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(bottom: BorderSide(color: Color(0xFFE9E9E9))),
-      ),
-      child: SafeArea(
-        bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
-          child: Row(
-            children: [
-              Image.asset(
-                'assets/images/logos/logo.png',
-                height: 32,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(width: 10),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.grey.shade200),
-                ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.location_on, size: 12, color: _red),
-                    SizedBox(width: 4),
-                    Text(
-                      'OTR MEDAN',
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF222222),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Spacer(),
-              GestureDetector(
-                onTap: widget.onProfileClick,
-                child: const HondakuAvatar(radius: 20, fontSize: 12),
-              ),
-            ],
-          ),
+  PreferredSizeWidget _buildHeader() {
+    return AppBar(
+      backgroundColor: Colors.white,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(1.0),
+        child: Container(
+          color: const Color(0xFFE9E9E9),
+          height: 1.0,
         ),
+      ),
+      title: Row(
+        children: [
+          Image.asset(
+            'assets/images/logos/logo.png',
+            height: 44,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(width: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.grey.shade200),
+            ),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.location_on, size: 12, color: _red),
+                SizedBox(width: 4),
+                Text(
+                  'OTR MEDAN',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF222222),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Spacer(),
+          GestureDetector(
+            onTap: widget.onProfileClick,
+            child: const HondakuAvatar(radius: 20, fontSize: 12),
+          ),
+        ],
       ),
     );
   }
@@ -152,9 +153,9 @@ class _AktivitasPageState extends State<AktivitasPage>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
+      appBar: _buildHeader(),
       body: Column(
         children: [
-          _buildHeader(),
           Container(
             color: Colors.white,
             child: TabBar(
@@ -220,14 +221,13 @@ class _AktivitasPageState extends State<AktivitasPage>
   }
 
   Widget _buildList(WidgetRef ref, List<AktivitasItem> list) {
-    return RefreshIndicator(
+    return CustomRefreshIndicator(
+      edgeOffset: 10,
       onRefresh: () async {
         await Future.delayed(const Duration(milliseconds: 800));
         // ignore: unused_result
         ref.refresh(aktivitasListProvider);
       },
-      color: _red,
-      backgroundColor: Colors.white,
       child: list.isEmpty
           ? SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(
@@ -382,10 +382,6 @@ class _AktivitasPageState extends State<AktivitasPage>
                     Container(
                       width: 52,
                       height: 52,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF5F5F5),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
                       padding: const EdgeInsets.all(4),
                       child: Image.asset(
                         item.imagePath,
