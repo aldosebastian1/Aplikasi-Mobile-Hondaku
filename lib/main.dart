@@ -11,8 +11,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'firebase_options.dart';
 import 'ui/features/profile/view_models/profile_view_model.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+import 'data/providers.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  late SharedPreferences prefs;
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -23,8 +27,15 @@ void main() async {
     // We still want to run the app even if Firebase fails,
     // to prevent the user from being stuck on a white screen.
   }
+  
+  prefs = await SharedPreferences.getInstance();
 
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(ProviderScope(
+    overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends ConsumerWidget {
