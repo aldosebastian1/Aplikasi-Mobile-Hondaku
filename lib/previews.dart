@@ -58,10 +58,7 @@ Widget previewSearchBar() {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: HomeSearchBar(
-          controller: TextEditingController(),
-          searchQuery: '',
-          onChanged: (_) {},
-          onClear: () {},
+          onTap: () {},
         ),
       ),
     ),
