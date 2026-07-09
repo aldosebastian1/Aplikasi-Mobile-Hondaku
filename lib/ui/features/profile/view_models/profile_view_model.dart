@@ -51,6 +51,10 @@ class UserProfileNotifier extends Notifier<UserProfile> {
           initials = 'PH';
         }
         
+        final prefs = ref.watch(sharedPreferencesProvider);
+        final cachedColorValue = prefs.getInt('cached_avatar_color_${user.uid}');
+        Color? cachedColor = cachedColorValue != null ? Color(cachedColorValue) : null;
+        
         final basicProfile = UserProfile.create(
           nama: name,
           username: email.split('@').first,
@@ -60,6 +64,7 @@ class UserProfileNotifier extends Notifier<UserProfile> {
           avatarPath: user.photoURL ?? 'assets/images/profile.png',
           isCustomAvatar: user.photoURL != null,
           initials: initials,
+          avatarBgColor: cachedColor,
         );
 
         // Fetch complete profile from Firestore asynchronously
@@ -129,6 +134,10 @@ class UserProfileNotifier extends Notifier<UserProfile> {
     final user = ref.read(authStateProvider).value;
     if (user != null) {
       ref.read(userRepositoryProvider).saveUserProfile(user.uid, newProfile);
+      
+      // Cache avatar color locally
+      final prefs = ref.read(sharedPreferencesProvider);
+      prefs.setInt('cached_avatar_color_${user.uid}', newProfile.avatarBgColor.toARGB32());
     }
   }
 
@@ -146,6 +155,10 @@ class UserProfileNotifier extends Notifier<UserProfile> {
         final currentUser = ref.read(authStateProvider).value;
         if (currentUser?.uid == uid) {
           state = mergedProfile;
+          
+          // Cache avatar color locally so next app launch is instant
+          final prefs = ref.read(sharedPreferencesProvider);
+          prefs.setInt('cached_avatar_color_$uid', mergedProfile.avatarBgColor.toARGB32());
         }
       }
     } catch (e) {
