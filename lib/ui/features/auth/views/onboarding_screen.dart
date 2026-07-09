@@ -62,10 +62,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Image.asset(
-                'assets/images/logos/logo.png',
-                height: 32,
-                fit: BoxFit.contain,
+              Transform.scale(
+                scale: 1.4,
+                alignment: Alignment.centerLeft,
+                child: Image.asset(
+                  'assets/images/logos/logo.png',
+                  height: 32,
+                  fit: BoxFit.contain,
+                ),
               ),
               TextButton(
                 onPressed: _navigateToLogin,
