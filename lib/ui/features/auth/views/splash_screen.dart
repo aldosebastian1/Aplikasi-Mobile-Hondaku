@@ -83,17 +83,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
               return Stack(
                 children: [
-                  // Center Logo and Text
-                  Center(
+                  // Center Logo and Text (Adjusted for optical center)
+                  Align(
+                    alignment: const Alignment(0, -0.15),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Image.asset(
                           'assets/images/logos/logo.png',
-                          height: constraints.maxHeight < 450 ? 100.0 : 150.0,
+                          height: constraints.maxHeight < 450 ? 130.0 : 180.0,
                           fit: BoxFit.contain,
                         ),
-                        const SizedBox(height: 16.0),
+                        const SizedBox(height: 4.0),
                         Text(
                           'HONDAKU',
                           style: TextStyle(
