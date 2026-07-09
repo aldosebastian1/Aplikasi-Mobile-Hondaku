@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../domain/models/aktivitas_item.dart';
 import 'package:hondaku/ui/core/widgets/hondaku_toast.dart';
 import '../../aktivitas/view_models/aktivitas_view_model.dart';
+import '../view_models/review_view_model.dart';
 
 
 class StatusPesananPage extends ConsumerStatefulWidget {
@@ -98,7 +99,7 @@ class _StatusPesananPageState extends ConsumerState<StatusPesananPage> {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomActions(),
+      bottomNavigationBar: _buildBottomActions(ref.watch(hasReviewedProvider(item.id)).value ?? false),
     );
   }
 
@@ -541,7 +542,7 @@ class _StatusPesananPageState extends ConsumerState<StatusPesananPage> {
     );
   }
 
-  Widget _buildBottomActions() {
+  Widget _buildBottomActions(bool hasReviewed) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -558,108 +559,149 @@ class _StatusPesananPageState extends ConsumerState<StatusPesananPage> {
         child: Row(
           children: [
             Expanded(
-              child: OutlinedButton(
-                onPressed: () {
-                  HondakuToast.showInfo(context, 'Menghubungi Layanan Bantuan Honda Care Medan di 1-500-989...');
-                },
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  backgroundColor: Colors.white,
-                  side: BorderSide(color: Colors.grey.shade300),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                ),
-                child: const Text(
-                  'Butuh Bantuan',
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
+              child: item.status == StatusAktivitas.selesai
+                  ? ElevatedButton(
+                      onPressed: () {
+                        context.push('/konfirmasi-pesanan', extra: item);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _red,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                      ),
+                      child: Text(
+                        hasReviewed ? 'Lihat Konfirmasi & Ulasan' : 'Konfirmasi Pesanan',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    )
+                  : OutlinedButton(
+                      onPressed: () {
+                        HondakuToast.showInfo(context, 'Menghubungi Layanan Bantuan Honda Care Medan di 1-500-989...');
+                      },
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        backgroundColor: Colors.white,
+                        side: BorderSide(color: Colors.grey.shade300),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                      ),
+                      child: const Text(
+                        'Butuh Bantuan',
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: ElevatedButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.all(24),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Rincian Pesanan', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                              const SizedBox(height: 16),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text('Order ID', style: TextStyle(color: Colors.grey)),
-                                  Text(item.id, style: const TextStyle(fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text('Unit Motor', style: TextStyle(color: Colors.grey)),
-                                  Text(item.namaMotor, style: const TextStyle(fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text('Tipe/Varian', style: TextStyle(color: Colors.grey)),
-                                  Text(item.tipeUnit, style: const TextStyle(fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text('Dealer', style: TextStyle(color: Colors.grey)),
-                                  Text(item.dealer, style: const TextStyle(fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text('Metode Pembayaran', style: TextStyle(color: Colors.grey)),
-                                  Text(item.tipe == TipeTransaksi.cash ? 'Cash' : 'Kredit', style: const TextStyle(fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                            ],
-                          ),
+              child: item.status == StatusAktivitas.selesai
+                  ? OutlinedButton(
+                      onPressed: _showRincian,
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        backgroundColor: Colors.white,
+                        side: BorderSide(color: Colors.grey.shade300),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
                         ),
-                      );
-                    },
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _red,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                ),
-                child: const Text(
-                  'Rincian Pesanan',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
+                      ),
+                      child: const Text(
+                        'Rincian Pesanan',
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    )
+                  : ElevatedButton(
+                      onPressed: _showRincian,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _red,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                      ),
+                      child: const Text(
+                        'Rincian Pesanan',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void _showRincian() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Rincian Pesanan', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('ID Pesanan', style: TextStyle(color: Colors.grey)),
+                    Text(item.id, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Unit Motor', style: TextStyle(color: Colors.grey)),
+                    Text(item.namaMotor, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Tipe/Varian', style: TextStyle(color: Colors.grey)),
+                    Text(item.tipeUnit, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Dealer', style: TextStyle(color: Colors.grey)),
+                    Text(item.dealer, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Metode Pembayaran', style: TextStyle(color: Colors.grey)),
+                    Text(item.tipe == TipeTransaksi.cash ? 'Cash' : 'Kredit', style: const TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
