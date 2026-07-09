@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../domain/repositories/motorcycle_repository.dart';
 import '../domain/repositories/bank_repository.dart';
 import '../domain/repositories/garage_repository.dart';
@@ -21,7 +22,18 @@ import 'repositories/aktivitas_repository_impl.dart';
 import 'repositories/user_repository_impl.dart';
 import 'repositories/leasing_repository_impl.dart';
 import 'repositories/location_repository_impl.dart';
+import 'repositories/review_repository_impl.dart';
+import '../domain/repositories/review_repository.dart';
 import '../ui/features/auth/providers/auth_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final reviewRepositoryProvider = Provider<ReviewRepository>((ref) {
+  return ReviewRepositoryImpl(FirebaseFirestore.instance);
+});
+
+final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
+  throw UnimplementedError();
+});
 
 final motorcycleRepositoryProvider = Provider<MotorcycleRepository>((ref) {
   return MotorcycleRepositoryImpl();
