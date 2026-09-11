@@ -160,11 +160,11 @@ class _CatalogPageState extends ConsumerState<CatalogPage> {
           slivers: [
             _buildSliverHeader(),
             SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
-                        child: _buildHeroHeader(),
-                      ),
-                    ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+                child: _buildHeroHeader(),
+              ),
+            ),
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),

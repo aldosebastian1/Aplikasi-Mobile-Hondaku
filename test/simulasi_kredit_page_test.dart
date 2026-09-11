@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hondaku/domain/models/motorcycle.dart';
+import 'package:hondaku/domain/models/leasing_parameter.dart';
+import 'package:hondaku/data/providers.dart';
 import 'package:hondaku/ui/features/kredit/views/simulasi_kredit_page.dart';
 
 void main() {
@@ -24,8 +26,39 @@ void main() {
 
   testWidgets('SimulasiKreditPage rendering and calculation flow', (WidgetTester tester) async {
     await tester.pumpWidget(
-      const ProviderScope(
-        child: MaterialApp(
+      ProviderScope(
+        overrides: [
+          leasingParametersProvider.overrideWith((ref) => Future.value([
+            const LeasingParameter(
+              id: '1',
+              name: 'FIF Group',
+              subtitle: 'Proses Cepat & Terpercaya',
+              rateTahunan: 0.12,
+              minDpPersen: 0.10,
+              maxDpPersen: 0.75,
+              tenorList: [11, 23, 35],
+            ),
+            const LeasingParameter(
+              id: '2',
+              name: 'Adira Finance',
+              subtitle: 'Bunga Ringan',
+              rateTahunan: 0.14,
+              minDpPersen: 0.10,
+              maxDpPersen: 0.75,
+              tenorList: [11, 23, 35],
+            ),
+            const LeasingParameter(
+              id: '3',
+              name: 'BAF',
+              subtitle: 'Pilihan Fleksibel',
+              rateTahunan: 0.13,
+              minDpPersen: 0.10,
+              maxDpPersen: 0.75,
+              tenorList: [11, 23, 35],
+            ),
+          ])),
+        ],
+        child: const MaterialApp(
           home: SimulasiKreditPage(motor: mockMotor),
         ),
       ),

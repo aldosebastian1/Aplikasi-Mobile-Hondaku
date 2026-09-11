@@ -8,55 +8,69 @@ part of 'motorcycle.dart';
 
 _MotorcycleFeature _$MotorcycleFeatureFromJson(Map<String, dynamic> json) =>
     _MotorcycleFeature(
-      iconName: json['iconName'] as String?,
-      title: json['title'] as String,
-      description: json['description'] as String,
+      iconName: json['icon_name'] as String? ?? '',
+      title: json['title'] as String? ?? '',
+      description: json['description'] as String? ?? '',
     );
 
 Map<String, dynamic> _$MotorcycleFeatureToJson(_MotorcycleFeature instance) =>
     <String, dynamic>{
-      'iconName': instance.iconName,
+      'icon_name': instance.iconName,
       'title': instance.title,
       'description': instance.description,
     };
 
 _Motorcycle _$MotorcycleFromJson(Map<String, dynamic> json) => _Motorcycle(
-  id: json['id'] as String,
-  name: json['name'] as String,
-  categoryBadge: json['categoryBadge'] as String,
-  subtitle: json['subtitle'] as String,
-  description: json['description'] as String,
-  price: json['price'] as String,
-  imageAsset: json['imageAsset'] as String,
-  isNew: json['isNew'] as bool? ?? false,
-  isRecommended: json['isRecommended'] as bool? ?? false,
-  engine: json['engine'] as String,
-  maxPower: json['maxPower'] as String,
-  fuelCapacity: json['fuelCapacity'] as String,
-  features: (json['features'] as List<dynamic>)
-      .map((e) => MotorcycleFeature.fromJson(e as Map<String, dynamic>))
-      .toList(),
-  specsMesin: Map<String, String>.from(json['specsMesin'] as Map),
-  specsRangka: Map<String, String>.from(json['specsRangka'] as Map),
-  specsDimensi: Map<String, String>.from(json['specsDimensi'] as Map),
+  id: json['id'] as String? ?? '',
+  name: json['name'] as String? ?? '',
+  categoryBadge: json['category_badge'] as String? ?? '',
+  subtitle: json['subtitle'] as String? ?? '',
+  description: json['description'] as String? ?? '',
+  price: json['price'] as String? ?? '',
+  imageAsset: json['image_asset'] as String? ?? '',
+  isNew: json['is_new'] as bool? ?? false,
+  isRecommended: json['is_recommended'] as bool? ?? false,
+  engine: json['engine'] as String? ?? '',
+  maxPower: json['max_power'] as String? ?? '',
+  fuelCapacity: json['fuel_capacity'] as String? ?? '',
+  features:
+      (json['features'] as List<dynamic>?)
+          ?.map((e) => MotorcycleFeature.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
+  specsMesin:
+      (json['specs_mesin'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ) ??
+      const {},
+  specsRangka:
+      (json['specs_rangka'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ) ??
+      const {},
+  specsDimensi:
+      (json['specs_dimensi'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ) ??
+      const {},
 );
 
 Map<String, dynamic> _$MotorcycleToJson(_Motorcycle instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'categoryBadge': instance.categoryBadge,
+      'category_badge': instance.categoryBadge,
       'subtitle': instance.subtitle,
       'description': instance.description,
       'price': instance.price,
-      'imageAsset': instance.imageAsset,
-      'isNew': instance.isNew,
-      'isRecommended': instance.isRecommended,
+      'image_asset': instance.imageAsset,
+      'is_new': instance.isNew,
+      'is_recommended': instance.isRecommended,
       'engine': instance.engine,
-      'maxPower': instance.maxPower,
-      'fuelCapacity': instance.fuelCapacity,
+      'max_power': instance.maxPower,
+      'fuel_capacity': instance.fuelCapacity,
       'features': instance.features.map((e) => e.toJson()).toList(),
-      'specsMesin': instance.specsMesin,
-      'specsRangka': instance.specsRangka,
-      'specsDimensi': instance.specsDimensi,
+      'specs_mesin': instance.specsMesin,
+      'specs_rangka': instance.specsRangka,
+      'specs_dimensi': instance.specsDimensi,
     };

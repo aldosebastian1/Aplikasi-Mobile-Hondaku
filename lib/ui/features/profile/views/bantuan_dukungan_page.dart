@@ -278,7 +278,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
       context: context,
       barrierDismissible: true,
       barrierLabel: 'Dismiss',
-      barrierColor: Colors.black.withOpacity(0.7),
+      barrierColor: Colors.black.withValues(alpha: 0.7),
       transitionDuration: const Duration(milliseconds: 300),
       pageBuilder: (context, animation, secondaryAnimation) {
         return Center(
@@ -296,7 +296,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
                 borderRadius: BorderRadius.circular(32),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
+                    color: Colors.black.withValues(alpha: 0.5),
                     blurRadius: 30,
                     offset: const Offset(0, 15),
                   ),
@@ -305,12 +305,12 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Animated or static clean avatar
+                  // Animated pulsing effect around icon
                   Container(
                     width: 90,
                     height: 90,
                     decoration: BoxDecoration(
-                      color: theme.red.withOpacity(0.15),
+                      color: theme.red.withValues(alpha: 0.15),
                       shape: BoxShape.circle,
                     ),
                     child: Center(
@@ -322,7 +322,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: theme.red.withOpacity(0.5),
+                              color: theme.red.withValues(alpha: 0.5),
                               blurRadius: 16,
                               offset: const Offset(0, 8),
                             ),
@@ -355,7 +355,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF00C853).withOpacity(0.15),
+                      color: const Color(0xFF00C853).withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: Row(
@@ -393,7 +393,7 @@ class _BantuanDukunganPageState extends ConsumerState<BantuanDukunganPage> {
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xFFFF3B30).withOpacity(0.4),
+                            color: const Color(0xFFFF3B30).withValues(alpha: 0.4),
                             blurRadius: 16,
                             offset: const Offset(0, 8),
                           ),

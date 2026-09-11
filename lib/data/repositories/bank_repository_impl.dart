@@ -1,17 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import '../../domain/models/bank_option.dart';
 import '../../domain/repositories/bank_repository.dart';
 
 class BankRepositoryImpl implements BankRepository {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final Dio dio;
+
+  BankRepositoryImpl(this.dio);
 
   @override
   Future<List<BankOption>> getBankOptions() async {
     try {
-      final snapshot = await _firestore.collection('banks').get();
-      return snapshot.docs.map((doc) {
-        return BankOption.fromJson(doc.data());
-      }).toList();
+      final response = await dio.get('/banks');
+      final data = response.data as List<dynamic>;
+      return data.map((json) => BankOption.fromJson(json as Map<String, dynamic>)).toList();
     } catch (e) {
       throw Exception('Gagal mengambil daftar bank. Pastikan koneksi internet Anda stabil.');
     }

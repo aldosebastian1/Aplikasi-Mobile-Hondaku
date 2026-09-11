@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,6 +17,16 @@ import 'data/providers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // ROBUSTNESS & BUG PREVENTION:
+  // Jangan biarkan aplikasi crash tiba-tiba (White Screen of Death) 
+  // hanya karena developer baru lupa membuat file .env saat clone repo.
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    debugPrint("⚠️ KRITIS: File .env tidak ditemukan! Silakan salin .env.example menjadi .env");
+  }
+
   late SharedPreferences prefs;
   try {
     await Firebase.initializeApp(

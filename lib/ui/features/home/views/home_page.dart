@@ -31,9 +31,12 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
   static const _red = HondakuTheme.red;
   static const _surface = Colors.white;
   String _selectedCategory = '';
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
 
   @override
   void dispose() {
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -52,6 +55,12 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
       motors = motors
           .where((m) => m.categoryBadge.toUpperCase() == _selectedCategory)
           .toList();
+    }
+
+    // Filter by search query
+    if (_searchQuery.isNotEmpty) {
+      final query = _searchQuery.toLowerCase();
+      motors = motors.where((m) => m.name.toLowerCase().contains(query)).toList();
     }
 
     // Limit to 5 recommended items
@@ -75,8 +84,18 @@ class _HalamanHomeState extends ConsumerState<HalamanHome> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                 child: HomeSearchBar(
-                  onTap: () {
-                    context.go('/catalog');
+                  controller: _searchController,
+                  onChanged: (value) {
+                    setState(() {
+                      _searchQuery = value;
+                    });
+                  },
+                  onClear: () {
+                    _searchController.clear();
+                    setState(() {
+                      _searchQuery = '';
+                    });
+                    FocusScope.of(context).unfocus();
                   },
                 ),
               ),

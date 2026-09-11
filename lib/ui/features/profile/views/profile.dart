@@ -70,15 +70,12 @@ class ProfilePage extends ConsumerWidget {
                     garageItemsAsync.when(
                       data: (items) {
                         final vehicle = items.firstOrNull;
-                        if (vehicle != null) {
-                          return Column(
-                            children: [
-                              _buildGarageSection(context, theme, vehicle, loc),
-                              const SizedBox(height: 24),
-                            ],
-                          );
-                        }
-                        return const SizedBox.shrink();
+                        return Column(
+                          children: [
+                            _buildGarageSection(context, theme, vehicle, loc),
+                            const SizedBox(height: 24),
+                          ],
+                        );
                       },
                       loading: () => Column(
                         children: [

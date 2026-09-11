@@ -53,7 +53,7 @@ class UserProfileNotifier extends Notifier<UserProfile> {
         
         final prefs = ref.watch(sharedPreferencesProvider);
         final cachedColorValue = prefs.getInt('cached_avatar_color_${user.uid}');
-        Color? cachedColor = cachedColorValue != null ? Color(cachedColorValue) : null;
+        final Color? cachedColor = cachedColorValue != null ? Color(cachedColorValue) : null;
         
         final basicProfile = UserProfile.create(
           nama: name,
@@ -158,7 +158,7 @@ class UserProfileNotifier extends Notifier<UserProfile> {
           
           // Cache avatar color locally so next app launch is instant
           final prefs = ref.read(sharedPreferencesProvider);
-          prefs.setInt('cached_avatar_color_$uid', mergedProfile.avatarBgColor.toARGB32());
+          await prefs.setInt('cached_avatar_color_$uid', mergedProfile.avatarBgColor.toARGB32());
         }
       }
     } catch (e) {

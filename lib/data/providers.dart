@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../core/network/dio_provider.dart';
+import 'repositories/api_motorcycle_repository_impl.dart';
 import '../domain/repositories/motorcycle_repository.dart';
 import '../domain/repositories/bank_repository.dart';
 import '../domain/repositories/garage_repository.dart';
@@ -14,7 +16,7 @@ import '../domain/models/hero_banner.dart';
 import '../domain/models/garage_item.dart';
 import '../domain/models/leasing_parameter.dart';
 import '../domain/models/kecamatan.dart';
-import 'repositories/motorcycle_repository_impl.dart';
+// Dead code removed
 import 'repositories/bank_repository_impl.dart';
 import 'repositories/garage_repository_impl.dart';
 import 'repositories/hero_banner_repository_impl.dart';
@@ -36,11 +38,15 @@ final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
 });
 
 final motorcycleRepositoryProvider = Provider<MotorcycleRepository>((ref) {
-  return MotorcycleRepositoryImpl();
+  // STANDAR CLEAN ARCHITECTURE: Swap "Koki" dalam satu baris.
+  // Mulai detik ini, seluruh UI katalog motor di aplikasi menggunakan REST API.
+  final dio = ref.watch(dioProvider);
+  return ApiMotorcycleRepositoryImpl(dio);
 });
 
 final bankRepositoryProvider = Provider<BankRepository>((ref) {
-  return BankRepositoryImpl();
+  final dio = ref.watch(dioProvider);
+  return BankRepositoryImpl(dio);
 });
 
 final garageRepositoryProvider = Provider<GarageRepository>((ref) {
@@ -58,7 +64,8 @@ final garageViewModelProvider = StreamProvider<List<GarageItem>>((ref) {
 });
 
 final heroBannerRepositoryProvider = Provider<HeroBannerRepository>((ref) {
-  return HeroBannerRepositoryImpl();
+  final dio = ref.watch(dioProvider);
+  return HeroBannerRepositoryImpl(dio);
 });
 
 final aktivitasRepositoryProvider = Provider<AktivitasRepository>((ref) {
@@ -90,7 +97,8 @@ final bankOptionsProvider = FutureProvider<List<BankOption>>((ref) async {
 });
 
 final leasingRepositoryProvider = Provider<LeasingRepository>((ref) {
-  return LeasingRepositoryImpl();
+  final dio = ref.watch(dioProvider);
+  return LeasingRepositoryImpl(dio);
 });
 
 final leasingParametersProvider = FutureProvider<List<LeasingParameter>>((ref) async {
@@ -99,7 +107,8 @@ final leasingParametersProvider = FutureProvider<List<LeasingParameter>>((ref) a
 });
 
 final locationRepositoryProvider = Provider<LocationRepository>((ref) {
-  return LocationRepositoryImpl();
+  final dio = ref.watch(dioProvider);
+  return LocationRepositoryImpl(dio);
 });
 
 final locationsProvider = FutureProvider<List<Kecamatan>>((ref) async {

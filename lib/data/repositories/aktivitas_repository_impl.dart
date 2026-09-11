@@ -54,7 +54,29 @@ class AktivitasRepositoryImpl implements AktivitasRepository {
         }
         return AktivitasItem.fromJson(data);
       }).toList();
+      
       _controller.add(items);
+      
+      // Sinkronisasi: Pastikan semua motor yang statusnya 'Selesai' masuk ke Garasi
+      if (garageRepository != null) {
+        for (var item in items) {
+          if (item.status == StatusAktivitas.selesai) {
+            try {
+              final garageItem = GarageItem(
+                id: item.id,
+                name: item.namaMotor,
+                type: item.tipeUnit,
+                imagePath: item.imagePath,
+                category: 'DAILY RIDE',
+              );
+              garageRepository!.addVehicle(garageItem);
+            } catch (e) {
+              // Ignore
+            }
+          }
+        }
+      }
+      
       _startTimersForItems(items);
     });
   }

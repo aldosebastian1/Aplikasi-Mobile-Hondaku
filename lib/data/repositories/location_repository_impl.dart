@@ -1,17 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import '../../domain/models/kecamatan.dart';
 import '../../domain/repositories/location_repository.dart';
 
 class LocationRepositoryImpl implements LocationRepository {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final Dio dio;
+
+  LocationRepositoryImpl(this.dio);
 
   @override
   Future<List<Kecamatan>> getKecamatans() async {
     try {
-      final snapshot = await _firestore.collection('locations').get();
-      return snapshot.docs.map((doc) {
-        return Kecamatan.fromJson(doc.data());
-      }).toList();
+      final response = await dio.get('/locations');
+      final data = response.data as List<dynamic>;
+      return data.map((json) => Kecamatan.fromJson(json as Map<String, dynamic>)).toList();
     } catch (e) {
       throw Exception('Gagal mengambil data wilayah. Pastikan koneksi internet Anda stabil.');
     }

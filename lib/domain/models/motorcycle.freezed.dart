@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MotorcycleFeature {
 
- String? get iconName; String get title; String get description;
+ String get iconName; String get title; String get description;
 /// Create a copy of MotorcycleFeature
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $MotorcycleFeatureCopyWith<$Res>  {
   factory $MotorcycleFeatureCopyWith(MotorcycleFeature value, $Res Function(MotorcycleFeature) _then) = _$MotorcycleFeatureCopyWithImpl;
 @useResult
 $Res call({
- String? iconName, String title, String description
+ String iconName, String title, String description
 });
 
 
@@ -65,10 +65,10 @@ class _$MotorcycleFeatureCopyWithImpl<$Res>
 
 /// Create a copy of MotorcycleFeature
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? iconName = freezed,Object? title = null,Object? description = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? iconName = null,Object? title = null,Object? description = null,}) {
   return _then(_self.copyWith(
-iconName: freezed == iconName ? _self.iconName : iconName // ignore: cast_nullable_to_non_nullable
-as String?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+iconName: null == iconName ? _self.iconName : iconName // ignore: cast_nullable_to_non_nullable
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -155,7 +155,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? iconName,  String title,  String description)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String iconName,  String title,  String description)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MotorcycleFeature() when $default != null:
 return $default(_that.iconName,_that.title,_that.description);case _:
@@ -176,7 +176,7 @@ return $default(_that.iconName,_that.title,_that.description);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? iconName,  String title,  String description)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String iconName,  String title,  String description)  $default,) {final _that = this;
 switch (_that) {
 case _MotorcycleFeature():
 return $default(_that.iconName,_that.title,_that.description);case _:
@@ -196,7 +196,7 @@ return $default(_that.iconName,_that.title,_that.description);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? iconName,  String title,  String description)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String iconName,  String title,  String description)?  $default,) {final _that = this;
 switch (_that) {
 case _MotorcycleFeature() when $default != null:
 return $default(_that.iconName,_that.title,_that.description);case _:
@@ -208,15 +208,15 @@ return $default(_that.iconName,_that.title,_that.description);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(fieldRename: FieldRename.snake)
 class _MotorcycleFeature implements MotorcycleFeature {
-  const _MotorcycleFeature({this.iconName, required this.title, required this.description});
+  const _MotorcycleFeature({this.iconName = '', this.title = '', this.description = ''});
   factory _MotorcycleFeature.fromJson(Map<String, dynamic> json) => _$MotorcycleFeatureFromJson(json);
 
-@override final  String? iconName;
-@override final  String title;
-@override final  String description;
+@override@JsonKey() final  String iconName;
+@override@JsonKey() final  String title;
+@override@JsonKey() final  String description;
 
 /// Create a copy of MotorcycleFeature
 /// with the given fields replaced by the non-null parameter values.
@@ -251,7 +251,7 @@ abstract mixin class _$MotorcycleFeatureCopyWith<$Res> implements $MotorcycleFea
   factory _$MotorcycleFeatureCopyWith(_MotorcycleFeature value, $Res Function(_MotorcycleFeature) _then) = __$MotorcycleFeatureCopyWithImpl;
 @override @useResult
 $Res call({
- String? iconName, String title, String description
+ String iconName, String title, String description
 });
 
 
@@ -268,10 +268,10 @@ class __$MotorcycleFeatureCopyWithImpl<$Res>
 
 /// Create a copy of MotorcycleFeature
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? iconName = freezed,Object? title = null,Object? description = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? iconName = null,Object? title = null,Object? description = null,}) {
   return _then(_MotorcycleFeature(
-iconName: freezed == iconName ? _self.iconName : iconName // ignore: cast_nullable_to_non_nullable
-as String?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+iconName: null == iconName ? _self.iconName : iconName // ignore: cast_nullable_to_non_nullable
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -491,46 +491,46 @@ return $default(_that.id,_that.name,_that.categoryBadge,_that.subtitle,_that.des
 
 /// @nodoc
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class _Motorcycle implements Motorcycle {
-  const _Motorcycle({required this.id, required this.name, required this.categoryBadge, required this.subtitle, required this.description, required this.price, required this.imageAsset, this.isNew = false, this.isRecommended = false, required this.engine, required this.maxPower, required this.fuelCapacity, required final  List<MotorcycleFeature> features, required final  Map<String, String> specsMesin, required final  Map<String, String> specsRangka, required final  Map<String, String> specsDimensi}): _features = features,_specsMesin = specsMesin,_specsRangka = specsRangka,_specsDimensi = specsDimensi;
+  const _Motorcycle({this.id = '', this.name = '', this.categoryBadge = '', this.subtitle = '', this.description = '', this.price = '', this.imageAsset = '', this.isNew = false, this.isRecommended = false, this.engine = '', this.maxPower = '', this.fuelCapacity = '', final  List<MotorcycleFeature> features = const [], final  Map<String, String> specsMesin = const {}, final  Map<String, String> specsRangka = const {}, final  Map<String, String> specsDimensi = const {}}): _features = features,_specsMesin = specsMesin,_specsRangka = specsRangka,_specsDimensi = specsDimensi;
   factory _Motorcycle.fromJson(Map<String, dynamic> json) => _$MotorcycleFromJson(json);
 
-@override final  String id;
-@override final  String name;
-@override final  String categoryBadge;
-@override final  String subtitle;
-@override final  String description;
-@override final  String price;
-@override final  String imageAsset;
+@override@JsonKey() final  String id;
+@override@JsonKey() final  String name;
+@override@JsonKey() final  String categoryBadge;
+@override@JsonKey() final  String subtitle;
+@override@JsonKey() final  String description;
+@override@JsonKey() final  String price;
+@override@JsonKey() final  String imageAsset;
 @override@JsonKey() final  bool isNew;
 @override@JsonKey() final  bool isRecommended;
-@override final  String engine;
-@override final  String maxPower;
-@override final  String fuelCapacity;
+@override@JsonKey() final  String engine;
+@override@JsonKey() final  String maxPower;
+@override@JsonKey() final  String fuelCapacity;
  final  List<MotorcycleFeature> _features;
-@override List<MotorcycleFeature> get features {
+@override@JsonKey() List<MotorcycleFeature> get features {
   if (_features is EqualUnmodifiableListView) return _features;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_features);
 }
 
  final  Map<String, String> _specsMesin;
-@override Map<String, String> get specsMesin {
+@override@JsonKey() Map<String, String> get specsMesin {
   if (_specsMesin is EqualUnmodifiableMapView) return _specsMesin;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableMapView(_specsMesin);
 }
 
  final  Map<String, String> _specsRangka;
-@override Map<String, String> get specsRangka {
+@override@JsonKey() Map<String, String> get specsRangka {
   if (_specsRangka is EqualUnmodifiableMapView) return _specsRangka;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableMapView(_specsRangka);
 }
 
  final  Map<String, String> _specsDimensi;
-@override Map<String, String> get specsDimensi {
+@override@JsonKey() Map<String, String> get specsDimensi {
   if (_specsDimensi is EqualUnmodifiableMapView) return _specsDimensi;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableMapView(_specsDimensi);
