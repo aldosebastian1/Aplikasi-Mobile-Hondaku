@@ -1,8 +1,6 @@
 import 'package:hondaku/domain/models/motorcycle.dart';
 export 'package:hondaku/domain/models/motorcycle.dart';
 
-
-
 // Pusat Data Base List Mockup
 final List<Motorcycle> motorcycleDatabase = [
   const Motorcycle(
@@ -10,8 +8,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "BeAT",
     categoryBadge: "MATIC",
     subtitle: "Matic • 110cc",
-    description:
-        "Motor matic Honda BeAT hadir dengan desain modern, ringan, irit bahan bakar, dan cocok untuk mobilitas harian di perkotaan.",
+    description: "Motor matic Honda BeAT hadir dengan desain modern, ringan, irit bahan bakar, dan cocok untuk mobilitas harian di perkotaan.",
     price: "Rp 19.155.000",
     imageAsset: "assets/images/products/matic/beat.webp",
     isRecommended: true,
@@ -22,20 +19,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'local_gas_station_outlined',
         title: "PGM-FI",
-        description:
-            "Teknologi injeksi yang membuat konsumsi bahan bakar lebih irit.",
+        description: "Teknologi injeksi yang membuat konsumsi bahan bakar lebih irit.",
       ),
       MotorcycleFeature(
         iconName: 'electric_bolt_outlined',
         title: "eSP Engine",
-        description:
-            "Mesin Enhanced Smart Power yang bertenaga dan ramah lingkungan.",
+        description: "Mesin Enhanced Smart Power yang bertenaga dan ramah lingkungan.",
       ),
       MotorcycleFeature(
         iconName: 'security_outlined',
         title: "Secure Key Shutter",
-        description:
-            "Sistem pengaman bermagnet untuk mencegah pencurian kendaraan.",
+        description: "Sistem pengaman bermagnet untuk mencegah pencurian kendaraan.",
       ),
     ],
     specsMesin: {
@@ -72,8 +66,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "BeAT Street",
     categoryBadge: "MATIC",
     subtitle: "Matic • 110cc",
-    description:
-        "Honda BeAT Street tampil lebih sporty dengan naked handlebar dan panel meter digital yang cocok untuk gaya hidup anak muda.",
+    description: "Honda BeAT Street tampil lebih sporty dengan naked handlebar dan panel meter digital yang cocok untuk gaya hidup anak muda.",
     price: "Rp 20.026.000",
     imageAsset: "assets/images/products/matic/beatstreet.webp",
     engine: "109,5 cc",
@@ -83,20 +76,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'speed_outlined',
         title: "Digital Panel Meter",
-        description:
-            "Speedometer full digital yang modern dan informatif.",
+        description: "Speedometer full digital yang modern dan informatif.",
       ),
       MotorcycleFeature(
         iconName: 'settings_input_component_outlined',
         title: "Naked Handlebar",
-        description:
-            "Stang model terbuka memberikan posisi berkendara lebih nyaman.",
+        description: "Stang model terbuka memberikan posisi berkendara lebih nyaman.",
       ),
       MotorcycleFeature(
         iconName: 'electric_bolt_outlined',
         title: "eSP Engine",
-        description:
-            "Mesin eSP yang bertenaga, irit, dan ramah lingkungan.",
+        description: "Mesin eSP yang bertenaga, irit, dan ramah lingkungan.",
       ),
     ],
     specsMesin: {
@@ -133,8 +123,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "Genio",
     categoryBadge: "MATIC",
     subtitle: "Matic • 110cc",
-    description:
-        "Honda Genio hadir dengan desain fashionable, bodi compact, dan teknologi modern yang membuat perjalanan sehari-hari semakin nyaman dan hemat bahan bakar.",
+    description: "Honda Genio hadir dengan desain fashionable, bodi compact, dan teknologi modern yang membuat perjalanan sehari-hari semakin nyaman dan hemat bahan bakar.",
     price: "Rp 20.325.000",
     imageAsset: "assets/images/products/matic/genio.webp",
     engine: "109,5 cc",
@@ -144,20 +133,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'palette_outlined',
         title: "Fashionable Design",
-        description:
-            "Desain stylish dan modern yang cocok untuk anak muda.",
+        description: "Desain stylish dan modern yang cocok untuk anak muda.",
       ),
       MotorcycleFeature(
         iconName: 'electric_bolt_outlined',
         title: "eSP Engine",
-        description:
-            "Mesin Enhanced Smart Power yang irit, bertenaga, dan ramah lingkungan.",
+        description: "Mesin Enhanced Smart Power yang irit, bertenaga, dan ramah lingkungan.",
       ),
       MotorcycleFeature(
         iconName: 'local_gas_station_outlined',
         title: "PGM-FI",
-        description:
-            "Teknologi injeksi modern untuk konsumsi bahan bakar yang lebih efisien.",
+        description: "Teknologi injeksi modern untuk konsumsi bahan bakar yang lebih efisien.",
       ),
     ],
     specsMesin: {
@@ -194,8 +180,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "Scoopy",
     categoryBadge: "MATIC",
     subtitle: "Matic • 110cc",
-    description:
-        "Honda Scoopy hadir dengan desain retro modern yang ikonik, dilengkapi fitur canggih dan kenyamanan berkendara untuk aktivitas sehari-hari.",
+    description: "Honda Scoopy hadir dengan desain retro modern yang ikonik, dilengkapi fitur canggih dan kenyamanan berkendara untuk aktivitas sehari-hari.",
     price: "Rp 22.990.000",
     imageAsset: "assets/images/products/matic/scopy.webp",
     engine: "109,5 cc",
@@ -205,20 +190,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'vpn_key_outlined',
         title: "Smart Key System",
-        description:
-            "Sistem kunci pintar tanpa anak kunci yang lebih aman dan praktis.",
+        description: "Sistem kunci pintar tanpa anak kunci yang lebih aman dan praktis.",
       ),
       MotorcycleFeature(
         iconName: 'lightbulb_outline',
         title: "Full LED Lighting",
-        description:
-            "Lampu depan dan belakang LED yang terang dan hemat energi.",
+        description: "Lampu depan dan belakang LED yang terang dan hemat energi.",
       ),
       MotorcycleFeature(
         iconName: 'phone_android_outlined',
         title: "USB Charger",
-        description:
-            "Memudahkan pengisian daya smartphone selama perjalanan.",
+        description: "Memudahkan pengisian daya smartphone selama perjalanan.",
       ),
     ],
     specsMesin: {
@@ -255,8 +237,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "Vario 125",
     categoryBadge: "MATIC",
     subtitle: "Matic • 125cc",
-    description:
-        "Honda Vario 125 menawarkan performa bertenaga, desain sporty modern, dan fitur lengkap untuk menunjang mobilitas harian yang nyaman.",
+    description: "Honda Vario 125 menawarkan performa bertenaga, desain sporty modern, dan fitur lengkap untuk menunjang mobilitas harian yang nyaman.",
     price: "Rp 24.550.000",
     imageAsset: "assets/images/products/matic/vario125.webp",
     engine: "124,8 cc",
@@ -266,20 +247,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'vpn_key_outlined',
         title: "Smart Key System",
-        description:
-            "Sistem kunci pintar yang praktis dan meningkatkan keamanan kendaraan.",
+        description: "Sistem kunci pintar yang praktis dan meningkatkan keamanan kendaraan.",
       ),
       MotorcycleFeature(
         iconName: 'phone_android_outlined',
         title: "USB Charger",
-        description:
-            "Mengisi daya smartphone menjadi lebih mudah saat berkendara.",
+        description: "Mengisi daya smartphone menjadi lebih mudah saat berkendara.",
       ),
       MotorcycleFeature(
         iconName: 'lightbulb_outline',
         title: "Full LED Lighting",
-        description:
-            "Pencahayaan lebih terang dengan tampilan modern.",
+        description: "Pencahayaan lebih terang dengan tampilan modern.",
       ),
     ],
     specsMesin: {
@@ -316,8 +294,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "Vario 125 Street",
     categoryBadge: "MATIC",
     subtitle: "Matic • 125cc",
-    description:
-        "Honda Vario 125 Street hadir dengan tampilan yang lebih sporty dan agresif, dipadukan dengan performa mesin 125cc yang responsif untuk aktivitas harian.",
+    description: "Honda Vario 125 Street hadir dengan tampilan yang lebih sporty dan agresif, dipadukan dengan performa mesin 125cc yang responsif untuk aktivitas harian.",
     price: "Rp 25.100.000",
     imageAsset: "assets/images/products/matic/vario125street.webp",
     engine: "124,8 cc",
@@ -327,20 +304,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'speed_outlined',
         title: "Full Digital Panel",
-        description:
-            "Panel meter digital modern dengan informasi berkendara lengkap.",
+        description: "Panel meter digital modern dengan informasi berkendara lengkap.",
       ),
       MotorcycleFeature(
         iconName: 'vpn_key_outlined',
         title: "Smart Key System",
-        description:
-            "Sistem kunci pintar yang aman dan praktis tanpa anak kunci.",
+        description: "Sistem kunci pintar yang aman dan praktis tanpa anak kunci.",
       ),
       MotorcycleFeature(
         iconName: 'phone_android_outlined',
         title: "USB Charger",
-        description:
-            "Mengisi daya smartphone lebih mudah selama perjalanan.",
+        description: "Mengisi daya smartphone lebih mudah selama perjalanan.",
       ),
     ],
     specsMesin: {
@@ -377,8 +351,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "Vario 160",
     categoryBadge: "MATIC",
     subtitle: "Matic • 160cc",
-    description:
-        "Honda Vario 160 hadir dengan desain premium yang lebih besar, mesin eSP+ 160cc yang bertenaga, serta fitur modern untuk pengalaman berkendara yang lebih nyaman.",
+    description: "Honda Vario 160 hadir dengan desain premium yang lebih besar, mesin eSP+ 160cc yang bertenaga, serta fitur modern untuk pengalaman berkendara yang lebih nyaman.",
     price: "Rp 32.850.000",
     imageAsset: "assets/images/products/matic/vario160.webp",
     isNew: true,
@@ -389,20 +362,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'shield_outlined',
         title: "ABS System",
-        description:
-            "Sistem pengereman ABS memberikan keamanan lebih saat melakukan pengereman mendadak.",
+        description: "Sistem pengereman ABS memberikan keamanan lebih saat melakukan pengereman mendadak.",
       ),
       MotorcycleFeature(
         iconName: 'light_mode_outlined',
         title: "Full LED Lighting",
-        description:
-            "Lampu LED modern dengan pencahayaan yang lebih terang.",
+        description: "Lampu LED modern dengan pencahayaan yang lebih terang.",
       ),
       MotorcycleFeature(
         iconName: 'vpn_key_outlined',
         title: "Honda Smart Key",
-        description:
-            "Sistem smart key tanpa anak kunci yang lebih aman dan praktis.",
+        description: "Sistem smart key tanpa anak kunci yang lebih aman dan praktis.",
       ),
     ],
     specsMesin: {
@@ -439,8 +409,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "Stylo 160",
     categoryBadge: "MATIC",
     subtitle: "Matic • 160cc",
-    description:
-        "Honda Stylo 160 memadukan desain retro premium dengan performa mesin 160cc eSP+ yang bertenaga. Cocok untuk pengendara yang mengutamakan gaya dan kenyamanan.",
+    description: "Honda Stylo 160 memadukan desain retro premium dengan performa mesin 160cc eSP+ yang bertenaga. Cocok untuk pengendara yang mengutamakan gaya dan kenyamanan.",
     price: "Rp 30.425.000",
     imageAsset: "assets/images/products/matic/stylo.webp",
     engine: "156,9 cc",
@@ -450,20 +419,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'style_outlined',
         title: "Premium Retro Design",
-        description:
-            "Desain klasik modern dengan sentuhan premium yang elegan.",
+        description: "Desain klasik modern dengan sentuhan premium yang elegan.",
       ),
       MotorcycleFeature(
         iconName: 'vpn_key_outlined',
         title: "Honda Smart Key",
-        description:
-            "Sistem smart key tanpa anak kunci yang praktis dan aman.",
+        description: "Sistem smart key tanpa anak kunci yang praktis dan aman.",
       ),
       MotorcycleFeature(
         iconName: 'light_mode_outlined',
         title: "Full LED Lighting",
-        description:
-            "Lampu LED depan dan belakang dengan tampilan modern.",
+        description: "Lampu LED depan dan belakang dengan tampilan modern.",
       ),
     ],
     specsMesin: {
@@ -500,8 +466,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "PCX160",
     categoryBadge: "MATIC",
     subtitle: "Matic • 160cc",
-    description:
-        "Honda PCX160 menghadirkan kenyamanan premium dengan desain elegan, mesin eSP+ 160cc yang responsif, serta fitur modern untuk perjalanan harian maupun touring.",
+    description: "Honda PCX160 menghadirkan kenyamanan premium dengan desain elegan, mesin eSP+ 160cc yang responsif, serta fitur modern untuk perjalanan harian maupun touring.",
     price: "Rp 33.750.000",
     imageAsset: "assets/images/products/matic/pcx.webp",
     engine: "156,9 cc",
@@ -511,20 +476,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'vpn_key_outlined',
         title: "Honda Smart Key",
-        description:
-            "Smart key system lengkap dengan alarm dan answer back system.",
+        description: "Smart key system lengkap dengan alarm dan answer back system.",
       ),
       MotorcycleFeature(
         iconName: 'phone_android_outlined',
         title: "USB Charger",
-        description:
-            "USB charger type-C untuk mengisi daya smartphone selama perjalanan.",
+        description: "USB charger type-C untuk mengisi daya smartphone selama perjalanan.",
       ),
       MotorcycleFeature(
         iconName: 'airline_seat_recline_normal_outlined',
         title: "Comfort Seat",
-        description:
-            "Jok lebar dan ergonomis memberikan kenyamanan maksimal.",
+        description: "Jok lebar dan ergonomis memberikan kenyamanan maksimal.",
       ),
     ],
     specsMesin: {
@@ -561,8 +523,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "ADV160",
     categoryBadge: "MATIC",
     subtitle: "Adventure • 160cc",
-    description:
-        "Honda ADV160 dirancang untuk pengendara yang menyukai petualangan. Menggabungkan performa mesin eSP+ 160cc, kenyamanan berkendara, dan desain SUV Touring yang tangguh.",
+    description: "Honda ADV160 dirancang untuk pengendara yang menyukai petualangan. Menggabungkan performa mesin eSP+ 160cc, kenyamanan berkendara, dan desain SUV Touring yang tangguh.",
     price: "Rp 37.265.000",
     imageAsset: "assets/images/products/matic/adv160.webp",
     engine: "156,9 cc",
@@ -572,20 +533,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'landscape_outlined',
         title: "Adjustable Windscreen",
-        description:
-            "Windscreen dapat diatur sesuai kebutuhan untuk kenyamanan berkendara.",
+        description: "Windscreen dapat diatur sesuai kebutuhan untuk kenyamanan berkendara.",
       ),
       MotorcycleFeature(
         iconName: 'shield_outlined',
         title: "ABS Brake System",
-        description:
-            "Pengereman lebih stabil dan aman pada berbagai kondisi jalan.",
+        description: "Pengereman lebih stabil dan aman pada berbagai kondisi jalan.",
       ),
       MotorcycleFeature(
         iconName: 'vpn_key_outlined',
         title: "Honda Smart Key",
-        description:
-            "Smart key system lengkap dengan alarm dan answer back system.",
+        description: "Smart key system lengkap dengan alarm dan answer back system.",
       ),
     ],
     specsMesin: {
@@ -622,8 +580,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "Forza",
     categoryBadge: "MATIC",
     subtitle: "Premium Matic • 250cc",
-    description:
-        "Honda Forza merupakan skutik premium berkapasitas 250cc yang menghadirkan kenyamanan, kemewahan, dan performa tinggi untuk perjalanan jarak dekat maupun touring.",
+    description: "Honda Forza merupakan skutik premium berkapasitas 250cc yang menghadirkan kenyamanan, kemewahan, dan performa tinggi untuk perjalanan jarak dekat maupun touring.",
     price: "Rp 90.515.000",
     imageAsset: "assets/images/products/matic/pcx.webp",
     engine: "249,5 cc",
@@ -633,20 +590,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'height_outlined',
         title: "Electric Windscreen",
-        description:
-            "Windscreen elektrik yang dapat diatur sesuai kenyamanan pengendara.",
+        description: "Windscreen elektrik yang dapat diatur sesuai kenyamanan pengendara.",
       ),
       MotorcycleFeature(
         iconName: 'vpn_key_outlined',
         title: "Honda Smart Key",
-        description:
-            "Smart Key System lengkap dengan alarm dan answer back system.",
+        description: "Smart Key System lengkap dengan alarm dan answer back system.",
       ),
       MotorcycleFeature(
         iconName: 'work_outline',
         title: "Large Luggage Box",
-        description:
-            "Bagasi ekstra luas yang mampu menyimpan dua helm sekaligus.",
+        description: "Bagasi ekstra luas yang mampu menyimpan dua helm sekaligus.",
       ),
     ],
     specsMesin: {
@@ -683,8 +637,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "CB150R Streetfire",
     categoryBadge: "SPORT",
     subtitle: "Sport • 150cc",
-    description:
-        "Honda CB150R Streetfire hadir dengan desain naked sport yang agresif, performa mesin DOHC 150cc yang responsif, serta handling yang lincah untuk penggunaan harian maupun touring.",
+    description: "Honda CB150R Streetfire hadir dengan desain naked sport yang agresif, performa mesin DOHC 150cc yang responsif, serta handling yang lincah untuk penggunaan harian maupun touring.",
     price: "Rp 32.115.000",
     imageAsset: "assets/images/products/sport/cb150rstreetfire.webp",
     engine: "149,16 cc",
@@ -694,20 +647,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'bolt_outlined',
         title: "DOHC Engine",
-        description:
-            "Mesin DOHC 150cc memberikan performa tinggi dan akselerasi responsif.",
+        description: "Mesin DOHC 150cc memberikan performa tinggi dan akselerasi responsif.",
       ),
       MotorcycleFeature(
         iconName: 'light_mode_outlined',
         title: "Full LED Lighting",
-        description:
-            "Lampu depan dan belakang LED dengan desain modern.",
+        description: "Lampu depan dan belakang LED dengan desain modern.",
       ),
       MotorcycleFeature(
         iconName: 'speed_outlined',
         title: "Digital Panel Meter",
-        description:
-            "Panel instrumen full digital yang informatif dan mudah dibaca.",
+        description: "Panel instrumen full digital yang informatif dan mudah dibaca.",
       ),
     ],
     specsMesin: {
@@ -744,8 +694,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "CBR150R",
     categoryBadge: "SPORT",
     subtitle: "Sport • 150cc",
-    description:
-        "Honda CBR150R hadir dengan desain supersport yang agresif, performa mesin DOHC 150cc, serta fitur modern yang memberikan sensasi berkendara layaknya motor balap.",
+    description: "Honda CBR150R hadir dengan desain supersport yang agresif, performa mesin DOHC 150cc, serta fitur modern yang memberikan sensasi berkendara layaknya motor balap.",
     price: "Rp 38.570.000",
     imageAsset: "assets/images/products/sport/cbr150r.webp",
     engine: "149,16 cc",
@@ -755,20 +704,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'sports_motorsports_outlined',
         title: "Supersport Design",
-        description:
-            "Desain fairing aerodinamis bergaya motor balap Honda Racing.",
+        description: "Desain fairing aerodinamis bergaya motor balap Honda Racing.",
       ),
       MotorcycleFeature(
         iconName: 'speed_outlined',
         title: "Assist & Slipper Clutch",
-        description:
-            "Perpindahan gigi lebih ringan dan mengurangi engine brake saat downshift.",
+        description: "Perpindahan gigi lebih ringan dan mengurangi engine brake saat downshift.",
       ),
       MotorcycleFeature(
         iconName: 'light_mode_outlined',
         title: "Full LED Lighting",
-        description:
-            "Sistem pencahayaan LED penuh yang modern dan terang.",
+        description: "Sistem pencahayaan LED penuh yang modern dan terang.",
       ),
     ],
     specsMesin: {
@@ -805,8 +751,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "Supra X 125",
     categoryBadge: "CUB",
     subtitle: "Cub • 125cc",
-    description:
-        "Honda Supra X 125 merupakan motor bebek legendaris dengan mesin irit, tangguh, dan nyaman digunakan untuk aktivitas harian maupun perjalanan jauh.",
+    description: "Honda Supra X 125 merupakan motor bebek legendaris dengan mesin irit, tangguh, dan nyaman digunakan untuk aktivitas harian maupun perjalanan jauh.",
     price: "Rp 20.950.000",
     imageAsset: "assets/images/products/cub/supra_x_125_fi.webp",
     engine: "124,89 cc",
@@ -816,20 +761,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'local_gas_station_outlined',
         title: "PGM-FI",
-        description:
-            "Teknologi injeksi Honda yang membuat konsumsi bahan bakar lebih hemat.",
+        description: "Teknologi injeksi Honda yang membuat konsumsi bahan bakar lebih hemat.",
       ),
       MotorcycleFeature(
         iconName: 'build_outlined',
         title: "Reliable Engine",
-        description:
-            "Mesin tangguh dengan perawatan mudah dan umur pakai panjang.",
+        description: "Mesin tangguh dengan perawatan mudah dan umur pakai panjang.",
       ),
       MotorcycleFeature(
         iconName: 'light_mode_outlined',
         title: "Modern Headlamp",
-        description:
-            "Lampu depan modern dengan pencahayaan yang optimal.",
+        description: "Lampu depan modern dengan pencahayaan yang optimal.",
       ),
     ],
     specsMesin: {
@@ -866,8 +808,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "Sonic 150R",
     categoryBadge: "CUB",
     subtitle: "Cub • 150cc",
-    description:
-        "Honda Sonic 150R hadir dengan desain super sport underbone yang ringan, lincah, dan didukung mesin DOHC 150cc untuk performa maksimal di jalanan.",
+    description: "Honda Sonic 150R hadir dengan desain super sport underbone yang ringan, lincah, dan didukung mesin DOHC 150cc untuk performa maksimal di jalanan.",
     price: "Rp 28.430.000",
     imageAsset: "assets/images/products/sport/sonic150r.webp",
     engine: "149,16 cc",
@@ -877,20 +818,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'sports_motorsports_outlined',
         title: "DOHC Engine",
-        description:
-            "Mesin DOHC 150cc memberikan akselerasi yang responsif dan bertenaga.",
+        description: "Mesin DOHC 150cc memberikan akselerasi yang responsif dan bertenaga.",
       ),
       MotorcycleFeature(
         iconName: 'speed_outlined',
         title: "Digital Panel Meter",
-        description:
-            "Panel instrumen digital dengan informasi berkendara yang lengkap.",
+        description: "Panel instrumen digital dengan informasi berkendara yang lengkap.",
       ),
       MotorcycleFeature(
         iconName: 'light_mode_outlined',
         title: "LED Headlight",
-        description:
-            "Lampu depan LED modern dengan pencahayaan lebih terang.",
+        description: "Lampu depan LED modern dengan pencahayaan lebih terang.",
       ),
     ],
     specsMesin: {
@@ -927,8 +865,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "CRF150L",
     categoryBadge: "OFF ROAD",
     subtitle: "Off Road • 150cc",
-    description:
-        "Honda CRF150L merupakan motor dual purpose yang dirancang untuk menghadapi berbagai medan. Cocok digunakan di jalan raya maupun jalur off-road dengan suspensi yang tangguh dan mesin bertenaga.",
+    description: "Honda CRF150L merupakan motor dual purpose yang dirancang untuk menghadapi berbagai medan. Cocok digunakan di jalan raya maupun jalur off-road dengan suspensi yang tangguh dan mesin bertenaga.",
     price: "Rp 37.705.000",
     imageAsset: "assets/images/products/sport/crf150l.webp",
     engine: "149,15 cc",
@@ -938,20 +875,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'terrain_outlined',
         title: "Long Travel Suspension",
-        description:
-            "Suspensi depan dan belakang dengan travel panjang untuk kenyamanan di medan ekstrem.",
+        description: "Suspensi depan dan belakang dengan travel panjang untuk kenyamanan di medan ekstrem.",
       ),
       MotorcycleFeature(
         iconName: 'landscape_outlined',
         title: "Dual Purpose Tire",
-        description:
-            "Ban dual purpose yang memberikan traksi maksimal di jalan maupun off-road.",
+        description: "Ban dual purpose yang memberikan traksi maksimal di jalan maupun off-road.",
       ),
       MotorcycleFeature(
         iconName: 'sports_motorsports_outlined',
         title: "Pro-Link Suspension",
-        description:
-            "Suspensi belakang Pro-Link memberikan kestabilan saat melintasi berbagai medan.",
+        description: "Suspensi belakang Pro-Link memberikan kestabilan saat melintasi berbagai medan.",
       ),
     ],
     specsMesin: {
@@ -988,8 +922,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "CRF250 Rally",
     categoryBadge: "OFF ROAD",
     subtitle: "Adventure • 250cc",
-    description:
-        "Honda CRF250 Rally dirancang untuk petualangan sejati. Dengan desain ala motor Rally Dakar, mesin 250cc DOHC, dan suspensi long travel, motor ini siap menghadapi berbagai medan perjalanan.",
+    description: "Honda CRF250 Rally dirancang untuk petualangan sejati. Dengan desain ala motor Rally Dakar, mesin 250cc DOHC, dan suspensi long travel, motor ini siap menghadapi berbagai medan perjalanan.",
     price: "Rp 96.539.000",
     imageAsset: "assets/images/products/sport/crf250rally.webp",
     engine: "249,6 cc",
@@ -999,20 +932,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'landscape_outlined',
         title: "Rally Design",
-        description:
-            "Desain khas motor rally dengan windshield tinggi dan bodi adventure.",
+        description: "Desain khas motor rally dengan windshield tinggi dan bodi adventure.",
       ),
       MotorcycleFeature(
         iconName: 'settings_input_component_outlined',
         title: "Long Travel Suspension",
-        description:
-            "Suspensi Showa depan dan belakang memberikan kenyamanan di berbagai medan.",
+        description: "Suspensi Showa depan dan belakang memberikan kenyamanan di berbagai medan.",
       ),
       MotorcycleFeature(
         iconName: 'explore_outlined',
         title: "Adventure Ready",
-        description:
-            "Ground clearance tinggi dan posisi berkendara ergonomis untuk perjalanan jauh.",
+        description: "Ground clearance tinggi dan posisi berkendara ergonomis untuk perjalanan jauh.",
       ),
     ],
     specsMesin: {
@@ -1049,8 +979,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "Honda EM1 e:",
     categoryBadge: "EV",
     subtitle: "Electric Vehicle",
-    description:
-        "Honda EM1 e: adalah motor listrik inovatif pertama dari Honda di Indonesia yang menghadirkan gaya hidup modern dan ramah lingkungan.",
+    description: "Honda EM1 e: adalah motor listrik inovatif pertama dari Honda di Indonesia yang menghadirkan gaya hidup modern dan ramah lingkungan.",
     price: "Rp 40.000.000",
     imageAsset: "assets/images/products/ev/em1_and_em1_plus.webp",
     engine: "Brushless Motor",
@@ -1060,20 +989,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'electric_bolt_outlined',
         title: "Honda Mobile Power Pack e:",
-        description:
-            "Baterai lithium-ion yang dapat ditukar dengan mudah dan praktis.",
+        description: "Baterai lithium-ion yang dapat ditukar dengan mudah dan praktis.",
       ),
       MotorcycleFeature(
         iconName: 'light_mode_outlined',
         title: "Full LED Lighting",
-        description:
-            "Sistem pencahayaan LED di seluruh lampu untuk penerangan maksimal.",
+        description: "Sistem pencahayaan LED di seluruh lampu untuk penerangan maksimal.",
       ),
       MotorcycleFeature(
         iconName: 'speed_outlined',
         title: "Digital Panel Meter",
-        description:
-            "Panel meter digital yang informatif menampilkan indikator baterai dan kecepatan.",
+        description: "Panel meter digital yang informatif menampilkan indikator baterai dan kecepatan.",
       ),
     ],
     specsMesin: {
@@ -1107,8 +1033,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "Honda CUV e:",
     categoryBadge: "EV",
     subtitle: "Electric Vehicle",
-    description:
-        "Honda CUV e: menawarkan performa bertenaga dengan desain futuristik dan fitur canggih untuk mobilitas bebas emisi masa depan.",
+    description: "Honda CUV e: menawarkan performa bertenaga dengan desain futuristik dan fitur canggih untuk mobilitas bebas emisi masa depan.",
     price: "Rp 53.000.000",
     imageAsset: "assets/images/products/ev/cuv_and_cuv_roadsync_duo.webp",
     engine: "Brushless Motor",
@@ -1118,20 +1043,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'electric_bolt_outlined',
         title: "Dual Mobile Power Pack",
-        description:
-            "Dilengkapi dua baterai yang memberikan jarak tempuh lebih jauh.",
+        description: "Dilengkapi dua baterai yang memberikan jarak tempuh lebih jauh.",
       ),
       MotorcycleFeature(
         iconName: 'phone_android_outlined',
         title: "RoadSync Duo",
-        description:
-            "Konektivitas canggih dengan smartphone untuk navigasi dan informasi kendaraan.",
+        description: "Konektivitas canggih dengan smartphone untuk navigasi dan informasi kendaraan.",
       ),
       MotorcycleFeature(
         iconName: 'speed_outlined',
         title: "Riding Mode",
-        description:
-            "Berbagai pilihan mode berkendara sesuai dengan kebutuhan.",
+        description: "Berbagai pilihan mode berkendara sesuai dengan kebutuhan.",
       ),
     ],
     specsMesin: {
@@ -1165,8 +1087,7 @@ final List<Motorcycle> motorcycleDatabase = [
     name: "Honda ICON e:",
     categoryBadge: "EV",
     subtitle: "Electric Vehicle",
-    description:
-        "Honda ICON e: merupakan motor listrik compact yang stylish, sangat cocok untuk mobilitas harian dengan desain atraktif.",
+    description: "Honda ICON e: merupakan motor listrik compact yang stylish, sangat cocok untuk mobilitas harian dengan desain atraktif.",
     price: "Rp 28.000.000",
     imageAsset: "assets/images/products/ev/icon.webp",
     engine: "Brushless Motor",
@@ -1176,20 +1097,17 @@ final List<Motorcycle> motorcycleDatabase = [
       MotorcycleFeature(
         iconName: 'design_services_outlined',
         title: "Compact Design",
-        description:
-            "Desain yang ringan dan ramping memudahkan bermanuver di jalanan.",
+        description: "Desain yang ringan dan ramping memudahkan bermanuver di jalanan.",
       ),
       MotorcycleFeature(
         iconName: 'lightbulb_outline',
         title: "LED Lighting",
-        description:
-            "Lampu LED depan dan belakang modern yang terang dan hemat energi.",
+        description: "Lampu LED depan dan belakang modern yang terang dan hemat energi.",
       ),
       MotorcycleFeature(
         iconName: 'battery_charging_full_outlined',
         title: "Direct Charging",
-        description:
-            "Pengisian daya baterai yang mudah langsung ke kendaraan.",
+        description: "Pengisian daya baterai yang mudah langsung ke kendaraan.",
       ),
     ],
     specsMesin: {
@@ -1217,194 +1135,476 @@ final List<Motorcycle> motorcycleDatabase = [
       'Berat Kosong': '89 kg',
       'Kapasitas Tangki': '-',
     },
-  ),  const Motorcycle(
+  ),
+  const Motorcycle(
     id: 'cub_ct125',
-    name: 'CT125',
-    categoryBadge: 'CUB',
-    subtitle: 'Trekking Cub',
-    description: 'Motor bebek trekking ikonik dengan desain klasik tangguh untuk bertualang di alam maupun jalanan kota.',
-    price: 'Rp 81.400.000',
-    imageAsset: 'assets/images/products/cub/ct125.webp',
-    engine: '125 cc',
-    maxPower: '6,5 kW',
-    fuelCapacity: '5 L',
+    name: "CT125",
+    categoryBadge: "CUB",
+    subtitle: "Trekking Cub",
+    description: "Motor bebek trekking ikonik dengan desain klasik tangguh untuk bertualang di alam maupun jalanan kota.",
+    price: "Rp 81.400.000",
+    imageAsset: "assets/images/products/cub/ct125.webp",
+    engine: "125 cc",
+    maxPower: "6,5 kW",
+    fuelCapacity: "5 L",
     features: [
-      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
-      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+      MotorcycleFeature(
+        iconName: 'light_mode_outlined',
+        title: "LED Headlight",
+        description: "Pencahayaan terang maksimal.",
+      ),
+      MotorcycleFeature(
+        iconName: 'speed_outlined',
+        title: "Digital Panel",
+        description: "Informasi berkendara lengkap.",
+      ),
     ],
-    specsMesin: {'Tipe': '4-Langkah, SOHC, Pendingin Udara'},
-    specsRangka: {'Tipe Rangka': 'Teleskopik'},
-    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+    specsMesin: {
+      'Tipe': '4-Langkah, SOHC, Pendingin Udara',
+      'Kapasitas': '124 cc',
+      'Daya Maksimal': '6,5 kW / 7.000 rpm',
+      'Torsi Maksimal': '11 Nm / 4.500 rpm',
+      'Sistem Suplai': 'PGM-FI',
+      'Starter': 'Electric & Kick Starter',
+      'Transmisi': 'Manual, 4-Kecepatan',
+    },
+    specsRangka: {
+      'Tipe Rangka': 'Backbone, Baja',
+      'Suspensi Depan': 'Teleskopik',
+      'Suspensi Belakang': 'Twin Shock',
+      'Rem Depan': 'Hydraulic Disc',
+      'Rem Belakang': 'Hydraulic Disc',
+      'Sistem Pengereman': 'ABS 1 Channel',
+    },
+    specsDimensi: {
+      'Panjang x Lebar x Tinggi': '1.960 x 805 x 1.085 mm',
+      'Jarak Sumbu Roda': '1.255 mm',
+      'Tinggi Jok': '800 mm',
+      'Kapasitas Tangki': '5,3 Liter',
+      'Berat Kosong': '120 kg',
+    },
   ),
   const Motorcycle(
     id: 'cub_supra_gtr_150',
-    name: 'Supra GTR 150',
-    categoryBadge: 'CUB',
-    subtitle: 'Sport Cub',
-    description: 'Bebek sport yang memberikan sensasi melesat kencang dengan performa mesin DOHC 6 Kecepatan.',
-    price: 'Rp 25.180.000',
-    imageAsset: 'assets/images/products/cub/gtr_150.webp',
-    engine: '149,16 cc',
-    maxPower: '12,0 kW',
-    fuelCapacity: '5 L',
+    name: "Supra GTR 150",
+    categoryBadge: "CUB",
+    subtitle: "Sport Cub",
+    description: "Bebek sport yang memberikan sensasi melesat kencang dengan performa mesin DOHC 6 Kecepatan.",
+    price: "Rp 25.180.000",
+    imageAsset: "assets/images/products/cub/gtr_150.webp",
+    engine: "149,16 cc",
+    maxPower: "12,0 kW",
+    fuelCapacity: "5 L",
     features: [
-      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
-      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+      MotorcycleFeature(
+        iconName: 'light_mode_outlined',
+        title: "LED Headlight",
+        description: "Pencahayaan terang maksimal.",
+      ),
+      MotorcycleFeature(
+        iconName: 'speed_outlined',
+        title: "Digital Panel",
+        description: "Informasi berkendara lengkap.",
+      ),
     ],
-    specsMesin: {'Tipe': '4-Langkah, DOHC, 4 Katup'},
-    specsRangka: {'Tipe Rangka': 'Teleskopik'},
-    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+    specsMesin: {
+      'Tipe': '4-Langkah, DOHC, 4 Katup',
+      'Kapasitas': '149,16 cc',
+      'Daya Maksimal': '12,0 kW / 9.000 rpm',
+      'Torsi Maksimal': '14,2 Nm / 6.500 rpm',
+      'Sistem Suplai': 'PGM-FI',
+      'Starter': 'Electric & Kick',
+      'Transmisi': 'Manual, 6-Kecepatan',
+    },
+    specsRangka: {
+      'Tipe Rangka': 'Twin Tube Steel',
+      'Suspensi Depan': 'Teleskopik',
+      'Suspensi Belakang': 'Monoshock',
+      'Rem Depan': 'Hydraulic Disc',
+      'Rem Belakang': 'Hydraulic Disc',
+    },
+    specsDimensi: {
+      'Panjang x Lebar x Tinggi': '2.025 x 705 x 1.105 mm',
+      'Jarak Sumbu Roda': '1.284 mm',
+      'Tinggi Jok': '780 mm',
+      'Kapasitas Tangki': '4,5 Liter',
+      'Berat Kosong': '119 kg',
+    },
   ),
   const Motorcycle(
     id: 'cub_revo',
-    name: 'Revo',
-    categoryBadge: 'CUB',
-    subtitle: 'Bebek Irit',
-    description: 'Bebek legendaris tangguh dan super irit dengan teknologi PGM-FI yang ramah di kantong.',
-    price: 'Rp 16.020.000',
-    imageAsset: 'assets/images/products/cub/revo.webp',
-    engine: '109,17 cc',
-    maxPower: '6,56 kW',
-    fuelCapacity: '5 L',
+    name: "Revo",
+    categoryBadge: "CUB",
+    subtitle: "Bebek Irit",
+    description: "Bebek legendaris tangguh dan super irit dengan teknologi PGM-FI yang ramah di kantong.",
+    price: "Rp 16.020.000",
+    imageAsset: "assets/images/products/cub/revo.webp",
+    engine: "109,17 cc",
+    maxPower: "6,56 kW",
+    fuelCapacity: "5 L",
     features: [
-      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
-      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+      MotorcycleFeature(
+        iconName: 'light_mode_outlined',
+        title: "LED Headlight",
+        description: "Pencahayaan terang maksimal.",
+      ),
+      MotorcycleFeature(
+        iconName: 'speed_outlined',
+        title: "Digital Panel",
+        description: "Informasi berkendara lengkap.",
+      ),
     ],
-    specsMesin: {'Tipe': '4-Langkah, SOHC, Pendingin Udara'},
-    specsRangka: {'Tipe Rangka': 'Teleskopik'},
-    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+    specsMesin: {
+      'Tipe': '4-Langkah, SOHC, Silinder Tunggal',
+      'Kapasitas': '109,17 cc',
+      'Daya Maksimal': '6,56 kW / 7.500 rpm',
+      'Torsi Maksimal': '8,76 Nm / 6.000 rpm',
+      'Sistem Suplai': 'PGM-FI',
+      'Starter': 'Kick & Electric',
+      'Transmisi': '4-Kecepatan',
+    },
+    specsRangka: {
+      'Tipe Rangka': 'Tulang Punggung',
+      'Suspensi Depan': 'Teleskopik',
+      'Suspensi Belakang': 'Lengan Ayun, Suspensi Ganda',
+      'Rem Depan': 'Cakram Hidrolik',
+      'Rem Belakang': 'Tromol',
+    },
+    specsDimensi: {
+      'Panjang x Lebar x Tinggi': '1.919 x 709 x 1.080 mm',
+      'Jarak Sumbu Roda': '1.227 mm',
+      'Tinggi Jok': '735 mm',
+      'Kapasitas Tangki': '4,0 Liter',
+      'Berat Kosong': '97 kg',
+    },
   ),
   const Motorcycle(
     id: 'cub_super_cub_c125',
-    name: 'Super Cub C125',
-    categoryBadge: 'CUB',
-    subtitle: 'Premium Cub',
-    description: 'Desain orisinal Super Cub dengan sentuhan premium modern untuk gaya hidup ikonik dan berkelas.',
-    price: 'Rp 77.160.000',
-    imageAsset: 'assets/images/products/cub/supercub_c125.webp',
-    engine: '124 cc',
-    maxPower: '7,2 kW',
-    fuelCapacity: '5 L',
+    name: "Super Cub C125",
+    categoryBadge: "CUB",
+    subtitle: "Premium Cub",
+    description: "Desain orisinal Super Cub dengan sentuhan premium modern untuk gaya hidup ikonik dan berkelas.",
+    price: "Rp 77.160.000",
+    imageAsset: "assets/images/products/cub/supercub_c125.webp",
+    engine: "124 cc",
+    maxPower: "7,2 kW",
+    fuelCapacity: "5 L",
     features: [
-      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
-      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+      MotorcycleFeature(
+        iconName: 'light_mode_outlined',
+        title: "LED Headlight",
+        description: "Pencahayaan terang maksimal.",
+      ),
+      MotorcycleFeature(
+        iconName: 'speed_outlined',
+        title: "Digital Panel",
+        description: "Informasi berkendara lengkap.",
+      ),
     ],
-    specsMesin: {'Tipe': '4-Langkah, SOHC, eSP'},
-    specsRangka: {'Tipe Rangka': 'Teleskopik'},
-    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+    specsMesin: {
+      'Tipe': '4-Langkah, SOHC, eSP',
+      'Kapasitas': '124 cc',
+      'Daya Maksimal': '7,2 kW / 7.500 rpm',
+      'Torsi Maksimal': '10,4 Nm / 6.250 rpm',
+      'Sistem Suplai': 'PGM-FI',
+      'Starter': 'Electric Starter',
+      'Transmisi': '4-Kecepatan',
+    },
+    specsRangka: {
+      'Tipe Rangka': 'Backbone, Baja',
+      'Suspensi Depan': 'Teleskopik',
+      'Suspensi Belakang': 'Twin Shock',
+      'Rem Depan': 'Hydraulic Disc',
+      'Rem Belakang': 'Tromol',
+    },
+    specsDimensi: {
+      'Panjang x Lebar x Tinggi': '1.915 x 720 x 1.000 mm',
+      'Jarak Sumbu Roda': '1.245 mm',
+      'Tinggi Jok': '780 mm',
+      'Kapasitas Tangki': '3,7 Liter',
+      'Berat Kosong': '110 kg',
+    },
   ),
   const Motorcycle(
     id: 'sport_cb150_verza',
-    name: 'CB150 Verza',
-    categoryBadge: 'SPORT',
-    subtitle: 'Naked Sport',
-    description: 'Motor naked sport andalan yang tangguh, irit, dan nyaman untuk mobilitas tinggi sehari-hari.',
-    price: 'Rp 20.945.000',
-    imageAsset: 'assets/images/products/sport/cb150verza.webp',
-    engine: '149,15 cc',
-    maxPower: '9,59 kW',
-    fuelCapacity: '5 L',
+    name: "CB150 Verza",
+    categoryBadge: "SPORT",
+    subtitle: "Naked Sport",
+    description: "Motor naked sport andalan yang tangguh, irit, dan nyaman untuk mobilitas tinggi sehari-hari.",
+    price: "Rp 20.945.000",
+    imageAsset: "assets/images/products/sport/cb150verza.webp",
+    engine: "149,15 cc",
+    maxPower: "9,59 kW",
+    fuelCapacity: "5 L",
     features: [
-      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
-      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+      MotorcycleFeature(
+        iconName: 'light_mode_outlined',
+        title: "LED Headlight",
+        description: "Pencahayaan terang maksimal.",
+      ),
+      MotorcycleFeature(
+        iconName: 'speed_outlined',
+        title: "Digital Panel",
+        description: "Informasi berkendara lengkap.",
+      ),
     ],
-    specsMesin: {'Tipe': '4-Langkah, SOHC, Pendingin Udara'},
-    specsRangka: {'Tipe Rangka': 'Teleskopik'},
-    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+    specsMesin: {
+      'Tipe': '4-Langkah, SOHC, Silinder Tunggal',
+      'Kapasitas': '149,15 cc',
+      'Daya Maksimal': '9,59 kW / 8.500 rpm',
+      'Torsi Maksimal': '12,73 Nm / 6.000 rpm',
+      'Sistem Suplai': 'PGM-FI',
+      'Starter': 'Electric & Kick',
+      'Transmisi': '5-Kecepatan',
+    },
+    specsRangka: {
+      'Tipe Rangka': 'Diamond Steel',
+      'Suspensi Depan': 'Teleskopik',
+      'Suspensi Belakang': 'Suspensi Ganda',
+      'Rem Depan': 'Cakram Hidrolik',
+      'Rem Belakang': 'Tromol',
+    },
+    specsDimensi: {
+      'Panjang x Lebar x Tinggi': '2.056 x 742 x 1.054 mm',
+      'Jarak Sumbu Roda': '1.318 mm',
+      'Tinggi Jok': '742 mm',
+      'Kapasitas Tangki': '12,2 Liter',
+      'Berat Kosong': '129 kg',
+    },
   ),
   const Motorcycle(
     id: 'sport_cb150x',
-    name: 'CB150X',
-    categoryBadge: 'SPORT',
-    subtitle: 'Adventure Sport',
-    description: 'Motor sport adventure touring 150cc pertama di Indonesia, siap taklukkan berbagai jalanan.',
-    price: 'Rp 33.910.000',
-    imageAsset: 'assets/images/products/sport/cb150x.webp',
-    engine: '149,16 cc',
-    maxPower: '11,5 kW',
-    fuelCapacity: '5 L',
+    name: "CB150X",
+    categoryBadge: "SPORT",
+    subtitle: "Adventure Sport",
+    description: "Motor sport adventure touring 150cc pertama di Indonesia, siap taklukkan berbagai jalanan.",
+    price: "Rp 33.910.000",
+    imageAsset: "assets/images/products/sport/cb150x.webp",
+    engine: "149,16 cc",
+    maxPower: "11,5 kW",
+    fuelCapacity: "5 L",
     features: [
-      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
-      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+      MotorcycleFeature(
+        iconName: 'light_mode_outlined',
+        title: "LED Headlight",
+        description: "Pencahayaan terang maksimal.",
+      ),
+      MotorcycleFeature(
+        iconName: 'speed_outlined',
+        title: "Digital Panel",
+        description: "Informasi berkendara lengkap.",
+      ),
     ],
-    specsMesin: {'Tipe': '4-Langkah, DOHC 4 Katup'},
-    specsRangka: {'Tipe Rangka': 'Teleskopik'},
-    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+    specsMesin: {
+      'Tipe': '4-Langkah, DOHC 4 Katup',
+      'Kapasitas': '149,16 cc',
+      'Daya Maksimal': '11,5 kW / 9.000 rpm',
+      'Torsi Maksimal': '13,8 Nm / 7.000 rpm',
+      'Sistem Suplai': 'PGM-FI',
+      'Starter': 'Electric Starter',
+      'Transmisi': 'Manual, 6-Kecepatan',
+    },
+    specsRangka: {
+      'Tipe Rangka': 'Diamond (Truss)',
+      'Suspensi Depan': 'Inverted Telescopic (USD)',
+      'Suspensi Belakang': 'Monoshock Pro-Link',
+      'Rem Depan': 'Hydraulic Disc',
+      'Rem Belakang': 'Hydraulic Disc',
+    },
+    specsDimensi: {
+      'Panjang x Lebar x Tinggi': '2.031 x 796 x 1.309 mm',
+      'Jarak Sumbu Roda': '1.315 mm',
+      'Tinggi Jok': '817 mm',
+      'Kapasitas Tangki': '12 Liter',
+      'Berat Kosong': '139 kg',
+    },
   ),
   const Motorcycle(
     id: 'sport_cbr250rr',
-    name: 'CBR250RR',
-    categoryBadge: 'SPORT',
-    subtitle: 'Supersport',
-    description: 'Motor supersport revolusioner berbekal mesin 2-silinder bertenaga buas untuk total control sejati.',
-    price: 'Rp 63.456.000',
-    imageAsset: 'assets/images/products/sport/cbr250rr.webp',
-    engine: '249,7 cc',
-    maxPower: '31 kW',
-    fuelCapacity: '5 L',
+    name: "CBR250RR",
+    categoryBadge: "SPORT",
+    subtitle: "Supersport",
+    description: "Motor supersport revolusioner berbekal mesin 2-silinder bertenaga buas untuk total control sejati.",
+    price: "Rp 63.456.000",
+    imageAsset: "assets/images/products/sport/cbr250rr.webp",
+    engine: "249,7 cc",
+    maxPower: "31 kW",
+    fuelCapacity: "5 L",
     features: [
-      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
-      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+      MotorcycleFeature(
+        iconName: 'light_mode_outlined',
+        title: "LED Headlight",
+        description: "Pencahayaan terang maksimal.",
+      ),
+      MotorcycleFeature(
+        iconName: 'speed_outlined',
+        title: "Digital Panel",
+        description: "Informasi berkendara lengkap.",
+      ),
     ],
-    specsMesin: {'Tipe': '4-Stroke, 8-Valve, Parallel Twin Cylinder'},
-    specsRangka: {'Tipe Rangka': 'Teleskopik'},
-    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+    specsMesin: {
+      'Tipe': '4-Stroke, 8-Valve, Parallel Twin',
+      'Kapasitas': '249,7 cc',
+      'Daya Maksimal': '31 kW / 13.000 rpm',
+      'Torsi Maksimal': '25 Nm / 11.000 rpm',
+      'Sistem Suplai': 'PGM-FI',
+      'Starter': 'Electric Starter',
+      'Transmisi': 'Manual, 6-Kecepatan',
+    },
+    specsRangka: {
+      'Tipe Rangka': 'Diamond (Truss) Frame',
+      'Suspensi Depan': 'Inverted Telescopic',
+      'Suspensi Belakang': 'Aluminum Swing Arm',
+      'Rem Depan': 'Hydraulic Disc, Dual Piston',
+      'Rem Belakang': 'Hydraulic Disc, Single Piston',
+    },
+    specsDimensi: {
+      'Panjang x Lebar x Tinggi': '2.061 x 724 x 1.114 mm',
+      'Jarak Sumbu Roda': '1.389 mm',
+      'Tinggi Jok': '790 mm',
+      'Kapasitas Tangki': '14,5 Liter',
+      'Berat Kosong': '168 kg',
+    },
   ),
   const Motorcycle(
     id: 'sport_crf250l',
-    name: 'CRF250L',
-    categoryBadge: 'SPORT',
-    subtitle: 'Off-road',
-    description: 'Dirt bike sejati dengan suspensi Inverted Showa untuk performa off-road dan on-road tiada tanding.',
-    price: 'Rp 79.900.000',
-    imageAsset: 'assets/images/products/sport/crf250l.webp',
-    engine: '249 cc',
-    maxPower: '18,9 kW',
-    fuelCapacity: '5 L',
+    name: "CRF250L",
+    categoryBadge: "SPORT",
+    subtitle: "Off-road",
+    description: "Dirt bike sejati dengan suspensi Inverted Showa untuk performa off-road dan on-road tiada tanding.",
+    price: "Rp 79.900.000",
+    imageAsset: "assets/images/products/sport/crf250l.webp",
+    engine: "249 cc",
+    maxPower: "18,9 kW",
+    fuelCapacity: "5 L",
     features: [
-      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
-      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+      MotorcycleFeature(
+        iconName: 'light_mode_outlined',
+        title: "LED Headlight",
+        description: "Pencahayaan terang maksimal.",
+      ),
+      MotorcycleFeature(
+        iconName: 'speed_outlined',
+        title: "Digital Panel",
+        description: "Informasi berkendara lengkap.",
+      ),
     ],
-    specsMesin: {'Tipe': '4-Langkah, DOHC, 4 Katup'},
-    specsRangka: {'Tipe Rangka': 'Teleskopik'},
-    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+    specsMesin: {
+      'Tipe': '4-Langkah, DOHC, 4 Katup',
+      'Kapasitas': '249,6 cc',
+      'Daya Maksimal': '18,9 kW / 8.500 rpm',
+      'Torsi Maksimal': '23,1 Nm / 6.500 rpm',
+      'Sistem Suplai': 'PGM-FI',
+      'Starter': 'Electric',
+      'Transmisi': 'Manual, 6-Kecepatan',
+    },
+    specsRangka: {
+      'Tipe Rangka': 'Semi Double Cradle',
+      'Suspensi Depan': 'Inverted Telescopic (Showa)',
+      'Suspensi Belakang': 'Pro-Link Monoshock',
+      'Rem Depan': 'Cakram Hidrolik',
+      'Rem Belakang': 'Cakram Hidrolik',
+    },
+    specsDimensi: {
+      'Panjang x Lebar x Tinggi': '2.229 x 903 x 1.203 mm',
+      'Jarak Sumbu Roda': '1.453 mm',
+      'Tinggi Jok': '877 mm',
+      'Kapasitas Tangki': '7,8 Liter',
+      'Berat Kosong': '140 kg',
+    },
   ),
   const Motorcycle(
     id: 'sport_monkey',
-    name: 'Monkey',
-    categoryBadge: 'SPORT',
-    subtitle: 'Ikonik',
-    description: 'Tampil beda dengan desain mungil dan ikonik yang mengundang senyum di setiap perjalanan.',
-    price: 'Rp 82.970.000',
-    imageAsset: 'assets/images/products/sport/monkey.webp',
-    engine: '124 cc',
-    maxPower: '6,9 kW',
-    fuelCapacity: '5 L',
+    name: "Monkey",
+    categoryBadge: "SPORT",
+    subtitle: "Ikonik",
+    description: "Tampil beda dengan desain mungil dan ikonik yang mengundang senyum di setiap perjalanan.",
+    price: "Rp 82.970.000",
+    imageAsset: "assets/images/products/sport/monkey.webp",
+    engine: "124 cc",
+    maxPower: "6,9 kW",
+    fuelCapacity: "5 L",
     features: [
-      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
-      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+      MotorcycleFeature(
+        iconName: 'light_mode_outlined',
+        title: "LED Headlight",
+        description: "Pencahayaan terang maksimal.",
+      ),
+      MotorcycleFeature(
+        iconName: 'speed_outlined',
+        title: "Digital Panel",
+        description: "Informasi berkendara lengkap.",
+      ),
     ],
-    specsMesin: {'Tipe': '4-Langkah, SOHC, eSP'},
-    specsRangka: {'Tipe Rangka': 'Teleskopik'},
-    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+    specsMesin: {
+      'Tipe': '4-Langkah, SOHC, eSP',
+      'Kapasitas': '124 cc',
+      'Daya Maksimal': '6,9 kW / 6.750 rpm',
+      'Torsi Maksimal': '11 Nm / 5.500 rpm',
+      'Sistem Suplai': 'PGM-FI',
+      'Starter': 'Electric',
+      'Transmisi': 'Manual, 5-Kecepatan',
+    },
+    specsRangka: {
+      'Tipe Rangka': 'Backbone, Baja',
+      'Suspensi Depan': 'Inverted Telescopic',
+      'Suspensi Belakang': 'Twin Shock',
+      'Rem Depan': 'Hydraulic Disc',
+      'Rem Belakang': 'Hydraulic Disc',
+    },
+    specsDimensi: {
+      'Panjang x Lebar x Tinggi': '1.710 x 755 x 1.030 mm',
+      'Jarak Sumbu Roda': '1.145 mm',
+      'Tinggi Jok': '776 mm',
+      'Kapasitas Tangki': '5,6 Liter',
+      'Berat Kosong': '104 kg',
+    },
   ),
   const Motorcycle(
     id: 'sport_st125_dax',
-    name: 'ST125 Dax',
-    categoryBadge: 'SPORT',
-    subtitle: 'Leisure',
-    description: 'Bentuk unik dan nyentrik, motor rekreasi ST125 Dax siap jadikan akhir pekan Anda lebih berwarna.',
-    price: 'Rp 81.750.000',
-    imageAsset: 'assets/images/products/sport/st125.webp',
-    engine: '124 cc',
-    maxPower: '6,6 kW',
-    fuelCapacity: '5 L',
+    name: "ST125 Dax",
+    categoryBadge: "SPORT",
+    subtitle: "Leisure",
+    description: "Bentuk unik dan nyentrik, motor rekreasi ST125 Dax siap jadikan akhir pekan Anda lebih berwarna.",
+    price: "Rp 81.750.000",
+    imageAsset: "assets/images/products/sport/st125.webp",
+    engine: "124 cc",
+    maxPower: "6,6 kW",
+    fuelCapacity: "5 L",
     features: [
-      MotorcycleFeature(iconName: 'light_mode_outlined', title: 'LED Headlight', description: 'Pencahayaan terang maksimal.'),
-      MotorcycleFeature(iconName: 'speed_outlined', title: 'Digital Panel', description: 'Informasi berkendara lengkap.'),
+      MotorcycleFeature(
+        iconName: 'light_mode_outlined',
+        title: "LED Headlight",
+        description: "Pencahayaan terang maksimal.",
+      ),
+      MotorcycleFeature(
+        iconName: 'speed_outlined',
+        title: "Digital Panel",
+        description: "Informasi berkendara lengkap.",
+      ),
     ],
-    specsMesin: {'Tipe': '4-Langkah, SOHC, eSP'},
-    specsRangka: {'Tipe Rangka': 'Teleskopik'},
-    specsDimensi: {'Kapasitas Tangki': '5 Liter'},
+    specsMesin: {
+      'Tipe': '4-Langkah, SOHC, Pendingin Udara',
+      'Kapasitas': '124 cc',
+      'Daya Maksimal': '6,6 kW / 7.000 rpm',
+      'Torsi Maksimal': '10,4 Nm / 5.000 rpm',
+      'Sistem Suplai': 'PGM-FI',
+      'Starter': 'Electric Starter',
+      'Transmisi': 'Manual, 4-Kecepatan',
+    },
+    specsRangka: {
+      'Tipe Rangka': 'T-Shape Frame (Baja)',
+      'Suspensi Depan': 'Inverted Telescopic',
+      'Suspensi Belakang': 'Twin Shock',
+      'Rem Depan': 'Hydraulic Disc ABS',
+      'Rem Belakang': 'Hydraulic Disc',
+    },
+    specsDimensi: {
+      'Panjang x Lebar x Tinggi': '1.760 x 760 x 1.020 mm',
+      'Jarak Sumbu Roda': '1.200 mm',
+      'Tinggi Jok': '775 mm',
+      'Kapasitas Tangki': '3,8 Liter',
+      'Berat Kosong': '107 kg',
+    },
   ),
 ];
